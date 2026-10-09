@@ -6,5 +6,6 @@ __pycache__/
 .env
 backend/.env
 backend/ml_data/
+data/raw/
 frontend/.env.local
 nohup.out
