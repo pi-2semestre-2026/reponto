@@ -9,3 +9,7 @@ backend/ml_data/
 data/raw/
 frontend/.env.local
 nohup.out
+
+data/processed/
+.ipynb_checkpoints/
+*.egg-info/
