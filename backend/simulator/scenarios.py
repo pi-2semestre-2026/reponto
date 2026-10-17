@@ -110,6 +110,10 @@ SCENARIOS: dict[str, Scenario] = {
 
 DEFAULT_PRODUCT_COUNT_LIMIT = len(PRODUCTS)
 
+CUSTOM_STRENGTH_RANGE = (0.5, 1.2)
+CUSTOM_DEFAULT_PRICE = 9.9
+CUSTOM_MAX_PRODUCTS = 40
+
 
 def build_catalog(scenario: Scenario, rng) -> list[dict]:
     """Instantiate the scenario's products with randomized strength and prices."""
@@ -128,6 +132,31 @@ def build_catalog(scenario: Scenario, rng) -> list[dict]:
                 "price": price,
                 "cost": round(price * 0.68, 2),
                 "ups": spec["ups"],
+            }
+        )
+    return catalog
+
+
+def build_custom_catalog(items: list[dict], rng) -> list[dict]:
+    """Instantiate the owner's own products (name, category).
+
+    The owner says WHAT he sells; how fast each item
+    really sells stays hidden (randomized strength), exactly like the preset
+    catalog — so the recommender still has to learn it from the sales.
+    """
+    catalog = []
+    for i, item in enumerate(items):
+        base_price = PRICE_BY_CATEGORY.get(item["category"], CUSTOM_DEFAULT_PRICE)
+        price = round(base_price * rng.uniform(0.85, 1.25), 2)
+        catalog.append(
+            {
+                "key": f"custom_{i}",
+                "name": item["name"],
+                "category": item["category"],
+                "strength": rng.uniform(*CUSTOM_STRENGTH_RANGE),
+                "price": price,
+                "cost": round(price * 0.68, 2),
+                "ups": 1.0,
             }
         )
     return catalog
