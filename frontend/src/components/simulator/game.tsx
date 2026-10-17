@@ -5,6 +5,7 @@ import {
   Coins,
   Flame,
   Gamepad2,
+  Loader2,
   Pause,
   PartyPopper,
   Play,
@@ -13,6 +14,7 @@ import {
   ShoppingBag,
   Store,
   Timer,
+  Trash2,
   TrendingDown,
   TrendingUp,
   Truck,
@@ -49,6 +51,8 @@ const CAT_COLORS: Record<string, string> = {
   "Pet e Bebê": "#7B8794",
 };
 
+const MAX_CUSTOM_PRODUCTS = 40;
+
 const SPEEDS = [
   { days: 1, ms: 850 },
   { days: 7, ms: 950 },
@@ -77,6 +81,9 @@ export function SimulatorGame() {
   const [days, setDays] = useState(365);
   const [cycle, setCycle] = useState(7);
   const [seed, setSeed] = useState("");
+  const [catalogMode, setCatalogMode] = useState<"preset" | "custom">("preset");
+  const [customItems, setCustomItems] = useState<CustomItem[]>([EMPTY_ITEM]);
+  const [starting, setStarting] = useState(false);
 
   const [sid, setSid] = useState<string | null>(null);
   const [snap, setSnap] = useState<SimSnapshot | null>(null);
@@ -145,12 +152,28 @@ export function SimulatorGame() {
   }, [phase, playing, sid, speedIdx, tick]);
 
   const start = async () => {
+    let products = null;
+    if (catalogMode === "custom") {
+      products = customItems
+        .filter((i) => i.name.trim().length >= 2)
+        .map((i) => ({
+          name: i.name.trim(),
+          quantity: Math.max(0, Number(i.quantity) || 0),
+          price: Number(i.price.replace(",", ".")) > 0 ? Number(i.price.replace(",", ".")) : null,
+        }));
+      if (products.length === 0) {
+        toast.error(t("sim.setup.customEmpty"));
+        return;
+      }
+    }
+    setStarting(true);
     try {
       const res = await simApi.createSession({
         scenario,
         days,
         cycle_days: cycle,
         seed: seed ? parseInt(seed, 10) : null,
+        products,
       });
       setSid(res.sid);
       setSnap(res.snapshot);
@@ -159,6 +182,8 @@ export function SimulatorGame() {
       setToasts([]);
     } catch (e) {
       toast.error((e as Error).message);
+    } finally {
+      setStarting(false);
     }
   };
 
@@ -224,14 +249,27 @@ export function SimulatorGame() {
       days={days}
       cycle={cycle}
       seed={seed}
+      catalogMode={catalogMode}
+      customItems={customItems}
+      starting={starting}
       onScenario={setScenario}
       onDays={setDays}
       onCycle={setCycle}
       onSeed={setSeed}
+      onCatalogMode={setCatalogMode}
+      onCustomItems={setCustomItems}
       onStart={start}
     />
   );
 }
+
+interface CustomItem {
+  name: string;
+  quantity: string;
+  price: string;
+}
+
+const EMPTY_ITEM: CustomItem = { name: "", quantity: "", price: "" };
 
 
 function SetupScreen({
@@ -240,10 +278,15 @@ function SetupScreen({
   days,
   cycle,
   seed,
+  catalogMode,
+  customItems,
+  starting,
   onScenario,
   onDays,
   onCycle,
   onSeed,
+  onCatalogMode,
+  onCustomItems,
   onStart,
 }: {
   scenarios: SimScenario[];
@@ -251,12 +294,23 @@ function SetupScreen({
   days: number;
   cycle: number;
   seed: string;
+  catalogMode: "preset" | "custom";
+  customItems: CustomItem[];
+  starting: boolean;
   onScenario: (v: string) => void;
   onDays: (v: number) => void;
   onCycle: (v: number) => void;
   onSeed: (v: string) => void;
+  onCatalogMode: (v: "preset" | "custom") => void;
+  onCustomItems: (v: CustomItem[]) => void;
   onStart: () => void;
 }) {
+  const updateItem = (idx: number, patch: Partial<CustomItem>) =>
+    onCustomItems(customItems.map((it, i) => (i === idx ? { ...it, ...patch } : it)));
+  const removeItem = (idx: number) => {
+    const next = customItems.filter((_, i) => i !== idx);
+    onCustomItems(next.length ? next : [EMPTY_ITEM]);
+  };
   const { t } = useI18n();
   const dayOptions = [
     { v: 90, label: "3m" },
@@ -299,11 +353,68 @@ function SetupScreen({
                 <p className="font-display font-bold">{s.name}</p>
                 <p className="mt-1 text-xs leading-relaxed text-muted-foreground">{s.description}</p>
                 <p className="mt-3 font-mono text-xs text-muted-foreground">
-                  ≈{s.customers_per_day} {t("sim.setup.customers")} · {s.products} {t("sim.setup.products")}
+                  ≈{s.customers_per_day} {t("sim.setup.customers")}
+                  {catalogMode === "preset" && ` · ${s.products} ${t("sim.setup.products")}`}
                 </p>
               </button>
             ))}
           </div>
+        </section>
+
+        <section>
+          <p className="mb-3 font-display text-sm font-bold uppercase tracking-wide text-muted-foreground">
+            {t("sim.setup.catalog")}
+          </p>
+          <div className="flex flex-wrap gap-2">
+            <Chip active={catalogMode === "preset"} onClick={() => onCatalogMode("preset")}>
+              {t("sim.setup.catalogPreset")}
+            </Chip>
+            <Chip active={catalogMode === "custom"} onClick={() => onCatalogMode("custom")}>
+              {t("sim.setup.catalogCustom")}
+            </Chip>
+          </div>
+          {catalogMode === "custom" && (
+            <div className="mt-4 space-y-2">
+              <p className="text-xs leading-relaxed text-muted-foreground">{t("sim.setup.customHint")}</p>
+              {customItems.map((item, idx) => (
+                <div key={idx} className="flex gap-2">
+                  <Input
+                    value={item.name}
+                    maxLength={80}
+                    onChange={(e) => updateItem(idx, { name: e.target.value })}
+                    placeholder={t("sim.setup.productName")}
+                  />
+                  <Input
+                    type="number"
+                    min={0}
+                    className="w-28"
+                    value={item.quantity}
+                    onChange={(e) => updateItem(idx, { quantity: e.target.value })}
+                    placeholder={t("sim.setup.quantity")}
+                  />
+                  <Input
+                    inputMode="decimal"
+                    className="w-28"
+                    value={item.price}
+                    onChange={(e) => updateItem(idx, { price: e.target.value.replace(/[^\d.,]/g, "") })}
+                    placeholder={t("sim.setup.price")}
+                  />
+                  <Button variant="ghost" size="icon" onClick={() => removeItem(idx)} aria-label="Remover">
+                    <Trash2 />
+                  </Button>
+                </div>
+              ))}
+              {customItems.length < MAX_CUSTOM_PRODUCTS && (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => onCustomItems([...customItems, EMPTY_ITEM])}
+                >
+                  <Plus /> {t("sim.setup.addProduct")}
+                </Button>
+              )}
+            </div>
+          )}
         </section>
 
         <section>
@@ -345,8 +456,9 @@ function SetupScreen({
         </section>
 
         <div className="flex justify-center pt-2">
-          <Button variant="press" size="xl" onClick={onStart}>
-            <Gamepad2 /> {t("sim.start")}
+          <Button variant="press" size="xl" onClick={onStart} disabled={starting}>
+            {starting ? <Loader2 className="animate-spin" /> : <Gamepad2 />}
+            {starting ? t("sim.starting") : t("sim.start")}
           </Button>
         </div>
       </div>

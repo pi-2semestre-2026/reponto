@@ -9,14 +9,23 @@ import asyncio
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel, Field
 
+from app.database import SessionLocal
 from app.routers.dep import get_current_user
+from app.services.categorizer import get_categories, keyword_categorize, llm_categorize
+from app.services.seed_data import DEFAULT_CATEGORY_NAME
 from simulator import store
 from simulator.engine import SimulationEngine
 from simulator.llm import coach_report
 from simulator.metrics import full_report
-from simulator.scenarios import SCENARIOS
+from simulator.scenarios import CUSTOM_MAX_PRODUCTS, SCENARIOS
 
 router = APIRouter(prefix="/admin/simulator", tags=["simulator"])
+
+
+class CustomProductIn(BaseModel):
+    name: str = Field(min_length=2, max_length=80)
+    quantity: float = Field(ge=0, le=100_000)
+    price: float | None = Field(default=None, gt=0, le=100_000)
 
 
 class CreateIn(BaseModel):
@@ -24,6 +33,27 @@ class CreateIn(BaseModel):
     days: int = Field(default=90, ge=7, le=1095)
     cycle_days: int = Field(default=7, ge=1, le=30)
     seed: int | None = None
+    products: list[CustomProductIn] | None = Field(default=None, max_length=CUSTOM_MAX_PRODUCTS)
+
+
+async def _categorize_custom(products: list[CustomProductIn]) -> list[dict]:
+    """Same flow as the real app (keywords -> LLM -> default), but read-only:
+    a category the LLM invents here is NOT saved — the game never touches
+    user data."""
+    async with SessionLocal() as session:
+        categories = await get_categories(session)
+
+    async def one(p: CustomProductIn) -> dict:
+        name = p.name.strip()
+        cat = keyword_categorize(name, categories) or await llm_categorize(name, categories)
+        return {
+            "name": name,
+            "quantity": p.quantity,
+            "price": p.price,
+            "category": cat.name if cat else DEFAULT_CATEGORY_NAME,
+        }
+
+    return await asyncio.gather(*(one(p) for p in products))
 
 
 class StepIn(BaseModel):
@@ -53,12 +83,14 @@ async def list_scenarios(user=Depends(get_current_user)):
 
 @router.post("/sessions")
 async def create_session(payload: CreateIn, user=Depends(get_current_user)):
+    custom = await _categorize_custom(payload.products) if payload.products else None
     try:
         engine = SimulationEngine(
             scenario_key=payload.scenario,
             days=payload.days,
             cycle_days=payload.cycle_days,
             seed=payload.seed,
+            custom_products=custom,
         )
     except ValueError as e:
         raise HTTPException(status_code=422, detail=str(e))

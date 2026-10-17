@@ -101,11 +101,18 @@ export interface SimCoach {
   source: string;
 }
 
+export interface CustomProductIn {
+  name: string;
+  quantity: number;
+  price?: number | null;
+}
+
 export interface CreateSessionIn {
   scenario: string;
   days: number;
   cycle_days: number;
   seed?: number | null;
+  products?: CustomProductIn[] | null;
 }
 
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
