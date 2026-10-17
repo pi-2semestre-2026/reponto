@@ -159,6 +159,7 @@ export function SimulatorGame() {
         .map((i) => ({
           name: i.name.trim(),
           quantity: Math.max(0, Number(i.quantity) || 0),
+          price: Number(i.price.replace(",", ".")) > 0 ? Number(i.price.replace(",", ".")) : null,
         }));
       if (products.length === 0) {
         toast.error(t("sim.setup.customEmpty"));
@@ -265,9 +266,10 @@ export function SimulatorGame() {
 interface CustomItem {
   name: string;
   quantity: string;
+  price: string;
 }
 
-const EMPTY_ITEM: CustomItem = { name: "", quantity: "" };
+const EMPTY_ITEM: CustomItem = { name: "", quantity: "", price: "" };
 
 
 function SetupScreen({
@@ -389,6 +391,13 @@ function SetupScreen({
                     value={item.quantity}
                     onChange={(e) => updateItem(idx, { quantity: e.target.value })}
                     placeholder={t("sim.setup.quantity")}
+                  />
+                  <Input
+                    inputMode="decimal"
+                    className="w-28"
+                    value={item.price}
+                    onChange={(e) => updateItem(idx, { price: e.target.value.replace(/[^\d.,]/g, "") })}
+                    placeholder={t("sim.setup.price")}
                   />
                   <Button variant="ghost" size="icon" onClick={() => removeItem(idx)} aria-label="Remover">
                     <Trash2 />

@@ -104,6 +104,7 @@ export interface SimCoach {
 export interface CustomProductIn {
   name: string;
   quantity: number;
+  price?: number | null;
 }
 
 export interface CreateSessionIn {

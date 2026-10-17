@@ -138,7 +138,8 @@ def build_catalog(scenario: Scenario, rng) -> list[dict]:
 
 
 def build_custom_catalog(items: list[dict], rng) -> list[dict]:
-    """Instantiate the owner's own products (name, category, quantity on hand).
+    """Instantiate the owner's own products (name, category, quantity on hand,
+    optional price — falls back to the category's typical price).
 
     The owner says WHAT he sells and HOW MUCH he has; how fast each item
     really sells stays hidden (randomized strength), exactly like the preset
@@ -147,7 +148,8 @@ def build_custom_catalog(items: list[dict], rng) -> list[dict]:
     catalog = []
     for i, item in enumerate(items):
         base_price = PRICE_BY_CATEGORY.get(item["category"], CUSTOM_DEFAULT_PRICE)
-        price = round(base_price * rng.uniform(0.85, 1.25), 2)
+        random_price = round(base_price * rng.uniform(0.85, 1.25), 2)
+        price = round(item["price"], 2) if item.get("price") else random_price
         catalog.append(
             {
                 "key": f"custom_{i}",
