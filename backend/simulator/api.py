@@ -24,6 +24,7 @@ router = APIRouter(prefix="/admin/simulator", tags=["simulator"])
 
 class CustomProductIn(BaseModel):
     name: str = Field(min_length=2, max_length=80)
+    quantity: float = Field(ge=0, le=100_000)
 
 
 class CreateIn(BaseModel):
@@ -46,6 +47,7 @@ async def _categorize_custom(products: list[CustomProductIn]) -> list[dict]:
         cat = keyword_categorize(name, categories) or await llm_categorize(name, categories)
         return {
             "name": name,
+            "quantity": p.quantity,
             "category": cat.name if cat else DEFAULT_CATEGORY_NAME,
         }
 

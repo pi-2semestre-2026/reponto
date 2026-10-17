@@ -156,7 +156,10 @@ export function SimulatorGame() {
     if (catalogMode === "custom") {
       products = customItems
         .filter((i) => i.name.trim().length >= 2)
-        .map((i) => ({ name: i.name.trim() }));
+        .map((i) => ({
+          name: i.name.trim(),
+          quantity: Math.max(0, Number(i.quantity) || 0),
+        }));
       if (products.length === 0) {
         toast.error(t("sim.setup.customEmpty"));
         return;
@@ -261,9 +264,10 @@ export function SimulatorGame() {
 
 interface CustomItem {
   name: string;
+  quantity: string;
 }
 
-const EMPTY_ITEM: CustomItem = { name: "" };
+const EMPTY_ITEM: CustomItem = { name: "", quantity: "" };
 
 
 function SetupScreen({
@@ -377,6 +381,14 @@ function SetupScreen({
                     maxLength={80}
                     onChange={(e) => updateItem(idx, { name: e.target.value })}
                     placeholder={t("sim.setup.productName")}
+                  />
+                  <Input
+                    type="number"
+                    min={0}
+                    className="w-28"
+                    value={item.quantity}
+                    onChange={(e) => updateItem(idx, { quantity: e.target.value })}
+                    placeholder={t("sim.setup.quantity")}
                   />
                   <Button variant="ghost" size="icon" onClick={() => removeItem(idx)} aria-label="Remover">
                     <Trash2 />

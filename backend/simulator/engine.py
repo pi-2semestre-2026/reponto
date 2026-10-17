@@ -72,8 +72,12 @@ class SimulationEngine:
     def _seed_shelves(self) -> None:
         """The owner opens the market with a stocked shelf — like the real
         onboarding flow, where a product is created with initial stock.
-        Owner intuition = category-typical pace (no oracle info)."""
+        Owner intuition = category-typical pace (no oracle info), unless the
+        owner typed the quantity he actually has."""
         for p in self.catalog:
+            if "initial_stock" in p:
+                self.state[p["key"]]["stock"] = p["initial_stock"]
+                continue
             prior, _, _ = self.brain.prior_rate(p["category"], self.start_date)
             self.state[p["key"]]["stock"] = round(2.0 * self.cycle_days * prior, 1)
 

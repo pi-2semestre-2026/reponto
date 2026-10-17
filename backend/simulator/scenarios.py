@@ -138,9 +138,9 @@ def build_catalog(scenario: Scenario, rng) -> list[dict]:
 
 
 def build_custom_catalog(items: list[dict], rng) -> list[dict]:
-    """Instantiate the owner's own products (name, category).
+    """Instantiate the owner's own products (name, category, quantity on hand).
 
-    The owner says WHAT he sells; how fast each item
+    The owner says WHAT he sells and HOW MUCH he has; how fast each item
     really sells stays hidden (randomized strength), exactly like the preset
     catalog — so the recommender still has to learn it from the sales.
     """
@@ -157,6 +157,7 @@ def build_custom_catalog(items: list[dict], rng) -> list[dict]:
                 "price": price,
                 "cost": round(price * 0.68, 2),
                 "ups": 1.0,
+                "initial_stock": float(item["quantity"]),
             }
         )
     return catalog

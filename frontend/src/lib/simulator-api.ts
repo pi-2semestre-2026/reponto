@@ -103,6 +103,7 @@ export interface SimCoach {
 
 export interface CustomProductIn {
   name: string;
+  quantity: number;
 }
 
 export interface CreateSessionIn {
