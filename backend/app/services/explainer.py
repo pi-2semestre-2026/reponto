@@ -186,23 +186,30 @@ def match_fact(value: float, facts: dict) -> str | None:
 
 
 def verify(text: str, facts: dict) -> dict:
-    checked, unmatched = [], []
+    checked, unmatched, values = [], [], []
     # Numbers that belong to the product name ("Água 500ml", "Arroz 5kg") are not claims.
     name_numbers = {v for _, v in extract_numbers(f"{facts['produto']} {facts.get('categoria') or ''}")}
     for raw, value in extract_numbers(text):
         if value in name_numbers:
             continue
+        values.append(value)
         label = match_fact(value, facts)
         if label:
             checked.append({"value": raw, "fact": label})
         else:
             unmatched.append(raw)
+
+    def mentions(*keys: str) -> bool:
+        """Required facts are checked by value: two facts may share it (stock 0 -> buy == target)."""
+        targets = [facts[k] for k in keys if facts.get(k) is not None]
+        return any(abs(v - t) <= max(ABS_TOLERANCE, REL_TOLERANCE * abs(t)) for v in values for t in targets)
+
     problems = []
     if unmatched:
         problems.append(f"números que não existem no cálculo: {', '.join(unmatched)}")
-    if facts["comprar"] > 0 and not any(c["fact"] == "quantidade a comprar" for c in checked):
+    if facts["comprar"] > 0 and not mentions("comprar"):
         problems.append("não informou a quantidade a comprar")
-    if not any(c["fact"] in ("venda por dia", "venda no ciclo") for c in checked):
+    if not mentions("venda_por_dia", "venda_no_ciclo"):
         problems.append("não explicou o ritmo de venda")
     lowered = text.lower()
     jargon = [w for w in FORBIDDEN_JARGON if w in lowered]
@@ -253,6 +260,7 @@ SYSTEM_PROMPT = (
     "- Use SOMENTE os números da lista, escritos exatamente como aparecem (vírgula como separador decimal).\n"
     "- Não faça contas, não arredonde de outro jeito e não invente números, datas ou porcentagens.\n"
     "- Diga quanto comprar (ou que não precisa comprar) e por quê: ritmo de venda e quantos dias o estoque dura.\n"
+    "- Cite sempre a venda estimada por dia.\n"
     "- Se houver um dia em que o produto vende mais nesta loja, mencione isso.\n"
     "- Diga de onde vem a estimativa: vendas da própria loja e padrão de mercados parecidos.\n"
     "- 3 ou 4 frases curtas, tom direto e respeitoso, sem listas e sem markdown.\n"
@@ -260,7 +268,7 @@ SYSTEM_PROMPT = (
 )
 
 
-async def llm_text(facts: dict) -> str | None:
+async def llm_text(facts: dict, feedback: list[str] | None = None) -> str | None:
     if not settings.OPENROUTER_API_KEY:
         return None
     try:
@@ -274,14 +282,16 @@ async def llm_text(facts: dict) -> str | None:
             api_key=settings.OPENROUTER_API_KEY,
             base_url=settings.OPENROUTER_BASE_URL,
             temperature=0.2,
-            max_tokens=400,
+            max_tokens=1200,
             timeout=25,
             max_retries=1,
-            extra_body={"reasoning": {"exclude": True}},
+            # Writing a short text needs no hidden reasoning: off cuts ~20 s to ~3 s.
+            extra_body={"reasoning": {"enabled": False}},
         )
-        response = await llm.ainvoke(
-            [SystemMessage(content=SYSTEM_PROMPT), HumanMessage(content=facts_for_prompt(facts))]
-        )
+        human = facts_for_prompt(facts)
+        if feedback:
+            human += "\n\nSua resposta anterior foi recusada pela conferência: " + "; ".join(feedback) + ". Corrija."
+        response = await llm.ainvoke([SystemMessage(content=SYSTEM_PROMPT), HumanMessage(content=human)])
         text = re.sub(r"[*_#`]", "", _response_text(response)).strip()
         return text or None
     except Exception:
@@ -301,6 +311,13 @@ async def explain(session, product, market, last_log_id: int | None, refresh: bo
     result: dict
     if candidate:
         check = verify(candidate, facts)
+        if not check["ok"]:
+            # One corrective retry: tell the model what the check refused.
+            retry = await llm_text(facts, feedback=check["problems"])
+            if retry:
+                retry_check = verify(retry, facts)
+                if retry_check["ok"]:
+                    candidate, check = retry, retry_check
         if check["ok"]:
             result = {"text": candidate, "source": "llm", "checked": check["checked"], "rejected": None}
         else:
