@@ -25,6 +25,7 @@ const NAV = [
   { href: "/markets", key: "nav.markets" },
   { href: "/sales", key: "nav.sales" },
   { href: "/categories", key: "nav.categories" },
+  { href: "/modelo", key: "nav.model" },
 ];
 
 export function Header({ active }: { active?: string }) {

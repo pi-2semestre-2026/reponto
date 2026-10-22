@@ -36,9 +36,23 @@ async def seed_categories() -> None:
             logger.info("seeded %d categories", created)
 
 
+# create_all never alters existing tables: columns added after the first deploy
+# are applied here (idempotent, Postgres ADD COLUMN IF NOT EXISTS).
+COLUMN_PATCHES = (
+    "ALTER TABLE products ADD COLUMN IF NOT EXISTS sku VARCHAR(60)",
+    "ALTER TABLE products ADD COLUMN IF NOT EXISTS cost NUMERIC(12, 2) DEFAULT 0",
+    "ALTER TABLE sales ADD COLUMN IF NOT EXISTS source VARCHAR(12) DEFAULT 'app'",
+    "CREATE INDEX IF NOT EXISTS ix_products_sku ON products (sku)",
+)
+
+
 async def create_tables() -> None:
+    from sqlalchemy import text
+
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
+        for stmt in COLUMN_PATCHES:
+            await conn.execute(text(stmt))
     logger.info("tables ensured")
 
 

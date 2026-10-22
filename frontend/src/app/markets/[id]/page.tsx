@@ -5,6 +5,8 @@ import { useParams, useRouter } from "next/navigation";
 import {
   ArrowLeft,
   Brain,
+  ClipboardList,
+  FileSpreadsheet,
   Loader2,
   MapPin,
   Package,
@@ -18,6 +20,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { Header } from "@/components/header";
+import { ImportDialog } from "@/components/import-dialog";
 import { LearningPanelDialog } from "@/components/learning-panel";
 import { PontoDot } from "@/components/ponto-dot";
 import { SaleCartDialog } from "@/components/sale-cart";
@@ -67,6 +70,7 @@ export default function MarketPage() {
   const [adjustProduct, setAdjustProduct] = useState<Product | null>(null);
   const [deleteProduct, setDeleteProduct] = useState<Product | null>(null);
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const [importOpen, setImportOpen] = useState(false);
 
   const hadProcessing = useRef(false);
 
@@ -146,7 +150,13 @@ export default function MarketPage() {
               </div>
             </div>
           </div>
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2">
+            <Button variant="outline" onClick={() => setImportOpen(true)}>
+              <FileSpreadsheet /> {t("import.button")}
+            </Button>
+            <Button variant="outline" onClick={() => router.push(`/markets/${marketId}/compras`)}>
+              <ClipboardList /> {t("purchase.button")}
+            </Button>
             <Button variant="outline" onClick={() => setNewOpen(true)}>
               <Plus /> {t("market.newProduct")}
             </Button>
@@ -170,9 +180,15 @@ export default function MarketPage() {
                   <Package className="h-8 w-8" strokeWidth={2.25} />
                 </span>
                 <p className="font-display text-lg font-bold">{t("market.noProducts")}</p>
-                <Button variant="press" onClick={() => setNewOpen(true)}>
-                  <Plus /> {t("market.newProduct")}
-                </Button>
+                <p className="max-w-md text-sm text-muted-foreground">{t("import.emptyHint")}</p>
+                <div className="flex flex-wrap justify-center gap-2">
+                  <Button variant="press" onClick={() => setImportOpen(true)}>
+                    <FileSpreadsheet /> {t("import.button")}
+                  </Button>
+                  <Button variant="outline" onClick={() => setNewOpen(true)}>
+                    <Plus /> {t("market.newProduct")}
+                  </Button>
+                </div>
               </div>
             ) : (
               <Table>
@@ -182,6 +198,7 @@ export default function MarketPage() {
                     <TableHead>{t("nav.categories")}</TableHead>
                     <TableHead>{t("common.price")}</TableHead>
                     <TableHead>{t("common.stock")}</TableHead>
+                    <TableHead>{t("market.coverage")}</TableHead>
                     <TableHead>Status</TableHead>
                     <TableHead>{t("market.learnedRate")}</TableHead>
                     <TableHead className="text-right">{t("common.actions")}</TableHead>
@@ -196,6 +213,7 @@ export default function MarketPage() {
                       onAdjust={() => setAdjustProduct(p)}
                       onDelete={() => setDeleteProduct(p)}
                       onLearning={() => setLearningId(p.id)}
+                      cycleDays={market?.replenishment_cycle_days ?? 7}
                       t={t}
                     />
                   ))}
@@ -213,6 +231,7 @@ export default function MarketPage() {
         products={products ?? []}
         onDone={load}
       />
+      <ImportDialog marketId={marketId} open={importOpen} onOpenChange={setImportOpen} onDone={load} />
       <LearningPanelDialog productId={learningId} open={!!learningId} onOpenChange={(v) => !v && setLearningId(null)} />
       <ProductDialog
         open={newOpen || !!editProduct}
@@ -260,9 +279,11 @@ function ProductRow({
   onAdjust,
   onDelete,
   onLearning,
+  cycleDays,
   t,
 }: {
   p: Product;
+  cycleDays: number;
   onEdit: () => void;
   onAdjust: () => void;
   onDelete: () => void;
@@ -271,6 +292,7 @@ function ProductRow({
 }) {
   const stock = parseFloat(p.stock);
   const min = parseFloat(p.min_stock);
+  const coverage = p.learned_rate > 0 ? stock / p.learned_rate : 0;
   const status =
     p.status === "processing"
       ? "processing"
@@ -302,6 +324,19 @@ function ProductRow({
         <span className={status === "out" ? "font-bold text-destructive" : status === "low" ? "font-bold text-amber-600" : ""}>
           {fmtNum(p.stock)}
         </span>
+      </TableCell>
+      <TableCell>
+        {p.status === "processing" || p.learned_rate <= 0 ? (
+          <span className="text-xs text-muted-foreground">—</span>
+        ) : (
+          <span
+            className={
+              coverage < cycleDays * 0.4 ? "font-bold text-destructive" : coverage < cycleDays ? "font-semibold text-amber-600" : ""
+            }
+          >
+            {fmtNum(Math.round(coverage * 10) / 10)} <span className="text-xs text-muted-foreground">{t("market.days")}</span>
+          </span>
+        )}
       </TableCell>
       <TableCell>
         {status === "processing" && (
@@ -367,6 +402,7 @@ function ProductDialog({
   const { t } = useI18n();
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
+  const [cost, setCost] = useState("");
   const [stock, setStock] = useState("");
   const [unit, setUnit] = useState("unidade");
   const [saving, setSaving] = useState(false);
@@ -376,6 +412,7 @@ function ProductDialog({
     if (open) {
       setName(product?.name ?? "");
       setPrice(product ? product.price : "");
+      setCost(product && parseFloat(product.cost) > 0 ? product.cost : "");
       setStock(product ? product.stock : "");
       setUnit(product?.unit ?? "unidade");
     }
@@ -385,10 +422,16 @@ function ProductDialog({
     setSaving(true);
     try {
       if (isEdit && product) {
-        await api.updateProduct(product.id, { name, price: parseFloat(price), unit });
+        await api.updateProduct(product.id, { name, price: parseFloat(price), cost: cost ? parseFloat(cost) : 0, unit });
         toast.success(t("toast.updated"));
       } else {
-        await api.createProduct(marketId, { name, price: parseFloat(price), stock: parseFloat(stock), unit });
+        await api.createProduct(marketId, {
+          name,
+          price: parseFloat(price),
+          cost: cost ? parseFloat(cost) : 0,
+          stock: parseFloat(stock),
+          unit,
+        });
         toast.success(t("toast.productCreated"));
       }
       onOpenChange(false);
@@ -416,6 +459,17 @@ function ProductDialog({
             <div className="space-y-2">
               <Label>{t("product.dialog.price")}</Label>
               <Input type="number" step="0.01" min={0} value={price} onChange={(e) => setPrice(e.target.value)} />
+            </div>
+            <div className="space-y-2">
+              <Label>{t("product.dialog.cost")}</Label>
+              <Input
+                type="number"
+                step="0.01"
+                min={0}
+                value={cost}
+                onChange={(e) => setCost(e.target.value)}
+                placeholder={t("product.dialog.costPh")}
+              />
             </div>
             {!isEdit && (
               <div className="space-y-2">

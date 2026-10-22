@@ -6,7 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.bootstrap import prepare_data
 from app.config import get_settings
-from app.routers import analytics, auth, categories, markets, products, sales
+from app.routers import analytics, auth, categories, imports, markets, model_eval, products, purchases, sales
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s")
 
@@ -19,6 +19,9 @@ async def lifespan(app: FastAPI):
     if not bootstrap_done:
         await prepare_data()
         bootstrap_done = True
+    from app.services import evaluation
+
+    evaluation.start()
     yield
 
 
@@ -38,6 +41,9 @@ app.include_router(products.router)
 app.include_router(sales.router)
 app.include_router(categories.router)
 app.include_router(analytics.router)
+app.include_router(imports.router)
+app.include_router(purchases.router)
+app.include_router(model_eval.router)
 
 try:
     from simulator import register as register_simulator

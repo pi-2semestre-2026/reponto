@@ -11,7 +11,8 @@ from app.models import Category, Product, RecommendationLog, StockAdjustment
 from app.routers.dep import get_current_user, get_owned_market
 from app.schemas import LearningLogOut, LearningPanelOut, ProductCreateIn, ProductOut, ProductUpdateIn, StockAdjustIn
 from app.services.categorizer import process_product_background
-from app.services.recommender import compute_blend, formula_string, recalc_product
+from app.services.explainer import explain
+from app.services.recommender import compute_blend, formula_string, profile_payload, recalc_product
 from app.services.seed_data import DEFAULT_CATEGORY_NAME
 
 router = APIRouter(tags=["products"])
@@ -53,6 +54,7 @@ async def create_product(
         name=payload.name.strip(),
         unit=payload.unit,
         price=payload.price,
+        cost=payload.cost,
         stock=payload.stock,
         status="processing",
     )
@@ -67,6 +69,7 @@ async def create_product(
         name=product.name,
         unit=product.unit,
         price=product.price,
+        cost=product.cost,
         stock=product.stock,
         min_stock=product.min_stock,
         max_stock=product.max_stock,
@@ -110,6 +113,8 @@ async def update_product(
         product.name = payload.name.strip()
     if payload.price is not None:
         product.price = payload.price
+    if payload.cost is not None:
+        product.cost = payload.cost
     if payload.unit is not None:
         product.unit = payload.unit
     await db.commit()
@@ -202,7 +207,27 @@ async def learning_panel(
         formula=formula_string(blend),
         evolution=evolution,
         logs=[LearningLogOut.model_validate(log) for log in logs],
+        profile=profile_payload(blend),
     )
+
+
+@router.get("/products/{product_id}/explanation")
+async def product_explanation(
+    product_id: uuid.UUID,
+    refresh: bool = False,
+    user=Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+):
+    """Plain-language explanation of the current recommendation, checked
+    number by number against the calculation (template fallback)."""
+    product = await _product_owned(product_id, user, db)
+    last_log_id = await db.scalar(
+        select(RecommendationLog.id)
+        .where(RecommendationLog.product_id == product.id)
+        .order_by(RecommendationLog.id.desc())
+        .limit(1)
+    )
+    return await explain(db, product, product.market, last_log_id, refresh=refresh)
 
 
 def dt_utc(d):

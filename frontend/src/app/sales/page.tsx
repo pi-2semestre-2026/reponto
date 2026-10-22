@@ -162,6 +162,11 @@ export default function SalesPage() {
                         ) : (
                           <Badge variant="destructive">{t("sales.cancelled")}</Badge>
                         )}
+                        {s.source === "import" && (
+                          <Badge variant="ai" className="ml-1.5">
+                            {t("sales.fromErp")}
+                          </Badge>
+                        )}
                       </TableCell>
                       <TableCell className="text-right">
                         <div className="flex justify-end gap-1">
