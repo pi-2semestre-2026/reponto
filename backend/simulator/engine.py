@@ -54,6 +54,7 @@ class SimulationEngine:
         }
         self._seed_shelves()
 
+        self.store_history: dict[dt.date, float] = {}
         self.daily_series: list[dict] = []
         self.event_log: list[dict] = []
         self.day_evals: list[dict] = []
@@ -79,7 +80,7 @@ class SimulationEngine:
         buys: dict[str, int] = {}
         for p in self.catalog:
             st = self.state[p["key"]]
-            rec = self.brain.recommend(p, st["history"], date, st["stock"])
+            rec = self.brain.recommend(p, st["history"], date, st["stock"], self.store_history)
             st["rec"] = rec
             buy = max(0, round(rec["recommended_quantity"] - st["stock"]))
             st["stock"] += buy
@@ -124,6 +125,7 @@ class SimulationEngine:
                 n_tx = max(1, round(sold / p["ups"]))
                 prev = st["history"].get(date, (0.0, 0))
                 st["history"][date] = (prev[0] + sold, prev[1] + n_tx)
+                self.store_history[date] = self.store_history.get(date, 0.0) + n_tx
 
             buy = buys.get(p["key"], 0)
             day_revenue += sold * p["price"]
@@ -139,7 +141,7 @@ class SimulationEngine:
                     "key": p["key"],
                     "date": date.isoformat(),
                     "category": p["category"],
-                    "predicted": rec.get("final_rate", 0.0),
+                    "predicted": rec.get("final_rate", 0.0) * (rec.get("weekday_index") or [1.0] * 7)[date.weekday()],
                     "actual_demand": demand,
                     "actual_sales": sold,
                     "stockout": lost > 0,

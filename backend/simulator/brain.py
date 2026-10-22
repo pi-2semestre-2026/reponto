@@ -11,12 +11,14 @@ observed_rate = Σ qty·2^(−age/half_life) / Σ day_weights   (window from
                 first sale, capped to OBS_WINDOW_DAYS)
 alpha         = max(0.3, n_sales/(n_sales+10))   (n=0 → stock/cycle trick)
 final_rate    = α·observed + (1−α)·prior
-min/rec/max   = the same 0.4/1.2/2.0 × cycle multipliers + 30% safety.
+levels        = same day-by-day projection with the weekday profile and the
+                same error-based safety stock (app.services.forecast_math).
 """
 
 import datetime as dt
 
 from app.config import get_settings
+from app.services import forecast_math as fm
 from app.services.ml import rate_model
 from app.services.seed_data import baseline_by_name, size_bucket_from_customers
 
@@ -48,10 +50,8 @@ class SimRecommender:
 
     def prior_rate(self, category: str, today: dt.date) -> tuple[float, str, float | None]:
         baseline = baseline_by_name(category)
-        pred = rate_model.predict(today.month, today.weekday(), self.size_bucket)
-        if pred is not None and rate_model.overall_mean:
-            factor = pred / rate_model.overall_mean
-            factor = max(SEASONAL_FACTOR_BOUNDS[0], min(SEASONAL_FACTOR_BOUNDS[1], factor))
+        factor = fm.month_factor(rate_model, today.month, self.size_bucket, SEASONAL_FACTOR_BOUNDS)
+        if factor is not None:
             return baseline * factor * self.customers_per_day, "model", round(factor, 3)
         return baseline * self.customers_per_day, "default", None
 
@@ -65,7 +65,7 @@ class SimRecommender:
         sale_days = sorted(d for d, (qty, _) in history.items() if qty > 0)
         if not sale_days:
             observed = stock / cycle if stock > 0 else 0.0
-            return observed, 0, {"window_days": 0}
+            return observed, 0, {"window_days": 0, "window_start": today}
 
         window_start = max(sale_days[0], today - dt.timedelta(days=self.obs_window))
         window_days = (today - window_start).days
@@ -80,9 +80,16 @@ class SimRecommender:
             n_sales += n_tx
         denominator = window_denominator(window_days, self.half_life)
         observed = numerator / denominator if denominator > 0 else 0.0
-        return observed, n_sales, {"window_days": window_days}
+        return observed, n_sales, {"window_days": window_days, "window_start": window_start}
 
-    def recommend(self, product: dict, history: dict[dt.date, tuple[float, int]], today: dt.date, stock: float) -> dict:
+    def recommend(
+        self,
+        product: dict,
+        history: dict[dt.date, tuple[float, int]],
+        today: dt.date,
+        stock: float,
+        store_history: dict[dt.date, float] | None = None,
+    ) -> dict:
         prior, source, seasonal = self.prior_rate(product["category"], today)
         observed, n_sales, win = self.observed_rate(history, today, stock)
 
@@ -93,10 +100,23 @@ class SimRecommender:
 
         final = alpha * observed + (1 - alpha) * prior
         cycle = self.cycle_days
-        safety = final * cycle * 0.3
-        min_stock = final * cycle * 0.4 + safety
-        recommended = final * cycle * 1.2 + safety
-        max_stock = final * cycle * 2.0 + safety
+
+        window_start = win["window_start"]
+        yesterday = today - dt.timedelta(days=1)
+        dataset_index = fm.dataset_weekday_prior(rate_model, today.month, self.size_bucket)
+        store_index = dataset_index
+        if store_history:
+            first = min(store_history)
+            store_series = fm.daily_series(store_history, max(first, window_start), yesterday)
+            if len(store_series) >= fm.MIN_DAYS_FOR_PROFILE:
+                store_index = fm.weekday_profile(store_series, dataset_index, fm.STORE_SHRINK_K)
+        series = fm.daily_series({d: q for d, (q, _) in history.items()}, window_start, yesterday) if n_sales else []
+        if len(series) >= fm.MIN_DAYS_FOR_PROFILE:
+            weekday_index = fm.weekday_profile(series, store_index, fm.PRODUCT_SHRINK_K)
+        else:
+            weekday_index = list(store_index)
+
+        levels = fm.stock_levels(final, weekday_index, today, cycle, series)
         confidence = "baixa" if n_sales < 3 else ("media" if n_sales < 10 else "alta")
 
         return {
@@ -106,11 +126,13 @@ class SimRecommender:
             "observed_rate": observed,
             "alpha": alpha,
             "final_rate": final,
-            "safety_stock": safety,
-            "min_stock": min_stock,
-            "recommended_quantity": recommended,
-            "max_stock": max_stock,
+            "weekday_index": weekday_index,
+            "safety_stock": levels["safety_stock"],
+            "safety_method": levels["safety_method"],
+            "min_stock": levels["min_stock"],
+            "recommended_quantity": levels["recommended_quantity"],
+            "max_stock": levels["max_stock"],
             "n_sales": n_sales,
             "confidence": confidence,
-            **win,
+            "window_days": win["window_days"],
         }

@@ -1,3 +1,6 @@
 # Shell scripts run inside Linux containers: always check out with LF,
 # even when core.autocrlf=true (a CRLF shebang makes the container fail to start).
 *.sh text eol=lf
+
+# Sample ERP exports must keep their exact bytes (Windows-1252, CRLF) to exercise the importer.
+frontend/public/exemplos/*.csv binary

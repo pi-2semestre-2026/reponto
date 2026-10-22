@@ -83,7 +83,9 @@ class Product(Base):
     category_id: Mapped[uuid.UUID | None] = mapped_column(UUID(as_uuid=True), ForeignKey("categories.id"), nullable=True, index=True)
     name: Mapped[str] = mapped_column(String(160), index=True)
     unit: Mapped[str] = mapped_column(String(20), default="unidade")
+    sku: Mapped[str | None] = mapped_column(String(60), nullable=True, index=True)
     price: Mapped[Decimal] = mapped_column(Numeric(12, 2), default=0)
+    cost: Mapped[Decimal] = mapped_column(Numeric(12, 2), default=0)
     stock: Mapped[Decimal] = mapped_column(Numeric(12, 3), default=0)
     min_stock: Mapped[Decimal] = mapped_column(Numeric(12, 3), default=0)
     max_stock: Mapped[Decimal] = mapped_column(Numeric(12, 3), default=0)
@@ -116,6 +118,7 @@ class Sale(Base):
     user_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("users.id"))
     total: Mapped[Decimal] = mapped_column(Numeric(12, 2), default=0)
     status: Mapped[str] = mapped_column(String(12), default="completed", index=True)
+    source: Mapped[str] = mapped_column(String(12), default="app")
     sold_at: Mapped[dt.datetime] = mapped_column(DateTime(timezone=True), server_default=func.now(), index=True)
     created_at: Mapped[dt.datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
     cancelled_at: Mapped[dt.datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
@@ -138,6 +141,25 @@ class SaleItem(Base):
     subtotal: Mapped[Decimal] = mapped_column(Numeric(12, 2), default=0)
 
     sale: Mapped[Sale] = relationship(back_populates="items", lazy="selectin")
+
+
+class ImportBatch(Base):
+    """One ERP/PDV file import. The file hash blocks importing the same file twice."""
+
+    __tablename__ = "import_batches"
+    __table_args__ = (UniqueConstraint("market_id", "file_hash", name="uq_import_market_hash"),)
+
+    id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=gen_uuid)
+    market_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("markets.id", ondelete="CASCADE"), index=True)
+    user_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("users.id"))
+    filename: Mapped[str] = mapped_column(String(255), default="")
+    file_hash: Mapped[str] = mapped_column(String(64))
+    kind: Mapped[str] = mapped_column(String(12))
+    rows: Mapped[int] = mapped_column(Integer, default=0)
+    products_created: Mapped[int] = mapped_column(Integer, default=0)
+    products_updated: Mapped[int] = mapped_column(Integer, default=0)
+    sales_created: Mapped[int] = mapped_column(Integer, default=0)
+    created_at: Mapped[dt.datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
 
 
 class StockAdjustment(Base):

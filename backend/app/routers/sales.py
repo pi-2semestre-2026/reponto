@@ -7,12 +7,12 @@ from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
-from app.database import SessionLocal, get_db
+from app.database import get_db
 from app.models import Market, Product, Sale, SaleItem
 from app.routers.dep import get_current_user
 from app.schemas import SaleCreateIn, SaleOut
 from app.services.clock import day_bounds
-from app.services.recommender import recalc_product
+from app.services.recommender import recalc_products
 
 router = APIRouter(prefix="/sales", tags=["sales"])
 
@@ -103,17 +103,7 @@ async def create_sale(
 
 
 async def _recalc_products(product_ids: list[uuid.UUID | None], trigger: str = "sale") -> None:
-    ids = [pid for pid in set(product_ids) if pid is not None]
-    if not ids:
-        return
-    async with SessionLocal() as session:
-        result = await session.execute(
-            select(Product).where(Product.id.in_(ids)).options(selectinload(Product.category), selectinload(Product.market))
-        )
-        products = result.scalars().all()
-        for p in products:
-            await recalc_product(session, p, p.market, trigger)
-        await session.commit()
+    await recalc_products(product_ids, trigger)
 
 
 async def _load_sale(sale_id: uuid.UUID, db: AsyncSession) -> Sale:

@@ -13,11 +13,11 @@ import re
 import unicodedata
 
 from langchain_core.messages import HumanMessage, SystemMessage
-from sqlalchemy import select
+from sqlalchemy import select, update
 
 from app.config import get_settings
 from app.database import SessionLocal
-from app.models import Category, Market, Product, RecommendationLog
+from app.models import Category, Market, Product, RecommendationLog, SaleItem
 from app.services.seed_data import DEFAULT_CATEGORY_NAME
 
 settings = get_settings()
@@ -41,6 +41,7 @@ def keyword_categorize(product_name: str, categories: list[Category]) -> Categor
     n = normalize(product_name)
     if not n:
         return None
+    words = set(re.findall(r"[a-z0-9]+", n))
     best: Category | None = None
     best_len = 0
     best_count = 0
@@ -49,16 +50,24 @@ def keyword_categorize(product_name: str, categories: list[Category]) -> Categor
         longest = 0
         for kw in cat.keywords.split(","):
             k = normalize(kw)
-            if k and k in n:
+            # Short keywords only count as whole words: "maca" must not match "macarrao".
+            hit = (k in words) if len(k) <= 4 else (k in n)
+            if k and hit:
                 matched += 1
                 longest = max(longest, len(k))
-        if matched > 0:
-            if cat.name == DEFAULT_CATEGORY_NAME and best is not None:
-                continue
-            if longest > best_len or (longest == best_len and matched > best_count):
-                best = cat
-                best_len = longest
-                best_count = matched
+        if matched == 0:
+            continue
+        # The default category competes like any other and only loses ties.
+        is_default = cat.name == DEFAULT_CATEGORY_NAME
+        best_is_default = best is not None and best.name == DEFAULT_CATEGORY_NAME
+        if (
+            longest > best_len
+            or (longest == best_len and matched > best_count)
+            or (longest == best_len and matched == best_count and best_is_default and not is_default)
+        ):
+            best = cat
+            best_len = longest
+            best_count = matched
     return best
 
 
@@ -240,6 +249,13 @@ async def process_product_background(product_id) -> None:
             category, method = await resolve_category(product.name)
             product.category_id = category.id
             product.status = "ready"
+            # Items sold (or imported) before the AI finished carry the
+            # provisional default category: move them to the real one.
+            await session.execute(
+                update(SaleItem)
+                .where(SaleItem.product_id == product.id, SaleItem.category_id.is_distinct_from(category.id))
+                .values(category_id=category.id)
+            )
 
             market = await session.get(Market, product.market_id)
             if market is not None:

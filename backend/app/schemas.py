@@ -65,6 +65,7 @@ class MarketOut(BaseModel):
 class ProductCreateIn(BaseModel):
     name: str = Field(min_length=2, max_length=160)
     price: Decimal = Field(ge=0)
+    cost: Decimal = Field(default=Decimal("0"), ge=0)
     stock: Decimal = Field(ge=0)
     unit: str = Field(default="unidade", max_length=20)
 
@@ -72,7 +73,18 @@ class ProductCreateIn(BaseModel):
 class ProductUpdateIn(BaseModel):
     name: str | None = None
     price: Decimal | None = None
+    cost: Decimal | None = Field(default=None, ge=0)
     unit: str | None = None
+
+
+class PurchaseItemIn(BaseModel):
+    product_id: uuid.UUID
+    quantity: Decimal = Field(gt=0)
+
+
+class PurchaseReceiveIn(BaseModel):
+    items: list[PurchaseItemIn] = Field(min_length=1)
+    note: str = Field(default="", max_length=255)
 
 
 class StockAdjustIn(BaseModel):
@@ -85,8 +97,10 @@ class ProductOut(BaseModel):
     id: uuid.UUID
     market_id: uuid.UUID
     name: str
+    sku: str | None = None
     unit: str
     price: Decimal
+    cost: Decimal = Decimal("0")
     stock: Decimal
     min_stock: Decimal
     max_stock: Decimal
@@ -129,6 +143,7 @@ class SaleOut(BaseModel):
     market_id: uuid.UUID
     total: Decimal
     status: str
+    source: str = "app"
     sold_at: dt.datetime
     created_at: dt.datetime
     cancelled_at: dt.datetime | None
@@ -176,6 +191,7 @@ class LearningPanelOut(BaseModel):
     formula: str
     evolution: list[dict]
     logs: list[LearningLogOut]
+    profile: dict | None = None
 
 
 class AnalyticsQuery(BaseModel):

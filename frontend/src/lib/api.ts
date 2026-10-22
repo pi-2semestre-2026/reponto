@@ -1,4 +1,17 @@
-import type { Analytics, Category, LearningPanel, Market, Product, Sale, User } from "./types";
+import type {
+  Analytics,
+  Category,
+  Evaluation,
+  Explanation,
+  ImportPreview,
+  ImportResult,
+  LearningPanel,
+  Market,
+  Product,
+  PurchaseList,
+  Sale,
+  User,
+} from "./types";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
@@ -24,7 +37,8 @@ async function request<T>(method: string, path: string, body?: unknown, params?:
   const headers: Record<string, string> = {};
   const t = token();
   if (t) headers["Authorization"] = `Bearer ${t}`;
-  if (body !== undefined) headers["Content-Type"] = "application/json";
+  const isForm = typeof FormData !== "undefined" && body instanceof FormData;
+  if (body !== undefined && !isForm) headers["Content-Type"] = "application/json";
 
   const url = new URL(API_URL + path);
   if (params) {
@@ -36,7 +50,7 @@ async function request<T>(method: string, path: string, body?: unknown, params?:
   const res = await fetch(url.toString(), {
     method,
     headers,
-    body: body !== undefined ? JSON.stringify(body) : undefined,
+    body: body === undefined ? undefined : isForm ? (body as FormData) : JSON.stringify(body),
     cache: "no-store",
   });
 
@@ -71,14 +85,33 @@ export const api = {
   deleteMarket: (id: string) => api.delete<void>(`/markets/${id}`),
 
   products: (marketId: string) => api.get<Product[]>(`/markets/${marketId}/products`),
-  createProduct: (marketId: string, body: { name: string; price: number; stock: number; unit: string }) =>
+  createProduct: (marketId: string, body: { name: string; price: number; cost?: number; stock: number; unit: string }) =>
     api.post<Product>(`/markets/${marketId}/products`, body),
-  updateProduct: (id: string, body: { name?: string; price?: number; unit?: string }) =>
+  updateProduct: (id: string, body: { name?: string; price?: number; cost?: number; unit?: string }) =>
     api.patch<Product>(`/products/${id}`, body),
   deleteProduct: (id: string) => api.delete<void>(`/products/${id}`),
   adjustStock: (id: string, delta: number, reason: string) =>
     api.post<Product>(`/products/${id}/stock`, { delta, reason }),
   learning: (id: string) => api.get<LearningPanel>(`/products/${id}/learning`),
+  explanation: (id: string, refresh = false) =>
+    api.get<Explanation>(`/products/${id}/explanation`, { refresh: refresh ? "true" : undefined }),
+
+  importPreview: (marketId: string, file: File) => {
+    const fd = new FormData();
+    fd.append("file", file);
+    return api.post<ImportPreview>(`/markets/${marketId}/import/preview`, fd);
+  },
+  importFile: (marketId: string, file: File) => {
+    const fd = new FormData();
+    fd.append("file", file);
+    return api.post<ImportResult>(`/markets/${marketId}/import`, fd);
+  },
+
+  purchaseList: (marketId: string) => api.get<PurchaseList>(`/markets/${marketId}/purchase-list`),
+  receivePurchase: (marketId: string, items: { product_id: string; quantity: number }[], note?: string) =>
+    api.post<{ received: number; units: number }>(`/markets/${marketId}/purchases`, { items, note: note ?? "" }),
+
+  evaluation: () => api.get<Evaluation>("/ml/evaluation"),
 
   sales: (params?: { market_id?: string; date_from?: string; date_to?: string }) => api.get<Sale[]>("/sales", params),
   getSale: (id: string) => api.get<Sale>(`/sales/${id}`),
