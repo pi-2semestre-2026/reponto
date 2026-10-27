@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Ban, Eye, Loader2, ReceiptText, X } from "lucide-react";
 import { toast } from "sonner";
 import { Header } from "@/components/header";
@@ -26,14 +26,20 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { openDatePicker } from "@/lib/date-picker";
 import { api } from "@/lib/api";
-import { fmtDateTime, fmtMoney, fmtNum } from "@/lib/format";
+import { subscribeEvents } from "@/lib/events";
+import { fmtDateTime, fmtMoney, fmtQuantity, saleQuantities } from "@/lib/format";
 import { useI18n } from "@/lib/i18n";
 import type { Market, Sale } from "@/lib/types";
 
 export default function SalesPage() {
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
   const [sales, setSales] = useState<Sale[] | null>(null);
+  const [page, setPage] = useState(1);
+  const [total, setTotal] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const pageSize = 20;
   const [markets, setMarkets] = useState<Market[]>([]);
   const [marketId, setMarketId] = useState<string>("");
   const [from, setFrom] = useState("");
@@ -41,18 +47,38 @@ export default function SalesPage() {
   const [detail, setDetail] = useState<Sale | null>(null);
   const [cancelTarget, setCancelTarget] = useState<Sale | null>(null);
   const [cancelling, setCancelling] = useState(false);
+  const requestVersion = useRef(0);
 
-  const load = useCallback(() => {
-    api
-      .sales({ market_id: marketId || undefined, date_from: from || undefined, date_to: to || undefined })
-      .then(setSales)
-      .catch((e) => toast.error(e.message));
-  }, [marketId, from, to]);
+  const load = useCallback(async () => {
+    const version = ++requestVersion.current;
+    setLoading(true);
+    try {
+      const [latestSales, latestMarkets] = await Promise.all([
+        api.salesPage({ market_id: marketId || undefined, date_from: from || undefined, date_to: to || undefined, page, page_size: pageSize }),
+        api.markets(),
+      ]);
+      if (version !== requestVersion.current) return;
+      setSales(latestSales.items);
+      setTotal(latestSales.total);
+      setPage(latestSales.page);
+      setMarkets(latestMarkets);
+      setDetail(current => current ? latestSales.items.find(sale => sale.id === current.id) ?? current : null);
+      setCancelTarget(current => current && latestSales.items.find(sale => sale.id === current.id)?.status === "cancelled" ? null : current);
+    } catch (e) {
+      if (version === requestVersion.current) toast.error((e as Error).message);
+    } finally {
+      if (version === requestVersion.current) setLoading(false);
+    }
+  }, [marketId, from, to, page]);
 
   useEffect(() => {
-    api.markets().then(setMarkets).catch(() => {});
-  }, []);
-  useEffect(load, [load]);
+    void load();
+    const unsubscribe = subscribeEvents(load);
+    return () => {
+      requestVersion.current++;
+      unsubscribe();
+    };
+  }, [load]);
 
   const cancel = async () => {
     if (!cancelTarget) return;
@@ -81,7 +107,7 @@ export default function SalesPage() {
         <div className="animate-fade-in flex flex-wrap items-end gap-3">
           <div className="space-y-1">
             <p className="text-xs font-bold text-muted-foreground">{t("sales.market")}</p>
-            <Select value={marketId || "all"} onValueChange={(v) => setMarketId(v === "all" ? "" : v)}>
+            <Select value={marketId || "all"} onValueChange={(v) => {setMarketId(v === "all" ? "" : v); setPage(1);}}>
               <SelectTrigger className="w-52">
                 <SelectValue />
               </SelectTrigger>
@@ -97,15 +123,16 @@ export default function SalesPage() {
           </div>
           <div className="space-y-1">
             <p className="text-xs font-bold text-muted-foreground">{t("sales.from")}</p>
-            <Input type="date" className="w-40" value={from} onChange={(e) => setFrom(e.target.value)} />
+            <Input type="date" className="w-40 cursor-pointer" value={from} onClick={(e) => openDatePicker(e.currentTarget)} onChange={(e) => {setFrom(e.target.value); setPage(1);}} />
           </div>
           <div className="space-y-1">
             <p className="text-xs font-bold text-muted-foreground">{t("sales.to")}</p>
-            <Input type="date" className="w-40" value={to} onChange={(e) => setTo(e.target.value)} />
+            <Input type="date" className="w-40 cursor-pointer" value={to} onClick={(e) => openDatePicker(e.currentTarget)} onChange={(e) => {setTo(e.target.value); setPage(1);}} />
           </div>
           <Button
             variant="outline"
             onClick={() => {
+              setPage(1);
               setMarketId("");
               setFrom("");
               setTo("");
@@ -152,7 +179,7 @@ export default function SalesPage() {
                       <TableCell className="text-sm">
                         {s.items.length} {t("sales.items")}
                         <span className="ml-1 text-muted-foreground">
-                          ({fmtNum(s.items.reduce((acc, i) => acc + parseFloat(i.quantity), 0))} un)
+                          ({saleQuantities(s.items, locale)})
                         </span>
                       </TableCell>
                       <TableCell className="font-mono font-semibold text-primary">{fmtMoney(s.total)}</TableCell>
@@ -192,6 +219,14 @@ export default function SalesPage() {
             )}
           </CardContent>
         </Card>
+        <nav aria-label={t("sales.pagination")} className="flex flex-wrap items-center justify-between gap-3 text-sm">
+          <span aria-live="polite">{t("sales.page")} {page} / {Math.max(1, Math.ceil(total / pageSize))} · {total} {t("sales.title").toLowerCase()}</span>
+          <div className="flex items-center gap-2">
+            {loading && <Loader2 className="h-4 w-4 animate-spin" aria-label={t("sales.loading")} />}
+            <Button variant="outline" disabled={loading || page <= 1} onClick={() => setPage(p => p - 1)}>{t("sales.previous")}</Button>
+            <Button variant="outline" disabled={loading || page * pageSize >= total} onClick={() => setPage(p => p + 1)}>{t("sales.next")}</Button>
+          </div>
+        </nav>
       </main>
 
       <Dialog open={!!detail} onOpenChange={(v) => !v && setDetail(null)}>
@@ -207,7 +242,7 @@ export default function SalesPage() {
                   <div>
                     <p className="font-bold">{i.product_name}</p>
                     <p className="text-xs text-muted-foreground">
-                      {fmtNum(i.quantity)} × {fmtMoney(i.unit_price)}
+                      {fmtQuantity(i.quantity, i.unit, locale)} × {fmtMoney(i.unit_price)}
                     </p>
                   </div>
                   <span className="font-bold">{fmtMoney(i.subtotal)}</span>

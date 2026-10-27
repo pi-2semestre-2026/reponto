@@ -52,6 +52,15 @@ services:
     depends_on:
       - backend
 
+  caixa:
+    profiles: ["caixa"]
+    build: ./caixa
+    ports:
+      - "${CAIXA_PORT:-3301}:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+
 volumes:
   pgdata:
   ml_data:

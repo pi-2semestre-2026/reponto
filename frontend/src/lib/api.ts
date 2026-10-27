@@ -10,6 +10,7 @@ import type {
   Product,
   PurchaseList,
   Sale,
+  SalePage,
   User,
 } from "./types";
 
@@ -17,9 +18,11 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
 class ApiError extends Error {
   status: number;
-  constructor(status: number, message: string) {
+  detail: unknown;
+  constructor(status: number, message: string, detail?: unknown) {
     super(message);
     this.status = status;
+    this.detail = detail;
   }
 }
 
@@ -57,12 +60,15 @@ async function request<T>(method: string, path: string, body?: unknown, params?:
   if (res.status === 204) return undefined as T;
   const data = await res.json().catch(() => ({}));
   if (!res.ok) {
-    const detail = (data as { detail?: string }).detail;
+    const detail = (data as { detail?: unknown }).detail;
     if (res.status === 401 && typeof window !== "undefined") {
       setToken(null);
       window.location.href = "/login";
     }
-    throw new ApiError(res.status, detail || `Erro ${res.status}`);
+    const message = typeof detail === "string" ? detail
+      : detail && typeof detail === "object" && "message" in detail && typeof detail.message === "string" ? detail.message
+      : `Erro ${res.status}`;
+    throw new ApiError(res.status, message, detail);
   }
   return data as T;
 }
@@ -85,8 +91,8 @@ export const api = {
   deleteMarket: (id: string) => api.delete<void>(`/markets/${id}`),
 
   products: (marketId: string) => api.get<Product[]>(`/markets/${marketId}/products`),
-  createProduct: (marketId: string, body: { name: string; price: number; cost?: number; stock: number; unit: string }) =>
-    api.post<Product>(`/markets/${marketId}/products`, body),
+  createProduct: (marketId: string, body: ProductRegistration) =>
+    api.post<Product & {stock_added: boolean}>(`/markets/${marketId}/products`, body),
   updateProduct: (id: string, body: { name?: string; price?: number; cost?: number; unit?: string }) =>
     api.patch<Product>(`/products/${id}`, body),
   deleteProduct: (id: string) => api.delete<void>(`/products/${id}`),
@@ -113,6 +119,7 @@ export const api = {
 
   evaluation: () => api.get<Evaluation>("/ml/evaluation"),
 
+  salesPage: (params: { market_id?: string; date_from?: string; date_to?: string; page: number; page_size: number }) => api.get<SalePage>("/sales/history", {...params, page: String(params.page), page_size: String(params.page_size)}),
   sales: (params?: { market_id?: string; date_from?: string; date_to?: string }) => api.get<Sale[]>("/sales", params),
   getSale: (id: string) => api.get<Sale>(`/sales/${id}`),
   createSale: (body: { market_id: string; items: { product_id: string; quantity: number }[]; sold_at?: string }) =>
@@ -131,3 +138,13 @@ export const api = {
 };
 
 export { API_URL, ApiError };
+
+export type ProductRegistration = {
+  name: string; price: number; cost?: number; stock: number; unit: string;
+  duplicate_action?: "auto" | "add_stock" | "create_new";
+  existing_product_id?: string;
+};
+export type DuplicateProductDetails = {
+  code: "duplicate_product";
+  existing_product: Pick<Product, "id" | "name" | "price" | "cost" | "unit">;
+};

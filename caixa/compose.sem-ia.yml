@@ -1,0 +1,5 @@
+# Use junto com o compose da raiz. Sobrescreve a chave só no contêiner.
+services:
+  backend:
+    environment:
+      OPENROUTER_API_KEY: ""

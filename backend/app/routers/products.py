@@ -1,15 +1,16 @@
 import datetime as dt
 import uuid
+from decimal import Decimal
 
-from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException
-from sqlalchemy import select
+from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, Response
+from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
 from app.database import get_db
 from app.models import Category, Product, RecommendationLog, StockAdjustment
 from app.routers.dep import get_current_user, get_owned_market
-from app.schemas import LearningLogOut, LearningPanelOut, ProductCreateIn, ProductOut, ProductUpdateIn, StockAdjustIn
+from app.schemas import LearningLogOut, LearningPanelOut, ProductCreateIn, ProductCreateOut, ProductOut, ProductUpdateIn, StockAdjustIn
 from app.services.categorizer import process_product_background
 from app.services.explainer import explain
 from app.services.recommender import compute_blend, formula_string, profile_payload, recalc_product
@@ -30,19 +31,66 @@ async def _product_owned(product_id: uuid.UUID, user, db: AsyncSession) -> Produ
     return product
 
 
-@router.post("/markets/{market_id}/products", response_model=ProductOut, status_code=202)
+@router.post("/markets/{market_id}/products", response_model=ProductCreateOut, status_code=202)
 async def create_product(
     market_id: uuid.UUID,
     payload: ProductCreateIn,
     background: BackgroundTasks,
+    response: Response,
     user=Depends(get_current_user),
     market=Depends(get_owned_market),
     db: AsyncSession = Depends(get_db),
 ):
-    """Async creation: responds immediately with status=processing.
+    """Merge identical product registrations or ask before resolving a conflict."""
+    name = " ".join(payload.name.split())
+    if len(name) < 2:
+        raise HTTPException(status_code=422, detail="Informe um nome de produto com pelo menos dois caracteres")
+    # Serialize this name even when no product exists yet, without locking the
+    # parent market (which would conflict with foreign keys in background jobs).
+    await db.execute(select(func.pg_advisory_xact_lock(
+        func.hashtextextended(f"product-registration:{market.id}:{name.lower()}", 0)
+    )))
+    normalized_name = func.lower(func.regexp_replace(func.btrim(Product.name), r"\s+", " ", "g"))
+    candidates = (await db.execute(
+        select(Product).where(Product.market_id == market.id, normalized_name == name.lower())
+        .options(selectinload(Product.category))
+        .order_by(Product.created_at, Product.id).with_for_update()
+        .execution_options(populate_existing=True)
+    )).scalars().all()
+    exact = next((p for p in candidates if p.price == payload.price and p.cost == payload.cost and p.unit == payload.unit), None)
+    existing = None
+    if payload.duplicate_action == "add_stock":
+        existing = next((p for p in candidates if p.id == payload.existing_product_id), None)
+        if existing is None:
+            raise HTTPException(status_code=409, detail="O produto existente mudou ou foi removido. Tente cadastrar novamente.")
+        if existing.unit != payload.unit:
+            raise HTTPException(status_code=409, detail="Não é possível somar estoques com unidades de medida diferentes. Crie um novo produto.")
+    elif exact is not None:
+        existing = exact
+    elif candidates and payload.duplicate_action == "auto":
+        candidate = next((p for p in candidates if p.unit == payload.unit), candidates[0])
+        raise HTTPException(status_code=409, detail={
+            "code": "duplicate_product",
+            "message": "Já existe um produto com esse nome e valores diferentes.",
+            "existing_product": {
+                "id": str(candidate.id), "name": candidate.name, "price": str(candidate.price),
+                "cost": str(candidate.cost), "unit": candidate.unit,
+            },
+        })
 
-    Categorization (keywords -> LLM) + first recommendation run in background.
-    """
+    if existing is not None:
+        stock = (existing.stock + payload.stock).quantize(Decimal("0.001"))
+        if stock > Decimal("999999999.999"):
+            raise HTTPException(status_code=422, detail="A soma ultrapassa o limite de estoque do produto")
+        existing.stock = stock
+        if payload.stock:
+            db.add(StockAdjustment(product_id=existing.id, delta=payload.stock, reason="Quantidade adicionada no cadastro de produto existente"))
+        await recalc_product(db, existing, market, "stock_adjust")
+        await db.commit()
+        await db.refresh(existing)
+        response.status_code = 200
+        return ProductCreateOut.model_validate(existing).model_copy(update={"stock_added": True})
+
     categories = (await db.execute(select(Category))).scalars().all()
     default = next((c for c in categories if c.name == DEFAULT_CATEGORY_NAME), None)
     if default is None and categories:
@@ -51,7 +99,7 @@ async def create_product(
     product = Product(
         market_id=market.id,
         category_id=default.id if default else None,
-        name=payload.name.strip(),
+        name=name,
         unit=payload.unit,
         price=payload.price,
         cost=payload.cost,

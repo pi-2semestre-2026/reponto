@@ -1,9 +1,12 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import {
   ArrowLeft,
+  ArrowDown,
+  ArrowUp,
+  ArrowUpDown,
   Brain,
   ClipboardList,
   FileSpreadsheet,
@@ -48,7 +51,9 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { api } from "@/lib/api";
+import { api, ApiError, type DuplicateProductDetails, type ProductRegistration } from "@/lib/api";
+import { subscribeEvents } from "@/lib/events";
+import { nextProductSort, productStockStatus, sortMarketProducts, type ProductSort } from "@/lib/market-sort";
 import { fmtMoney, fmtNum } from "@/lib/format";
 import { useI18n } from "@/lib/i18n";
 import type { Market, Product } from "@/lib/types";
@@ -58,11 +63,14 @@ const UNITS = ["unidade", "kg", "g", "L", "ml", "pacote", "caixa", "dz"];
 export default function MarketPage() {
   const params = useParams<{ id: string }>();
   const router = useRouter();
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
   const marketId = params.id;
 
   const [market, setMarket] = useState<Market | null>(null);
   const [products, setProducts] = useState<Product[] | null>(null);
+  const [productSort, setProductSort] = useState<ProductSort>(null);
+  const sortedProducts = useMemo(() => sortMarketProducts(products ?? [], productSort, locale), [products, productSort, locale]);
+  useEffect(() => {setProductSort(null);}, [marketId]);
   const [saleOpen, setSaleOpen] = useState(false);
   const [learningId, setLearningId] = useState<string | null>(null);
   const [newOpen, setNewOpen] = useState(false);
@@ -73,10 +81,13 @@ export default function MarketPage() {
   const [importOpen, setImportOpen] = useState(false);
 
   const hadProcessing = useRef(false);
+  const requestVersion = useRef(0);
 
   const load = useCallback(async () => {
+    const version = ++requestVersion.current;
     try {
       const [m, ps] = await Promise.all([api.markets(), api.products(marketId)]);
+      if (version !== requestVersion.current) return false;
       const me = m.find((x) => x.id === marketId) ?? null;
       setMarket(me);
       setProducts(ps);
@@ -88,24 +99,18 @@ export default function MarketPage() {
       }
       return processing;
     } catch (e) {
-      toast.error((e as Error).message);
+      if (version === requestVersion.current) toast.error((e as Error).message);
       return false;
     }
   }, [marketId, t]);
 
   useEffect(() => {
-    let active = true;
-    let timer: ReturnType<typeof setTimeout>;
-
-    const poll = async () => {
-      const stillProcessing = await load();
-      if (!active) return;
-      timer = setTimeout(poll, stillProcessing ? 2000 : 15000);
-    };
-    poll();
+    hadProcessing.current = false;
+    void load();
+    const unsubscribe = subscribeEvents(async () => { await load(); });
     return () => {
-      active = false;
-      clearTimeout(timer);
+      requestVersion.current++;
+      unsubscribe();
     };
   }, [load]);
 
@@ -194,18 +199,28 @@ export default function MarketPage() {
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>{t("common.name")}</TableHead>
-                    <TableHead>{t("nav.categories")}</TableHead>
-                    <TableHead>{t("common.price")}</TableHead>
-                    <TableHead>{t("common.stock")}</TableHead>
-                    <TableHead>{t("market.coverage")}</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>{t("market.learnedRate")}</TableHead>
+                    {([
+                      ["name", t("common.name")], ["category", t("nav.categories")],
+                      ["price", t("market.salePrice")], ["cost", t("market.purchaseCost")],
+                      ["stock", t("common.stock")], ["coverage", t("market.coverage")],
+                      ["status", "Status"], ["learned_rate", t("market.learnedRate")],
+                    ] as const).map(([key, label]) => {
+                      const direction = productSort?.key === key ? productSort.direction : null;
+                      const Icon = direction === "asc" ? ArrowUp : direction === "desc" ? ArrowDown : ArrowUpDown;
+                      const action = t(direction === "asc" ? "market.sortDesc" : direction === "desc" ? "market.sortDefault" : "market.sortAsc");
+                      return (
+                        <TableHead key={key} aria-sort={direction === "asc" ? "ascending" : direction === "desc" ? "descending" : "none"}>
+                          <button type="button" className="inline-flex items-center gap-2 whitespace-nowrap rounded py-2 text-left uppercase focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring" onClick={() => setProductSort(current => nextProductSort(current, key))} title={action} aria-label={`${label}: ${action}`}>
+                            {label}<Icon className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+                          </button>
+                        </TableHead>
+                      );
+                    })}
                     <TableHead className="text-right">{t("common.actions")}</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {products.map((p) => (
+                  {sortedProducts.map((p) => (
                     <ProductRow
                       key={p.id}
                       p={p}
@@ -291,16 +306,8 @@ function ProductRow({
   t: (k: string) => string;
 }) {
   const stock = parseFloat(p.stock);
-  const min = parseFloat(p.min_stock);
   const coverage = p.learned_rate > 0 ? stock / p.learned_rate : 0;
-  const status =
-    p.status === "processing"
-      ? "processing"
-      : stock <= 0
-        ? "out"
-        : stock <= min
-          ? "low"
-          : "ok";
+  const status = productStockStatus(p);
 
   const confVariant = p.confidence === "alta" ? "success" : p.confidence === "media" ? "warning" : "info";
 
@@ -320,6 +327,7 @@ function ProductRow({
         )}
       </TableCell>
       <TableCell className="font-semibold">{fmtMoney(p.price)}</TableCell>
+      <TableCell className="font-semibold">{fmtMoney(p.cost)}</TableCell>
       <TableCell>
         <span className={status === "out" ? "font-bold text-destructive" : status === "low" ? "font-bold text-amber-600" : ""}>
           {fmtNum(p.stock)}
@@ -406,10 +414,17 @@ function ProductDialog({
   const [stock, setStock] = useState("");
   const [unit, setUnit] = useState("unidade");
   const [saving, setSaving] = useState(false);
+  const [savingAction, setSavingAction] = useState<"auto" | "add_stock" | "create_new" | null>(null);
+  const submitting = useRef(false);
+  const [conflict, setConflict] = useState<{
+    existing: DuplicateProductDetails["existing_product"];
+    submitted: ProductRegistration;
+  } | null>(null);
   const isEdit = !!product;
 
   useEffect(() => {
     if (open) {
+      setConflict(null);
       setName(product?.name ?? "");
       setPrice(product ? product.price : "");
       setCost(product && parseFloat(product.cost) > 0 ? product.cost : "");
@@ -418,34 +433,77 @@ function ProductDialog({
     }
   }, [open, product]);
 
-  const save = async () => {
+  const save = async (action: "auto" | "add_stock" | "create_new" = "auto") => {
+    if (submitting.current) return;
+    const submitted: ProductRegistration = action !== "auto" && conflict ? conflict.submitted : {
+      name, price: parseFloat(price), cost: cost ? parseFloat(cost) : 0,
+      stock: stock ? parseFloat(stock) : 0, unit,
+    };
+    submitting.current = true;
+    setSavingAction(action);
     setSaving(true);
     try {
       if (isEdit && product) {
         await api.updateProduct(product.id, { name, price: parseFloat(price), cost: cost ? parseFloat(cost) : 0, unit });
         toast.success(t("toast.updated"));
       } else {
-        await api.createProduct(marketId, {
-          name,
-          price: parseFloat(price),
-          cost: cost ? parseFloat(cost) : 0,
-          stock: parseFloat(stock),
-          unit,
+        const result = await api.createProduct(marketId, {
+          ...submitted, duplicate_action: action,
+          existing_product_id: action === "add_stock" ? conflict?.existing.id : undefined,
         });
-        toast.success(t("toast.productCreated"));
+        toast.success(t(result.stock_added ? "product.duplicate.added" : "toast.productCreated"));
       }
       onOpenChange(false);
       onSaved();
     } catch (e) {
+      if (e instanceof ApiError && e.status === 409 && e.detail && typeof e.detail === "object") {
+        const detail = e.detail as DuplicateProductDetails;
+        if (detail.code === "duplicate_product" && detail.existing_product) {
+          setConflict({existing: detail.existing_product, submitted});
+          return;
+        }
+      }
       toast.error((e as Error).message);
     } finally {
+      submitting.current = false;
+      setSavingAction(null);
       setSaving(false);
     }
   };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent>
+    <Dialog open={open} onOpenChange={(value) => {if (!saving) onOpenChange(value);}}>
+      <DialogContent className={conflict ? "max-w-2xl" : undefined}>
+        {conflict ? (
+          <>
+            <DialogHeader>
+              <DialogTitle>{t("product.duplicate.title")}</DialogTitle>
+              <DialogDescription>
+                {t("product.duplicate.message").replace(/\{(name|price|cost)\}/g, (_, key: "name" | "price" | "cost") => ({
+                  name: conflict.submitted.name,
+                  price: fmtMoney(conflict.existing.price),
+                  cost: fmtMoney(conflict.existing.cost),
+                }[key] ?? ""))}
+              </DialogDescription>
+            </DialogHeader>
+            {conflict.existing.unit !== conflict.submitted.unit && (
+              <p className="text-sm text-muted-foreground">{t("product.duplicate.unitMismatch")}</p>
+            )}
+            <DialogFooter className="gap-3 sm:justify-between sm:space-x-0">
+              <Button variant="outline" disabled={saving} onClick={() => setConflict(null)}>{t("common.cancel")}</Button>
+              <div className="flex flex-col gap-2 sm:flex-row">
+                <Button variant="outline" disabled={saving || conflict.existing.unit !== conflict.submitted.unit} onClick={() => void save("add_stock")}>
+                  {saving && savingAction === "add_stock" && <Loader2 className="animate-spin" />}
+                  {t("product.duplicate.add")}
+                </Button>
+                <Button variant="press" disabled={saving} onClick={() => void save("create_new")}>
+                  {saving && savingAction === "create_new" && <Loader2 className="animate-spin" />}{t("product.duplicate.create")}
+                </Button>
+              </div>
+            </DialogFooter>
+          </>
+        ) : (
+          <>
         <DialogHeader>
           <DialogTitle>{isEdit ? t("product.edit.title") : t("product.dialog.title")}</DialogTitle>
           {!isEdit && <DialogDescription>{t("product.dialog.desc")}</DialogDescription>}
@@ -453,17 +511,18 @@ function ProductDialog({
         <div className="space-y-4">
           <div className="space-y-2">
             <Label>{t("product.dialog.name")}</Label>
-            <Input value={name} onChange={(e) => setName(e.target.value)} placeholder={t("product.dialog.namePh")} />
+            <Input disabled={saving} value={name} onChange={(e) => setName(e.target.value)} placeholder={t("product.dialog.namePh")} />
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label>{t("product.dialog.price")}</Label>
-              <Input type="number" step="0.01" min={0} value={price} onChange={(e) => setPrice(e.target.value)} />
+              <Input disabled={saving} type="number" step="0.01" min={0} value={price} onChange={(e) => setPrice(e.target.value)} />
             </div>
             <div className="space-y-2">
               <Label>{t("product.dialog.cost")}</Label>
               <Input
                 type="number"
+                disabled={saving}
                 step="0.01"
                 min={0}
                 value={cost}
@@ -474,12 +533,12 @@ function ProductDialog({
             {!isEdit && (
               <div className="space-y-2">
                 <Label>{t("product.dialog.stock")}</Label>
-                <Input type="number" step="0.001" min={0} value={stock} onChange={(e) => setStock(e.target.value)} />
+                <Input disabled={saving} type="number" step="0.001" min={0} value={stock} onChange={(e) => setStock(e.target.value)} />
               </div>
             )}
             <div className={isEdit ? "col-span-1" : ""}>
               <Label>{t("product.dialog.unit")}</Label>
-              <Select value={unit} onValueChange={setUnit}>
+              <Select disabled={saving} value={unit} onValueChange={setUnit}>
                 <SelectTrigger className="mt-2">
                   <SelectValue />
                 </SelectTrigger>
@@ -501,14 +560,16 @@ function ProductDialog({
           )}
         </div>
         <DialogFooter>
-          <Button variant="outline" onClick={() => onOpenChange(false)}>
+          <Button variant="outline" disabled={saving} onClick={() => onOpenChange(false)}>
             {t("common.cancel")}
           </Button>
-          <Button variant="press" onClick={save} disabled={saving || !name.trim() || !price}>
+          <Button variant="press" onClick={() => void save()} disabled={saving || !name.trim() || !price}>
             {saving && <Loader2 className="animate-spin" />}
             {t("common.save")}
           </Button>
         </DialogFooter>
+          </>
+        )}
       </DialogContent>
     </Dialog>
   );

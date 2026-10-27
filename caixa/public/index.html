@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Caixa • Simulador de mercado</title>
+  <link rel="icon" type="image/svg+xml" href="icon.svg">
+  <link rel="stylesheet" href="style.css">
+  <script>try { document.documentElement.dataset.theme = localStorage.getItem("theme") === "dark" ? "dark" : "light"; } catch {}</script>
+  <script src="preferences.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <header>
+    <div><span class="eyebrow" data-i18n="SIMULADOR DE MERCADO">SIMULADOR DE MERCADO</span><h1><span data-i18n="Caixa">Caixa</span><span class="register-number">01</span></h1></div>
+    <div class="header-actions">
+      <span class="connection" data-i18n="Integrado ao Reponto">Integrado ao Reponto</span>
+      <details id="language-menu" class="header-menu">
+        <summary class="icon-button" aria-label="Idioma" title="Idioma" data-i18n-aria="Idioma" data-i18n-title="Idioma">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M2 12h20M12 2a18 18 0 0 1 0 20 18 18 0 0 1 0-20"></path></svg>
+        </summary>
+        <div class="menu-content"><button type="button" data-locale="pt" lang="pt-BR">PT · Português</button><button type="button" data-locale="en" lang="en">EN · English</button></div>
+      </details>
+      <button id="theme-toggle" type="button" class="icon-button" aria-label="Ativar modo escuro" data-i18n-aria="Ativar modo escuro">
+        <svg id="theme-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M20.9 13a9 9 0 0 1-9.9-9.9A9 9 0 1 0 20.9 13Z"></path></svg>
+        <svg id="theme-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true" hidden><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"></path></svg>
+      </button>
+      <details id="account-menu" class="header-menu" hidden>
+        <summary id="account-trigger" class="account-badge"><span id="user-initial" class="avatar"></span><span id="user-name"></span></summary>
+        <div class="menu-content"><p id="user-email"></p><button id="logout" type="button" data-i18n="Sair">Sair</button></div>
+      </details>
+    </div>
+  </header>
+  <main>
+    <div id="message" role="status" aria-live="polite" hidden></div>
+    <section id="login-panel" class="panel login">
+      <span class="eyebrow"><span data-i18n="ABERTURA DO CAIXA">ABERTURA DO CAIXA</span></span><h2><span data-i18n="Vamos começar?">Vamos começar?</span></h2>
+      <p><span data-i18n="Entre com sua conta do Reponto para vender os produtos dos seus mercados.">Entre com sua conta do Reponto para vender os produtos dos seus mercados.</span></p>
+      <form id="login-form">
+        <label><span data-i18n="E-mail">E-mail</span><input id="email" type="email" autocomplete="username" required></label>
+        <label><span data-i18n="Senha">Senha</span><input id="password" type="password" autocomplete="current-password" required></label>
+        <button id="login-button" type="submit"><span data-i18n="Abrir caixa →">Abrir caixa →</span></button>
+      </form>
+      <small><span data-i18n="As vendas realizadas aqui gravam dados e movimentam o estoque do Reponto.">As vendas realizadas aqui gravam dados e movimentam o estoque do Reponto.</span></small>
+    </section>
+    <section id="workspace" hidden>
+      <p id="empty-markets" hidden><span data-i18n="Cadastre um mercado e seus produtos no Reponto. Eles aparecerão aqui automaticamente.">Cadastre um mercado e seus produtos no Reponto. Eles aparecerão aqui automaticamente.</span></p>
+      <div class="toolbar"><label><span data-i18n="Mercado">Mercado</span><select id="market" aria-label="Mercado" data-i18n-aria="Mercado"></select></label><button id="refresh" class="secondary"><span data-i18n="Atualizar produtos">Atualizar produtos</span></button></div>
+      <div class="grid">
+        <section class="panel catalog"><span class="eyebrow"><span data-i18n="PRODUTOS PRÉ-CADASTRADOS">PRODUTOS PRÉ-CADASTRADOS</span></span><h2><span data-i18n="O que vai levar?">O que vai levar?</span></h2><label class="search"><span data-i18n="Buscar produto">Buscar produto</span><input id="search" type="search" placeholder="Digite o nome ou a categoria" data-i18n-placeholder="Digite o nome ou a categoria"></label><div id="products" class="products"></div></section>
+        <aside class="panel ticket"><span class="eyebrow"><span data-i18n="VENDA EM ANDAMENTO">VENDA EM ANDAMENTO</span></span><h2><span data-i18n="Seu carrinho">Seu carrinho</span></h2><div id="cart"></div><div class="total"><span><span data-i18n="Total estimado">Total estimado</span></span><strong id="total">R$ 0,00</strong></div><small><span data-i18n="O preço e o estoque são conferidos pelo Reponto ao finalizar.">O preço e o estoque são conferidos pelo Reponto ao finalizar.</span></small><button id="checkout" disabled><span data-i18n="Concluir venda →">Concluir venda →</span></button><button id="clear" class="secondary" disabled><span data-i18n="Limpar carrinho">Limpar carrinho</span></button></aside>
+      </div>
+      <section id="receipt" class="panel receipt" hidden aria-live="polite"></section>
+      <section class="panel history">
+        <div class="history-heading"><div><span class="eyebrow"><span data-i18n="CONFERÊNCIA">CONFERÊNCIA</span></span><h2><span data-i18n="Últimas vendas do mercado">Últimas vendas do mercado</span></h2></div></div>
+        <p><span data-i18n="Vendas feitas em todas as telas do Reponto.">Vendas feitas em todas as telas do Reponto.</span></p>
+        <div class="history-filters">
+          <label><span data-i18n="Nome do produto">Nome do produto</span><input id="history-product" type="search" placeholder="Buscar produto vendido" maxlength="160" data-i18n-placeholder="Buscar produto vendido"></label>
+          <label><span data-i18n="Quantidade vendida do produto">Quantidade vendida do produto</span><input id="history-quantity" type="number" min="0" step="1" placeholder="Qualquer quantidade" data-i18n-placeholder="Qualquer quantidade"></label>
+          <label><span data-i18n="Ordenar por">Ordenar por</span><select id="history-order">
+            <option value="recent" data-i18n="Mais recentes">Mais recentes</option>
+            <option value="value_desc" data-i18n="Maior valor de venda">Maior valor de venda</option>
+            <option value="value_asc" data-i18n="Menor valor de venda">Menor valor de venda</option>
+            <option value="quantity_desc" data-i18n="Maior quantidade total">Maior quantidade total</option>
+            <option value="quantity_asc" data-i18n="Menor quantidade total">Menor quantidade total</option>
+          </select></label>
+          <button id="history-clear" class="secondary" type="button"><span data-i18n="Limpar filtros">Limpar filtros</span></button>
+        </div>
+        <small><span data-i18n="A quantidade busca um item da venda. A ordenação considera o valor ou a quantidade total da venda.">A quantidade busca um item da venda. A ordenação considera o valor ou a quantidade total da venda.</span></small>
+        <p id="history-error" role="status" hidden></p>
+        <div id="history" aria-busy="false"></div>
+        <nav class="history-pagination" aria-label="Páginas do histórico de vendas" data-i18n-aria="Páginas do histórico de vendas">
+          <span id="history-count" role="status"></span>
+          <div><button id="history-prev" type="button" class="secondary" disabled><span data-i18n="← Anterior">← Anterior</span></button><span id="history-page">Página 1 de 1</span><button id="history-next" type="button" class="secondary" disabled><span data-i18n="Próxima →">Próxima →</span></button></div>
+        </nav>
+      </section>
+    </section>
+  </main>
+  <div id="sale-toast" class="sale-toast" role="status" aria-live="polite" aria-atomic="true" hidden><span aria-hidden="true">✓</span> <span data-i18n="Venda gravada">Venda gravada</span></div>
+  <footer><span data-i18n="Caixa de testes · Os dados são reais no banco conectado ao Reponto.">Caixa de testes · Os dados são reais no banco conectado ao Reponto.</span></footer>
+</body>
+</html>
