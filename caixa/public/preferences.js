@@ -3,7 +3,7 @@ const caixaUI = (() => {
   const english = {
     'Caixa • Simulador de mercado': 'Checkout • Market simulator',
     'SIMULADOR DE MERCADO': 'MARKET SIMULATOR', 'Caixa': 'Checkout',
-    'Integrado ao Reponto': 'Connected to Reponto', 'Idioma': 'Language',
+    'Ir para o Reponto': 'Go to Reponto', 'Idioma': 'Language',
     'Ativar modo claro': 'Switch to light mode', 'Ativar modo escuro': 'Switch to dark mode',
     'Conta de {name}': 'Account for {name}', 'Sair': 'Sign out',
     'ABERTURA DO CAIXA': 'OPEN CHECKOUT', 'Vamos começar?': 'Ready to start?',

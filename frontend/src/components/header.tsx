@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useTheme } from "next-themes";
-import { Check, Gamepad2, Globe, LogOut, Moon, Sun } from "lucide-react";
+import { Check, Gamepad2, Globe, LogOut, Moon, ShoppingBasket, Sun } from "lucide-react";
 import { toast } from "sonner";
 import { Wordmark } from "@/components/logo";
 import { Button } from "@/components/ui/button";
@@ -75,6 +75,14 @@ export function Header({ active }: { active?: string }) {
         </nav>
 
         <div className="ml-auto flex items-center gap-1.5">
+          <Button variant="outline" size="sm" title={t("nav.checkout")} aria-label={t("nav.checkout")} onClick={() => {
+            const url = new URL("/", window.location.href);
+            url.port = "3301";
+            window.location.assign(url.href);
+          }}>
+            <ShoppingBasket className="h-4 w-4" />
+            <span className="hidden sm:inline">{t("nav.checkout")}</span>
+          </Button>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" size="icon" title="Language">
