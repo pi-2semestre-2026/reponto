@@ -399,6 +399,7 @@ $('login-form').onsubmit = async (event) => {
   } catch (error) {message(error.message, true);}
   finally {$('login-button').disabled = false;}
 };
+$('reponto-link').onclick = () => {const url = new URL('/dashboard', window.location.href); url.port = '3300'; window.location.assign(url.href);};
 $('logout').onclick = () => {logout(); message('');};
 $('search').oninput = render;
 function searchHistory() {
