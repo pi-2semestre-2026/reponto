@@ -7,8 +7,8 @@
   <link rel="icon" type="image/svg+xml" href="icon.svg">
   <link rel="stylesheet" href="style.css?v=abe1b75b3d8d">
   <script>try { document.documentElement.dataset.theme = localStorage.getItem("theme") === "dark" ? "dark" : "light"; } catch {}</script>
-  <script src="preferences.js?v=a65643cb3a37" defer></script>
-  <script src="app.js?v=e9806d57c0eb" defer></script>
+  <script src="preferences.js?v=3141223a5624" defer></script>
+  <script src="app.js?v=efc3efa4d4d6" defer></script>
 </head>
 <body>
   <header>
@@ -45,10 +45,10 @@
     </section>
     <section id="workspace" hidden>
       <p id="empty-markets" hidden><span data-i18n="Cadastre um mercado e seus produtos no Reponto. Eles aparecerão aqui automaticamente.">Cadastre um mercado e seus produtos no Reponto. Eles aparecerão aqui automaticamente.</span></p>
-      <div class="toolbar"><label><span data-i18n="Mercado">Mercado</span><select id="market" aria-label="Mercado" data-i18n-aria="Mercado"></select></label><button id="refresh" class="secondary"><span data-i18n="Atualizar produtos">Atualizar produtos</span></button></div>
+      <div class="toolbar"><label><span data-i18n="Mercado">Mercado</span><select id="market" aria-label="Mercado" data-i18n-aria="Mercado"></select></label></div>
       <div class="grid">
-        <section class="panel catalog"><span class="eyebrow"><span data-i18n="PRODUTOS PRÉ-CADASTRADOS">PRODUTOS PRÉ-CADASTRADOS</span></span><h2><span data-i18n="O que vai levar?">O que vai levar?</span></h2><label class="search"><span data-i18n="Buscar produto">Buscar produto</span><input id="search" type="search" placeholder="Digite o nome ou a categoria" data-i18n-placeholder="Digite o nome ou a categoria"></label><div id="products" class="products"></div></section>
-        <aside class="panel ticket"><span class="eyebrow"><span data-i18n="VENDA EM ANDAMENTO">VENDA EM ANDAMENTO</span></span><h2><span data-i18n="Seu carrinho">Seu carrinho</span></h2><div id="cart"></div><div class="total"><span><span data-i18n="Total estimado">Total estimado</span></span><strong id="total">R$ 0,00</strong></div><small><span data-i18n="O preço e o estoque são conferidos pelo Reponto ao finalizar.">O preço e o estoque são conferidos pelo Reponto ao finalizar.</span></small><button id="checkout" disabled><span data-i18n="Concluir venda →">Concluir venda →</span></button><button id="clear" class="secondary" disabled><span data-i18n="Limpar carrinho">Limpar carrinho</span></button></aside>
+        <section class="panel catalog"><span class="eyebrow"><span data-i18n="PRODUTOS PRÉ-CADASTRADOS NO REPONTO">PRODUTOS PRÉ-CADASTRADOS NO REPONTO</span></span><h2><span data-i18n="O que vai levar?">O que vai levar?</span></h2><label class="search"><span data-i18n="Buscar produto">Buscar produto</span><input id="search" type="search" placeholder="Digite o nome ou a categoria" data-i18n-placeholder="Digite o nome ou a categoria"></label><div id="products" class="products"></div></section>
+        <aside class="panel ticket"><h2><span data-i18n="Seu carrinho">Seu carrinho</span></h2><div id="cart"></div><div class="total"><span><span data-i18n="Total estimado">Total estimado</span></span><strong id="total">R$ 0,00</strong></div><small><span data-i18n="O preço e o estoque são conferidos pelo Reponto ao finalizar.">O preço e o estoque são conferidos pelo Reponto ao finalizar.</span></small><button id="checkout" disabled><span data-i18n="Concluir venda →">Concluir venda →</span></button><button id="clear" class="secondary" disabled><span data-i18n="Limpar carrinho">Limpar carrinho</span></button></aside>
       </div>
       <section id="receipt" class="panel receipt" hidden aria-live="polite"></section>
       <section class="panel history">

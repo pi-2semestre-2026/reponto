@@ -239,7 +239,7 @@ function render() {
   $('total').textContent = money(total);
   $('checkout').disabled = (!cart.size && !pendingSale) || busy || loading;
   $('clear').disabled = !cart.size || busy || loading || !!pendingSale;
-  for (const id of ['market', 'refresh', 'logout']) $(id).disabled = busy || loading || (id === 'market' && !!pendingSale);
+  for (const id of ['market', 'logout']) $(id).disabled = busy || loading || (id === 'market' && !!pendingSale);
   $('market').disabled ||= !$('market').value;
   $('checkout').textContent = busy ? tr('Registrando venda…') : pendingSale ? tr('Confirmar venda pendente →') : tr('Concluir venda →');
 }
@@ -426,7 +426,6 @@ $('history-prev').onclick = () => {if (!historyLoading && historyPage > 1) {hist
 $('history-next').onclick = () => {if (!historyLoading && historyPage * HISTORY_PAGE_SIZE < historyTotal) {historyPage++; void loadHistory();}};
 $('clear').onclick = () => {cart.clear(); render();};
 $('market').onchange = () => {cart.clear(); $('receipt').hidden = true; message(''); loadProducts().catch(e => message(e.message, true));};
-$('refresh').onclick = () => loadProducts().catch(e => message(e.message, true));
 $('checkout').onclick = async () => {
   if (busy || loading || (!cart.size && !pendingSale)) return;
   busy = true; render(); message('');
@@ -441,7 +440,7 @@ $('checkout').onclick = async () => {
     $('receipt').hidden = false;
     if (sale.status === 'cancelled') message('Esta venda já foi registrada e cancelada. Nenhuma nova venda foi criada.', true);
     else showSaleToast();
-    try {await loadProducts();} catch {message('Venda gravada, mas a atualização da tela falhou. Clique em Atualizar produtos.', true);}
+    try {await loadProducts();} catch {message('Venda gravada. A atualização da tela será tentada novamente automaticamente.', true); requestSync();}
   } catch (error) {
     if (error.status >= 400 && error.status < 500 && ![401, 408, 409, 429].includes(error.status)) savePending(null);
     message(pendingSale ? '{error} Clique em Confirmar venda pendente para repetir a mesma tentativa com segurança.' : '{error}', true, {error: error.message});
