@@ -199,7 +199,7 @@ function render() {
   for (const p of filtered) {
     const card = el('article', undefined, 'product');
     card.append(el('span', p.category_name || tr('Produto'), 'category'), el('h3', p.name), el('small', tr('{quantity} em estoque', {quantity: quantityWithUnit(p.stock, p.unit)})), el('strong', money(p.price)));
-    const button = el('button', tr('Adicionar +'));
+    const button = el('button', tr(Number(p.stock) <= 0 ? 'Sem estoque' : 'Adicionar +'), Number(p.stock) <= 0 ? 'out-of-stock' : undefined);
     button.disabled = busy || loading || !!pendingSale || Number(p.stock) - (cart.get(p.id) || 0) < (isCountUnit(p.unit) ? 1 : 0.001);
     button.onclick = () => {
       const available = Math.round((Number(p.stock) - (cart.get(p.id) || 0)) * 1000) / 1000;

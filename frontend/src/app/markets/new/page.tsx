@@ -86,7 +86,7 @@ export default function MarketWizardPage() {
     if (!canAdvance()) return;
     setStep((s) => Math.min(s + 1, STEPS - 1));
   };
-  const back = () => setStep((s) => Math.max(s - 1, 0));
+  const back = () => step === 0 ? router.push("/markets") : setStep((s) => s - 1);
 
   const selectedCycle = cycleOptions.find((c) => c.unit === cycle);
 
@@ -244,7 +244,7 @@ export default function MarketWizardPage() {
 
         {step < 4 && (
           <div className="mt-10 flex items-center justify-between">
-            <Button variant="ghost" onClick={back} disabled={step === 0}>
+            <Button variant="ghost" onClick={back}>
               <ArrowLeft /> {t("common.back")}
             </Button>
             <Button variant="press" onClick={next} disabled={!canAdvance()} size="lg">

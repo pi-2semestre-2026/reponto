@@ -35,7 +35,7 @@ const caixaUI = (() => {
     'Não foi possível completar a operação. Confira sua conexão e os dados informados.': 'Unable to complete the operation. Check your connection and the information provided.',
     'Nenhum produto encontrado.': 'No products found.',
     'Cadastre produtos e estoque neste mercado pelo Reponto para começar.': 'Register products and stock for this store in Reponto to get started.',
-    'Produto': 'Product', '{quantity} em estoque': '{quantity} in stock', 'Adicionar +': 'Add +',
+    'Produto': 'Product', '{quantity} em estoque': '{quantity} in stock', 'Adicionar +': 'Add +', 'Sem estoque': 'Out of stock',
     'Adicione produtos para iniciar uma venda.': 'Add products to start a sale.',
     'Quantidade de {name}': 'Quantity of {name}',
     'Informe uma quantidade positiva, com até três casas decimais, dentro do estoque disponível.': 'Enter a positive quantity with up to three decimal places, within the available stock.',
