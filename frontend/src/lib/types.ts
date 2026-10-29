@@ -50,6 +50,7 @@ export interface SaleItem {
   product_id: string;
   product_name: string;
   quantity: string;
+  unit: string;
   unit_price: string;
   subtotal: string;
 }
@@ -64,6 +65,13 @@ export interface Sale {
   created_at: string;
   cancelled_at: string | null;
   items: SaleItem[];
+}
+
+export interface SalePage {
+  items: Sale[];
+  total: number;
+  page: number;
+  page_size: number;
 }
 
 export interface LearningLog {

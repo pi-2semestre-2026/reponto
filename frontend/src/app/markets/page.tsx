@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { api } from "@/lib/api";
+import { subscribeEvents } from "@/lib/events";
 import { useI18n } from "@/lib/i18n";
 import type { Market } from "@/lib/types";
 
@@ -24,10 +25,20 @@ export default function MarketsPage() {
   const [markets, setMarkets] = useState<Market[] | null>(null);
 
   useEffect(() => {
-    api
-      .markets()
-      .then(setMarkets)
-      .catch((e) => toast.error(e.message));
+    let active = true;
+    let requestVersion = 0;
+    const load = async () => {
+      const version = ++requestVersion;
+      try {
+        const latest = await api.markets();
+        if (active && version === requestVersion) setMarkets(latest);
+      } catch (e) {
+        if (active && version === requestVersion) toast.error((e as Error).message);
+      }
+    };
+    void load();
+    const unsubscribe = subscribeEvents(load);
+    return () => { active = false; unsubscribe(); };
   }, []);
 
   return (

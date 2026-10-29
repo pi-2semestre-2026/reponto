@@ -123,6 +123,9 @@ class Sale(Base):
     created_at: Mapped[dt.datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
     cancelled_at: Mapped[dt.datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
 
+    idempotency_key: Mapped[uuid.UUID | None] = mapped_column(UUID(as_uuid=True), nullable=True)
+    request_hash: Mapped[str | None] = mapped_column(String(64), nullable=True)
+
     items: Mapped[list["SaleItem"]] = relationship(back_populates="sale", cascade="all, delete-orphan", lazy="selectin")
 
 
@@ -135,6 +138,7 @@ class SaleItem(Base):
         UUID(as_uuid=True), ForeignKey("products.id", ondelete="SET NULL"), nullable=True, index=True
     )
     product_name: Mapped[str] = mapped_column(String(160))
+    unit: Mapped[str] = mapped_column(String(20), default="unidade")
     category_id: Mapped[uuid.UUID | None] = mapped_column(UUID(as_uuid=True), ForeignKey("categories.id"), nullable=True)
     quantity: Mapped[Decimal] = mapped_column(Numeric(12, 3), default=1)
     unit_price: Mapped[Decimal] = mapped_column(Numeric(12, 2), default=0)

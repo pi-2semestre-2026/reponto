@@ -18,6 +18,7 @@ import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { api } from "@/lib/api";
+import { openDatePicker } from "@/lib/date-picker";
 import { fmtMoney, fmtNum } from "@/lib/format";
 import { useI18n } from "@/lib/i18n";
 import type { Product } from "@/lib/types";
@@ -186,7 +187,7 @@ export function SaleCartDialog({ open, onOpenChange, marketId, products, onDone 
               </Label>
               <p className="text-xs text-muted-foreground">{t("sale.retroDesc")}</p>
             </div>
-            {retro && <Input type="date" className="h-9 w-40" value={retroDate} onChange={(e) => setRetroDate(e.target.value)} max={new Date().toISOString().slice(0, 10)} />}
+            {retro && <Input type="date" className="h-9 w-40 cursor-pointer" onClick={(e) => openDatePicker(e.currentTarget)} value={retroDate} onChange={(e) => setRetroDate(e.target.value)} max={new Date().toISOString().slice(0, 10)} />}
           </div>
           <div className="text-right">
             <p className="text-xs text-muted-foreground">{t("sale.total")}</p>

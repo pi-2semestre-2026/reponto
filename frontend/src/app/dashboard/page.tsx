@@ -38,7 +38,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
 import { api } from "@/lib/api";
-import { fmtMoney, fmtNum } from "@/lib/format";
+import { subscribeEvents } from "@/lib/events";
+import { openDatePicker } from "@/lib/date-picker";
+import { dashboardRange, type DashboardPreset } from "@/lib/date-range";
+import { fmtDate, fmtMoney, fmtNum } from "@/lib/format";
 import { useI18n } from "@/lib/i18n";
 import type { Analytics } from "@/lib/types";
 import { cn } from "@/lib/utils";
@@ -54,7 +57,7 @@ const CHART_COLORS = [
   "hsl(150 10% 70%)",
 ];
 
-type Preset = "today" | "7d" | "30d" | "month" | "custom";
+type Preset = DashboardPreset;
 
 function AnimatedNumber({ value, format }: { value: number; format: (v: number) => string }) {
   const [display, setDisplay] = useState(0);
@@ -91,38 +94,26 @@ export default function DashboardPage() {
   const [customTo, setCustomTo] = useState("");
   const [data, setData] = useState<Analytics | null>(null);
   const [loading, setLoading] = useState(true);
+  const requestVersion = useRef(0);
 
-  const range = useMemo(() => {
-    const today = new Date();
-    const iso = (d: Date) => d.toISOString().slice(0, 10);
-    if (preset === "today") return { from: iso(today), to: iso(today) };
-    if (preset === "7d") {
-      const from = new Date(today.getTime() - 6 * 86400000);
-      return { from: iso(from), to: iso(today) };
-    }
-    if (preset === "30d") {
-      const from = new Date(today.getTime() - 29 * 86400000);
-      return { from: iso(from), to: iso(today) };
-    }
-    if (preset === "month") {
-      const from = new Date(today.getFullYear(), today.getMonth(), 1);
-      return { from: iso(from), to: iso(today) };
-    }
-    if (customFrom && customTo) return { from: customFrom, to: customTo };
-    return null;
-  }, [preset, customFrom, customTo]);
+  const range = useMemo(() => dashboardRange(preset, customFrom, customTo), [preset, customFrom, customTo]);
 
-  const load = useCallback(() => {
+  const load = useCallback(async () => {
+    const version = ++requestVersion.current;
     if (!range) return;
     setLoading(true);
-    api
+    await api
       .analytics({ date_from: range.from, date_to: range.to })
-      .then(setData)
-      .catch((e) => toast.error(e.message))
-      .finally(() => setLoading(false));
+      .then(latest => {if (version === requestVersion.current) setData(latest);})
+      .catch((e) => {if (version === requestVersion.current) toast.error(e.message);})
+      .finally(() => {if (version === requestVersion.current) setLoading(false);});
   }, [range]);
 
-  useEffect(load, [load]);
+  useEffect(() => {
+    void load();
+    const unsubscribe = subscribeEvents(load);
+    return () => {requestVersion.current++; unsubscribe();};
+  }, [load]);
 
   const pct = (v: number | null, positive = true) => {
     if (v === null) return null;
@@ -165,9 +156,9 @@ export default function DashboardPage() {
             ))}
             {preset === "custom" && (
               <div className="flex items-center gap-2">
-                <Input type="date" className="h-9 w-36" value={customFrom} onChange={(e) => setCustomFrom(e.target.value)} />
+                <Input type="date" onClick={(e) => openDatePicker(e.currentTarget)} className="h-9 w-36 cursor-pointer" value={customFrom} onChange={(e) => setCustomFrom(e.target.value)} />
                 <span className="text-sm text-muted-foreground">→</span>
-                <Input type="date" className="h-9 w-36" value={customTo} onChange={(e) => setCustomTo(e.target.value)} />
+                <Input type="date" onClick={(e) => openDatePicker(e.currentTarget)} className="h-9 w-36 cursor-pointer" value={customTo} onChange={(e) => setCustomTo(e.target.value)} />
               </div>
             )}
           </div>
@@ -208,16 +199,19 @@ export default function DashboardPage() {
                         <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" vertical={false} />
                         <XAxis
                           dataKey="date"
-                          tickFormatter={(v) => String(v).slice(5)}
+                          tickFormatter={(v) => fmtDate(String(v))}
                           tick={{ fontSize: 11 }}
                           stroke="hsl(var(--muted-foreground))"
                         />
                         <YAxis tick={{ fontSize: 11 }} stroke="hsl(var(--muted-foreground))" width={50} />
                         <ReTooltip
+                          labelFormatter={(label) => fmtDate(String(label))}
                           formatter={(v: number) => fmtMoney(v)}
-                          contentStyle={{ borderRadius: 12, border: "1px solid hsl(var(--border))" }}
+                          cursor={{ fill: "hsl(var(--muted))", fillOpacity: 0.35 }}
+                          contentStyle={{ backgroundColor: "hsl(var(--card))", color: "hsl(var(--foreground))", borderRadius: 12, border: "1px solid hsl(var(--border))" }}
+                          labelStyle={{ color: "hsl(var(--foreground))" }}
                         />
-                        <Bar dataKey="revenue" fill="hsl(var(--chart-1))" radius={[6, 6, 0, 0]} maxBarSize={40} />
+                        <Bar dataKey="revenue" name={t("dash.revenue")} fill="hsl(var(--chart-1))" radius={[6, 6, 0, 0]} maxBarSize={40} />
                       </BarChart>
                     </ResponsiveContainer>
                   )}
@@ -249,7 +243,8 @@ export default function DashboardPage() {
                         </Pie>
                         <ReTooltip
                           formatter={(v: number) => fmtMoney(v)}
-                          contentStyle={{ borderRadius: 12, border: "1px solid hsl(var(--border))" }}
+                          contentStyle={{ backgroundColor: "hsl(var(--card))", color: "hsl(var(--foreground))", borderRadius: 12, border: "1px solid hsl(var(--border))" }}
+                          itemStyle={{ color: "hsl(var(--foreground))" }}
                         />
                       </PieChart>
                     </ResponsiveContainer>

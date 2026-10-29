@@ -39,10 +39,18 @@ async def seed_categories() -> None:
 # create_all never alters existing tables: columns added after the first deploy
 # are applied here (idempotent, Postgres ADD COLUMN IF NOT EXISTS).
 COLUMN_PATCHES = (
+    "ALTER TABLE sales ADD COLUMN IF NOT EXISTS idempotency_key UUID",
+    "ALTER TABLE sales ADD COLUMN IF NOT EXISTS request_hash VARCHAR(64)",
+    "CREATE UNIQUE INDEX IF NOT EXISTS ix_sales_user_idempotency ON sales (user_id, idempotency_key)",
     "ALTER TABLE products ADD COLUMN IF NOT EXISTS sku VARCHAR(60)",
     "ALTER TABLE products ADD COLUMN IF NOT EXISTS cost NUMERIC(12, 2) DEFAULT 0",
     "ALTER TABLE sales ADD COLUMN IF NOT EXISTS source VARCHAR(12) DEFAULT 'app'",
     "CREATE INDEX IF NOT EXISTS ix_products_sku ON products (sku)",
+    "ALTER TABLE sale_items ADD COLUMN IF NOT EXISTS unit VARCHAR(20)",
+    "UPDATE sale_items si SET unit = p.unit FROM products p WHERE si.product_id = p.id AND si.unit IS NULL",
+    "UPDATE sale_items SET unit = 'unidade' WHERE unit IS NULL",
+    "ALTER TABLE sale_items ALTER COLUMN unit SET DEFAULT 'unidade'",
+    "ALTER TABLE sale_items ALTER COLUMN unit SET NOT NULL",
 )
 
 
@@ -53,6 +61,9 @@ async def create_tables() -> None:
         await conn.run_sync(Base.metadata.create_all)
         for stmt in COLUMN_PATCHES:
             await conn.execute(text(stmt))
+        from app.services.events import install_triggers
+
+        await install_triggers(conn)
     logger.info("tables ensured")
 
 

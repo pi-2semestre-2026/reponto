@@ -1,6 +1,7 @@
 import datetime as dt
 import uuid
 from decimal import Decimal
+from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, EmailStr, Field
 
@@ -64,10 +65,12 @@ class MarketOut(BaseModel):
 
 class ProductCreateIn(BaseModel):
     name: str = Field(min_length=2, max_length=160)
-    price: Decimal = Field(ge=0)
-    cost: Decimal = Field(default=Decimal("0"), ge=0)
-    stock: Decimal = Field(ge=0)
+    price: Decimal = Field(ge=0, max_digits=12, decimal_places=2)
+    cost: Decimal = Field(default=Decimal("0"), ge=0, max_digits=12, decimal_places=2)
+    stock: Decimal = Field(ge=0, max_digits=12, decimal_places=3)
     unit: str = Field(default="unidade", max_length=20)
+    duplicate_action: Literal["auto", "add_stock", "create_new"] = "auto"
+    existing_product_id: uuid.UUID | None = None
 
 
 class ProductUpdateIn(BaseModel):
@@ -116,6 +119,10 @@ class ProductOut(BaseModel):
     created_at: dt.datetime
 
 
+class ProductCreateOut(ProductOut):
+    stock_added: bool = False
+
+
 class SaleItemIn(BaseModel):
     product_id: uuid.UUID
     quantity: Decimal = Field(gt=0)
@@ -132,6 +139,7 @@ class SaleItemOut(BaseModel):
     id: int
     product_id: uuid.UUID
     product_name: str
+    unit: str = "unidade"
     quantity: Decimal
     unit_price: Decimal
     subtotal: Decimal
@@ -148,6 +156,13 @@ class SaleOut(BaseModel):
     created_at: dt.datetime
     cancelled_at: dt.datetime | None
     items: list[SaleItemOut]
+
+
+class SaleHistoryOut(BaseModel):
+    items: list[SaleOut]
+    total: int
+    page: int
+    page_size: int
 
 
 class LearningLogOut(BaseModel):

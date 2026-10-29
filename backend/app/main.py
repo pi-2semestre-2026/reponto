@@ -6,7 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.bootstrap import prepare_data
 from app.config import get_settings
-from app.routers import analytics, auth, categories, imports, markets, model_eval, products, purchases, sales
+from app.routers import analytics, auth, categories, events, imports, markets, model_eval, products, purchases, sales
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s")
 
@@ -36,6 +36,7 @@ app.add_middleware(
 )
 
 app.include_router(auth.router)
+app.include_router(events.router)
 app.include_router(markets.router)
 app.include_router(products.router)
 app.include_router(sales.router)

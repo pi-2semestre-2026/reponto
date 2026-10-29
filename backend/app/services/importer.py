@@ -478,6 +478,7 @@ async def apply_import(session, market, user, parsed: ParsedFile, raw: bytes, fi
                     SaleItem(
                         product_id=product.id,
                         product_name=product.name,
+                        unit=product.unit,
                         category_id=product.category_id,
                         quantity=r.quantity,
                         unit_price=unit_price,
