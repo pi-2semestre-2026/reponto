@@ -1,47 +1,10 @@
-# Byte-compiled / optimized / DLL files
-__pycache__/
-*.py[cod]
-*$py.class
-
-# Distribution / packaging
-build/
-dist/
-*.egg-info/
-.eggs/
-*.egg
-
-# Virtual environments
+node_modules/
+.next/
 .venv/
-venv/
-env/
-ENV/
-
-# Environment variables
+__pycache__/
+*.pyc
 .env
-.env.*
-
-# Jupyter Notebook
-.ipynb_checkpoints/
-
-# Testing / coverage
-.pytest_cache/
-.coverage
-htmlcov/
-.tox/
-
-# IDEs / editors
-.idea/
-.vscode/
-*.swp
-
-# OS files
-.DS_Store
-Thumbs.db
-
-# Dados brutos do Kaggle (CSVs originais não vão para o Git)
-data/raw/*
-!data/raw/.gitkeep
-
-# Dados processados (gerados pelo pipeline)
-data/processed/*
-!data/processed/.gitkeep
+backend/.env
+backend/ml_data/
+frontend/.env.local
+nohup.out

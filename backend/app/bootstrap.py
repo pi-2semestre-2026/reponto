@@ -1,0 +1,129 @@
+"""Boot sequence: create tables, seed categories, ingest dataset once, ensure model.
+
+Idempotent and safe to run on every restart: ingestion is skipped when the
+aggregate table is already populated and the model is loaded from its volume
+instead of being retrained.
+"""
+
+import logging
+
+from sqlalchemy import select
+
+from app.config import get_settings
+from app.database import Base, SessionLocal, engine
+from app.models import Category, CategoryPrior
+from app.services.ml import rate_model
+from app.services.seed_data import SEED_CATEGORIES
+
+logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s")
+logger = logging.getLogger("bootstrap")
+
+
+async def seed_categories() -> None:
+    async with SessionLocal() as session:
+        existing = {c.name: c for c in (await session.execute(select(Category))).scalars()}
+        created = 0
+        for spec in SEED_CATEGORIES:
+            cat = existing.get(spec["name"])
+            if cat is None:
+                session.add(Category(name=spec["name"], description=spec["description"], keywords=spec["keywords"], is_seed=True))
+                created += 1
+            else:
+                cat.description = spec["description"]
+                cat.keywords = spec["keywords"]
+        await session.commit()
+        if created:
+            logger.info("seeded %d categories", created)
+
+
+# create_all never alters existing tables: columns added after the first deploy
+# are applied here (idempotent, Postgres ADD COLUMN IF NOT EXISTS).
+COLUMN_PATCHES = (
+    "ALTER TABLE sales ADD COLUMN IF NOT EXISTS idempotency_key UUID",
+    "ALTER TABLE sales ADD COLUMN IF NOT EXISTS request_hash VARCHAR(64)",
+    "CREATE UNIQUE INDEX IF NOT EXISTS ix_sales_user_idempotency ON sales (user_id, idempotency_key)",
+    "ALTER TABLE products ADD COLUMN IF NOT EXISTS sku VARCHAR(60)",
+    "ALTER TABLE products ADD COLUMN IF NOT EXISTS cost NUMERIC(12, 2) DEFAULT 0",
+    "ALTER TABLE sales ADD COLUMN IF NOT EXISTS source VARCHAR(12) DEFAULT 'app'",
+    "CREATE INDEX IF NOT EXISTS ix_products_sku ON products (sku)",
+    "ALTER TABLE sale_items ADD COLUMN IF NOT EXISTS unit VARCHAR(20)",
+    "UPDATE sale_items si SET unit = p.unit FROM products p WHERE si.product_id = p.id AND si.unit IS NULL",
+    "UPDATE sale_items SET unit = 'unidade' WHERE unit IS NULL",
+    "ALTER TABLE sale_items ALTER COLUMN unit SET DEFAULT 'unidade'",
+    "ALTER TABLE sale_items ALTER COLUMN unit SET NOT NULL",
+)
+
+
+async def create_tables() -> None:
+    from sqlalchemy import text
+
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
+        for stmt in COLUMN_PATCHES:
+            await conn.execute(text(stmt))
+        from app.services.events import install_triggers
+
+        await install_triggers(conn)
+    logger.info("tables ensured")
+
+
+async def prepare_data() -> None:
+    settings = get_settings()
+    await create_tables()
+    await seed_categories()
+
+    from app.services.datasets import run_ingestion, sync_category_priors
+
+    try:
+        await run_ingestion()
+    except Exception:
+        logger.exception("dataset ingestion failed — continuing with default priors")
+
+    try:
+        await sync_category_priors()
+    except Exception:
+        logger.exception("category prior sync failed")
+
+    from app.models import DatasetAggregate
+
+    async with SessionLocal() as session:
+        result = await session.execute(
+            select(
+                DatasetAggregate.month,
+                DatasetAggregate.weekday,
+                DatasetAggregate.size_bucket,
+                DatasetAggregate.avg_sales_per_tx,
+            )
+        )
+        rows = [
+            {
+                "month": r.month,
+                "weekday": r.weekday,
+                "size_bucket": r.size_bucket,
+                "avg_sales_per_tx": r.avg_sales_per_tx,
+            }
+            for r in result
+        ]
+    rate_model.ensure(settings.ML_MODEL_PATH, rows)
+    if not rate_model.ready:
+        logger.warning("model unavailable — static category priors will be used")
+
+    from app.services.categorizer import recover_stale_products
+
+    try:
+        recovered = await recover_stale_products()
+        if recovered:
+            logger.info("recovered %d stuck 'processing' product(s)", recovered)
+    except Exception:
+        logger.exception("stale product recovery failed")
+
+
+async def main() -> None:
+    await prepare_data()
+    logger.info("bootstrap complete")
+
+
+if __name__ == "__main__":
+    import asyncio
+
+    asyncio.run(main())
