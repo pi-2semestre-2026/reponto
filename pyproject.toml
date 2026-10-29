@@ -13,3 +13,7 @@ build-backend = "setuptools.build_meta"
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.pytest.ini_options]
+# caixa/test_*.py run inside the backend container (see caixa/README.md).
+testpaths = ["tests"]
