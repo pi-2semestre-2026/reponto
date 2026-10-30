@@ -121,21 +121,51 @@ def stock_levels(rate: float, index: list[float], today: dt.date, cycle: int, se
     }
 
 
-def dataset_weekday_prior(model, month: int, size_bucket: int) -> list[float]:
-    """Weekday shape of the public dataset for this month and store size."""
-    preds = [model.predict(month, w, size_bucket) for w in range(7)]
+def model_stock_levels(rate: float, index: list[float], today: dt.date, cycle: int, forecast: dict) -> dict:
+    """Order-up-to levels when the validated weekly model is in charge.
+
+    The weekly forecast is already unbiased and comes with a calibrated 95%
+    upper bound (forecast x q95), so no extra cushion multiplier is applied:
+        safety      = weekly x (q95 - 1) x sqrt(cycle / 7)
+        recommended = demand of the cycle + safety     (covers ~95% of cycles)
+        minimum     = demand of the next 0.4 x cycle days + safety
+    The sqrt scaling spreads the weekly uncertainty over shorter or longer
+    cycles as independent weeks would (Poisson-like counts).
+    """
+    projection = project(rate, index, today, cycle)
+    cycle_demand = sum(projection)
+    reorder_demand = partial_sum(projection, REORDER_SHARE * cycle)
+    safety = max(0.0, forecast["weekly"] * (forecast["q95"] - 1.0) * math.sqrt(cycle / 7.0))
+    return {
+        "projection": projection,
+        "cycle_demand": cycle_demand,
+        "reorder_demand": reorder_demand,
+        "reorder_days": REORDER_SHARE * cycle,
+        "safety_stock": safety,
+        "safety_method": "modelo",
+        "sigma_daily": None,
+        "min_stock": reorder_demand + safety,
+        "recommended_quantity": cycle_demand + safety,
+        "max_stock": MAX_MULT * cycle_demand + safety,
+    }
+
+
+def dataset_weekday_prior(model, month: int, size_bucket: int, category: str | None = None) -> list[float]:
+    """Weekday shape of the public dataset for this month, store size and category."""
+    preds = [model.predict(month, w, size_bucket, category) for w in range(7)]
     if any(p is None for p in preds):
         return list(FLAT)
     mean = sum(preds) / 7
     return [p / mean for p in preds] if mean > 0 else list(FLAT)
 
 
-def month_factor(model, month: int, size_bucket: int, bounds=(0.5, 2.0)) -> float | None:
-    """Seasonal level of the month (weekday effect averaged out)."""
-    preds = [model.predict(month, w, size_bucket) for w in range(7)]
-    if any(p is None for p in preds) or not model.overall_mean:
+def month_factor(model, month: int, size_bucket: int, bounds=(0.5, 2.0), category: str | None = None) -> float | None:
+    """Seasonal level of the month relative to the category's yearly mean (weekday effect averaged out)."""
+    preds = [model.predict(month, w, size_bucket, category) for w in range(7)]
+    reference = model.reference_mean(size_bucket, category) if model.ready else None
+    if any(p is None for p in preds) or not reference:
         return None
-    factor = (sum(preds) / 7) / model.overall_mean
+    factor = (sum(preds) / 7) / reference
     return max(bounds[0], min(bounds[1], factor))
 
 

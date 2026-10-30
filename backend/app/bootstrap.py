@@ -89,6 +89,7 @@ async def prepare_data() -> None:
     async with SessionLocal() as session:
         result = await session.execute(
             select(
+                DatasetAggregate.family,
                 DatasetAggregate.month,
                 DatasetAggregate.weekday,
                 DatasetAggregate.size_bucket,
@@ -97,6 +98,7 @@ async def prepare_data() -> None:
         )
         rows = [
             {
+                "family": r.family,
                 "month": r.month,
                 "weekday": r.weekday,
                 "size_bucket": r.size_bucket,
@@ -107,6 +109,11 @@ async def prepare_data() -> None:
     rate_model.ensure(settings.ML_MODEL_PATH, rows)
     if not rate_model.ready:
         logger.warning("model unavailable — static category priors will be used")
+
+    from app.services.weekly_model import weekly_model
+
+    if not weekly_model.load():
+        logger.info("weekly model not trained yet — the backtest trains it in the background; rule-based forecast until then")
 
     from app.services.categorizer import recover_stale_products
 

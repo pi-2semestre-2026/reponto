@@ -1,16 +1,25 @@
 """Recommendation engine — the heart of the system.
 
-prior_rate    = baseline (typical SKU units/customer/day of the category)
-                x month factor (LightGBM on the Store Item Demand dataset)
-                x customers/day
-                (fallback: static category prior x customers/day)
-observed_rate = exponentially-decayed weighted average over the window
-                starting at the FIRST sale (capped to OBS_WINDOW_DAYS):
-                sum(qty x 2^(-age/half_life)) / sum(day weights)
-alpha         = max(0.3, n_sales_in_window / (n + 10))
-final_rate    = alpha x observed + (1 - alpha) x prior
-levels        = day-by-day projection with the store's weekday profile and
-                safety stock from the forecast error (see forecast_math)
+Two forecasting paths, chosen per product:
+
+1. Weekly model (products with >= 8 complete weeks of sales): the LightGBM
+   validated in evaluation.py on 1.729 real supermarket series forecasts next
+   week from the product's own weekly history; safety stock comes from its
+   calibrated 95% upper bound (app.services.weekly_model).
+
+2. Rule (new products, or before the model is trained):
+   prior_rate    = baseline (typical SKU units/customer/day of the category)
+                   x month factor (seasonal LightGBM, per category)
+                   x customers/day
+                   (fallback: static category prior x customers/day)
+   observed_rate = exponentially-decayed weighted average over the window
+                   starting at the FIRST sale (capped to OBS_WINDOW_DAYS):
+                   sum(qty x 2^(-age/half_life)) / sum(day weights)
+   alpha         = max(0.3, n_sales_in_window / (n + 10))
+   final_rate    = alpha x observed + (1 - alpha) x prior
+
+In both paths the daily projection uses the store's own weekday profile
+(product -> store -> dataset, see forecast_math).
 
 Every recalculation writes an auditable RecommendationLog row consumed by the
 "How the AI calculated" panel. Retroactive sales respect their own sold_at date.
@@ -29,6 +38,7 @@ from app.models import Category, CategoryPrior, Market, Product, RecommendationL
 from app.services.clock import LOCAL_TZ_NAME, day_bounds, local_date, today_local
 from app.services import forecast_math as fm
 from app.services.ml import rate_model
+from app.services import weekly_model as wm
 from app.services.seed_data import baseline_by_name, size_bucket_from_customers
 
 settings = get_settings()
@@ -102,7 +112,7 @@ async def compute_prior_rate(session, product: Product, market: Market, today: d
     baseline = baseline_by_name(cat_name) if cat_name else DEFAULT_PRIOR
     ctx["baseline"] = baseline
 
-    factor = fm.month_factor(rate_model, today.month, size, SEASONAL_FACTOR_BOUNDS)
+    factor = fm.month_factor(rate_model, today.month, size, SEASONAL_FACTOR_BOUNDS, category=cat_name)
     if factor is not None:
         ctx["seasonal_factor"] = round(factor, 3)
         return baseline * factor * market.customers_per_day, "model", ctx
@@ -132,6 +142,37 @@ async def store_weekday_index(session, market: Market, start: dt.date, end: dt.d
     if len(series) < fm.MIN_DAYS_FOR_PROFILE:
         return list(dataset_prior), len(series)
     return fm.weekday_profile(series, dataset_prior, fm.STORE_SHRINK_K), len(series)
+
+
+async def product_day_totals(session, product_id, start: dt.date, end: dt.date) -> dict[dt.date, float]:
+    """Units sold per local day in [start, end] (completed sales only)."""
+    app_tz = bindparam("app_tz_days", LOCAL_TZ_NAME, literal_execute=True)
+    day = func.date(func.timezone(app_tz, Sale.sold_at))
+    rows = (
+        await session.execute(
+            select(day, func.sum(SaleItem.quantity))
+            .join(Sale, Sale.id == SaleItem.sale_id)
+            .where(
+                SaleItem.product_id == product_id,
+                Sale.status == "completed",
+                Sale.sold_at >= day_bounds(start, start)[0],
+                Sale.sold_at < day_bounds(end, end)[1],
+            )
+            .group_by(day)
+        )
+    ).all()
+    return {(d if isinstance(d, dt.date) else dt.date.fromisoformat(str(d))): float(q or 0) for d, q in rows}
+
+
+async def weekly_forecast(session, product: Product, first_sale: dt.date | None, today: dt.date, category: str | None, size: int) -> dict | None:
+    """Validated weekly model for this product, or None (rule-based path)."""
+    if first_sale is None or not wm.weekly_model.ready:
+        return None
+    target_monday = today - dt.timedelta(days=today.weekday())
+    start = max(first_sale, target_monday - dt.timedelta(weeks=wm.MAX_HISTORY_WEEKS))
+    totals = await product_day_totals(session, product.id, start, target_monday - dt.timedelta(days=1))
+    weeks = wm.weekly_history(totals, first_sale, target_monday)
+    return wm.weekly_model.forecast(weeks, target_monday, category, size)
 
 
 async def compute_blend(session, product: Product, market: Market) -> dict:
@@ -210,7 +251,7 @@ async def compute_blend(session, product: Product, market: Market) -> dict:
 
     # Weekday profile: product -> store -> public dataset (closed days only).
     size = prior_ctx["size_bucket"]
-    dataset_index = fm.dataset_weekday_prior(rate_model, today.month, size)
+    dataset_index = fm.dataset_weekday_prior(rate_model, today.month, size, prior_ctx["category_name"])
     yesterday = today - dt.timedelta(days=1)
     store_index, store_days = await store_weekday_index(session, market, window_start, yesterday, dataset_index)
     series = fm.daily_series(day_totals, window_start, yesterday)
@@ -224,11 +265,28 @@ async def compute_blend(session, product: Product, market: Market) -> dict:
         weekday_index = list(dataset_index)
         profile_source = "padrao"
 
-    levels = fm.stock_levels(final_rate, weekday_index, today, cycle, series)
-    if levels["safety_method"] == "regra":
-        notes.append(f"Menos de {fm.MIN_DAYS_FOR_ERROR} dias de histórico: margem de segurança pela regra fixa (30% do ciclo)")
+    first_local = None
+    if first_sale_date is not None:
+        first_local = first_sale_date if isinstance(first_sale_date, dt.date) else _local_date(first_sale_date)
+    forecast = await weekly_forecast(session, product, first_local, today, prior_ctx["category_name"], size)
 
-    confidence = "baixa" if n_sales < 3 else ("media" if n_sales < 10 else "alta")
+    if forecast is not None:
+        forecast_source = "modelo"
+        final_rate = forecast["weekly"] / 7.0
+        levels = fm.model_stock_levels(final_rate, weekday_index, today, cycle, forecast)
+        confidence = "alta" if forecast["weeks"] >= 12 else "media"
+        notes.append(
+            f"Previsão do modelo semanal validado, a partir de {forecast['weeks']} semanas de vendas deste produto; "
+            f"margem pelo limite de 95% calibrado (×{forecast['q95']:.2f} na faixa {forecast['tier']} un/semana)"
+        )
+    else:
+        forecast_source = "regra"
+        levels = fm.stock_levels(final_rate, weekday_index, today, cycle, series)
+        if levels["safety_method"] == "regra":
+            notes.append(f"Menos de {fm.MIN_DAYS_FOR_ERROR} dias de histórico: margem de segurança pela regra fixa (30% do ciclo)")
+        confidence = "baixa" if n_sales < 3 else ("media" if n_sales < 10 else "alta")
+        if first_local is not None and wm.weekly_model.ready:
+            notes.append(f"Menos de {wm.MIN_WEEKS} semanas completas de vendas: estimativa pela regra (padrão da categoria + vendas recentes)")
 
     return {
         "prior_rate": prior_rate,
@@ -242,6 +300,14 @@ async def compute_blend(session, product: Product, market: Market) -> dict:
         "observed_rate": observed_rate,
         "alpha": alpha,
         "final_rate": final_rate,
+        "forecast_source": forecast_source,
+        "weekly_forecast": forecast["weekly"] if forecast else None,
+        "weekly_upper": forecast["upper"] if forecast else None,
+        "model_weeks": forecast["weeks"] if forecast else None,
+        "model_tier": forecast["tier"] if forecast else None,
+        "model_q95": forecast["q95"] if forecast else None,
+        "model_has_last_year": forecast["has_last_year"] if forecast else None,
+        "model_holiday_days": forecast["holiday_days"] if forecast else None,
         "safety_stock": levels["safety_stock"],
         "safety_method": levels["safety_method"],
         "sigma_daily": levels["sigma_daily"],
@@ -301,6 +367,11 @@ def _d(value: float, places: int = 3) -> Decimal:
 
 
 def formula_string(blend: dict) -> str:
+    if blend.get("forecast_source") == "modelo":
+        return (
+            f"final = previsão do modelo semanal ({blend['weekly_forecast']:.2f}/sem) ÷ 7 = {blend['final_rate']:.3f}/d · "
+            f"limite 95% = {blend['weekly_upper']:.2f}/sem"
+        )
     return (
         f"final = {blend['alpha']:.2f} × observado ({blend['observed_rate']:.3f}/d) "
         f"+ {1 - blend['alpha']:.2f} × prior ({blend['prior_rate']:.3f}/d) "
@@ -350,6 +421,10 @@ async def recalc_product(session, product: Product, market: Market, trigger: str
         "perfil_semana": [round(v, 3) for v in blend["weekday_index"]],
         "fonte_perfil": blend["profile_source"],
         "demanda_ciclo": round(blend["cycle_demand"], 3),
+        "fonte_previsao": blend["forecast_source"],
+        "previsao_semanal": round(blend["weekly_forecast"], 3) if blend["weekly_forecast"] is not None else None,
+        "limite_95_semanal": round(blend["weekly_upper"], 3) if blend["weekly_upper"] is not None else None,
+        "semanas_historico": blend["model_weeks"],
     }
 
     log = RecommendationLog(
@@ -366,7 +441,7 @@ async def recalc_product(session, product: Product, market: Market, trigger: str
         window_start=dt.datetime.combine(blend["window_start"], dt.time.min),
         window_end=dt.datetime.combine(blend["window_end"], dt.time.min),
         n_sales=blend["n_sales"],
-        source=blend["prior_source"],
+        source="modelo_semanal" if blend["forecast_source"] == "modelo" else blend["prior_source"],
         details=json.dumps(details, ensure_ascii=False),
     )
     session.add(log)

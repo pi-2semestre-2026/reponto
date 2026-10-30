@@ -13,6 +13,11 @@ alpha         = max(0.3, n_sales/(n_sales+10))   (n=0 → stock/cycle trick)
 final_rate    = α·observed + (1−α)·prior
 levels        = same day-by-day projection with the weekday profile and the
                 same error-based safety stock (app.services.forecast_math).
+
+With >= 8 complete weeks of (virtual) sales the same validated weekly model
+as production takes over (app.services.weekly_model), with the same
+calibrated 95% margin — so the game measures the system the owner really uses.
+`use_weekly_model=False` replays the previous rule, for A/B comparisons.
 """
 
 import datetime as dt
@@ -20,6 +25,7 @@ import datetime as dt
 from app.config import get_settings
 from app.services import forecast_math as fm
 from app.services.ml import rate_model
+from app.services import weekly_model as wm
 from app.services.seed_data import baseline_by_name, size_bucket_from_customers
 
 DEFAULT_PRIOR = 0.08
@@ -40,7 +46,8 @@ def window_denominator(window_days: int, half_life: float) -> float:
 class SimRecommender:
     """Replicates compute_prior_rate + compute_blend for virtual products."""
 
-    def __init__(self, customers_per_day: int, cycle_days: int) -> None:
+    def __init__(self, customers_per_day: int, cycle_days: int, use_weekly_model: bool = True) -> None:
+        self.use_weekly_model = use_weekly_model
         self.customers_per_day = customers_per_day
         self.cycle_days = max(1, cycle_days)
         settings = get_settings()
@@ -50,7 +57,7 @@ class SimRecommender:
 
     def prior_rate(self, category: str, today: dt.date) -> tuple[float, str, float | None]:
         baseline = baseline_by_name(category)
-        factor = fm.month_factor(rate_model, today.month, self.size_bucket, SEASONAL_FACTOR_BOUNDS)
+        factor = fm.month_factor(rate_model, today.month, self.size_bucket, SEASONAL_FACTOR_BOUNDS, category=category)
         if factor is not None:
             return baseline * factor * self.customers_per_day, "model", round(factor, 3)
         return baseline * self.customers_per_day, "default", None
@@ -103,7 +110,7 @@ class SimRecommender:
 
         window_start = win["window_start"]
         yesterday = today - dt.timedelta(days=1)
-        dataset_index = fm.dataset_weekday_prior(rate_model, today.month, self.size_bucket)
+        dataset_index = fm.dataset_weekday_prior(rate_model, today.month, self.size_bucket, product["category"])
         store_index = dataset_index
         if store_history:
             first = min(store_history)
@@ -116,8 +123,19 @@ class SimRecommender:
         else:
             weekday_index = list(store_index)
 
-        levels = fm.stock_levels(final, weekday_index, today, cycle, series)
-        confidence = "baixa" if n_sales < 3 else ("media" if n_sales < 10 else "alta")
+        forecast = None
+        sold_days = [d for d, (q, _) in history.items() if q > 0]
+        if self.use_weekly_model and sold_days and wm.weekly_model.ready:
+            target_monday = today - dt.timedelta(days=today.weekday())
+            weeks = wm.weekly_history({d: q for d, (q, _) in history.items()}, min(sold_days), target_monday)
+            forecast = wm.weekly_model.forecast(weeks, target_monday, product["category"], self.size_bucket)
+        if forecast is not None:
+            final = forecast["weekly"] / 7.0
+            levels = fm.model_stock_levels(final, weekday_index, today, cycle, forecast)
+            confidence = "alta" if forecast["weeks"] >= 12 else "media"
+        else:
+            levels = fm.stock_levels(final, weekday_index, today, cycle, series)
+            confidence = "baixa" if n_sales < 3 else ("media" if n_sales < 10 else "alta")
 
         return {
             "prior_rate": prior,
@@ -126,6 +144,7 @@ class SimRecommender:
             "observed_rate": observed,
             "alpha": alpha,
             "final_rate": final,
+            "forecast_source": "modelo" if forecast is not None else "regra",
             "weekday_index": weekday_index,
             "safety_stock": levels["safety_stock"],
             "safety_method": levels["safety_method"],
