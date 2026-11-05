@@ -99,6 +99,12 @@
 /* Mesmo cabeçalho do Reponto: fundo claro translúcido, logo + item ativo à esquerda, ações à direita. */
 :root { --ponto: hsl(19 100% 50%); --font-display: "Bricolage Grotesque", "Figtree", system-ui, sans-serif; --font-sans: "Figtree", system-ui, sans-serif; font-family: var(--font-sans); }
 :root[data-theme="dark"] { --ponto: hsl(22 100% 58%); }
+:root { --primary-deep: hsl(152 72% 15%); }
+:root[data-theme="dark"] { --primary-deep: hsl(152 45% 28%); }
+/* Botão principal igual ao "press" do Reponto: sombra de tecla que afunda ao clicar. */
+button.press { display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 52px; border-radius: 16px; font-family: var(--font-display); font-size: 16px; font-weight: 600; box-shadow: 0 3px 0 0 var(--primary-deep); transition: transform .08s ease, box-shadow .08s ease, filter .15s ease; }
+button.press:hover:not(:disabled) { filter: brightness(1.07); }
+button.press:active:not(:disabled) { transform: translateY(3px); box-shadow: 0 0 0 0 var(--primary-deep); }
 h2, .total strong { font-family: var(--font-display); }
 header { position: sticky; top: 0; z-index: 1000; height: 64px; padding: 0 max(5vw, 20px); background: color-mix(in srgb, var(--bg) 85%, transparent); backdrop-filter: blur(16px); color: var(--text); border-bottom: 1px solid var(--border); }
 .header-brand { display: flex; align-items: center; gap: 20px; }

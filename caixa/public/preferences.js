@@ -8,7 +8,7 @@ const caixaUI = (() => {
     'Conta de {name}': 'Account for {name}', 'Sair': 'Sign out',
     'ABERTURA DO CAIXA': 'OPEN CHECKOUT', 'Vamos começar?': 'Ready to start?',
     'Entre com sua conta do Reponto para vender os produtos dos seus mercados.': 'Sign in with your Reponto account to sell products from your stores.',
-    'E-mail': 'Email', 'Senha': 'Password', 'Abrir caixa →': 'Open checkout →',
+    'E-mail': 'Email', 'Senha': 'Password', 'Abrir caixa': 'Open checkout',
     'As vendas realizadas aqui gravam dados e movimentam o estoque do Reponto.': 'Sales made here are saved and update stock in Reponto.',
     'Cadastre um mercado e seus produtos no Reponto. Eles aparecerão aqui automaticamente.': 'Register a store and its products in Reponto. They will appear here automatically.',
     'Mercado': 'Store',
