@@ -39,6 +39,9 @@
   background-size: 18px;
 }
 .toolbar select:disabled, .history-filters select:disabled { color: var(--muted); cursor: default; }
+/* Escolher o mercado é o primeiro passo do caixa: campo maior que os filtros do histórico. */
+.toolbar label { font-size: 15px; }
+.toolbar select { height: 52px; min-height: 52px; font-size: 16px; font-weight: 600; padding-left: 16px; }
 /* Sem mercado cadastrado não há o que escolher: esconde a setinha. */
 .toolbar select.no-options, :root[data-theme="dark"] .toolbar select.no-options { background-image: none; }
 .toolbar button { min-height: 46px; }
