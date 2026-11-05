@@ -127,6 +127,7 @@ function updateMarkets(markets) {
   }
   $('market').value = next;
   $('market').disabled = busy || loading || !!pendingSale || !next;
+  $('market').classList.toggle('no-options', markets.length === 0);
   $('empty-markets').hidden = markets.length > 0;
   if (previous !== next) {
     cart.clear();

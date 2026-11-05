@@ -39,6 +39,8 @@
   background-size: 18px;
 }
 .toolbar select:disabled, .history-filters select:disabled { color: var(--muted); cursor: default; }
+/* Sem mercado cadastrado não há o que escolher: esconde a setinha. */
+.toolbar select.no-options, :root[data-theme="dark"] .toolbar select.no-options { background-image: none; }
 .toolbar button { min-height: 46px; }
 
 .sale-toast {
