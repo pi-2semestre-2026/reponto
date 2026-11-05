@@ -1,7 +1,7 @@
 import { LogoMark } from "@/components/logo";
 import { PontoDot } from "@/components/ponto-dot";
 
-export const BRAND_TOAST_MS = 3500;
+export const BRAND_TOAST_MS = 2000;
 
 export function BrandToast({ title, subtitle }: { title: string; subtitle: string }) {
   return (
