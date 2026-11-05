@@ -90,13 +90,24 @@
   .history-pagination button { padding: 12px; }
 }
 
-.header-actions { display: flex; align-items: center; gap: 10px; }
-/* Preserve the cashier's green banner in both themes. Dropdowns keep the page palette. */
-header { color: #fff; border-bottom-color: #ffffff26; padding-top: 14px; padding-bottom: 14px; }
-header .account-badge { border-color: #ffffff66; }
-header .icon-button { color: #fff; }
-header .icon-button:hover, header .header-menu summary:hover { background: #ffffff1a; }
-header .header-menu summary:focus-visible { outline-color: #d5e9a0; }
+.header-actions { display: flex; align-items: center; gap: 6px; }
+/* Mesmo cabeçalho do Reponto: fundo claro translúcido, logo + item ativo à esquerda, ações à direita. */
+:root { --ponto: hsl(19 100% 50%); --font-display: "Bricolage Grotesque", "Figtree", system-ui, sans-serif; --font-sans: "Figtree", system-ui, sans-serif; font-family: var(--font-sans); }
+:root[data-theme="dark"] { --ponto: hsl(22 100% 58%); }
+h2, .total strong { font-family: var(--font-display); }
+header { position: sticky; top: 0; z-index: 1000; height: 64px; padding: 0 max(5vw, 20px); background: color-mix(in srgb, var(--bg) 85%, transparent); backdrop-filter: blur(16px); color: var(--text); border-bottom: 1px solid var(--border); }
+.header-brand { display: flex; align-items: center; gap: 20px; }
+.wordmark { display: flex; align-items: center; gap: 8px; font-family: var(--font-display); font-size: 20px; font-weight: 700; letter-spacing: .025em; text-transform: uppercase; }
+.wordmark svg { width: 28px; height: 28px; color: var(--primary); }
+.wordmark .accent { color: var(--primary); }
+.ponto-fill { fill: var(--ponto); }
+h1.caixa-pill { display: inline-flex; align-items: center; gap: 8px; margin: 0; padding-left: 20px; border-left: 2px solid var(--border); color: var(--primary); font-family: var(--font-display); font-size: 18px; font-weight: 600; letter-spacing: -.01em; }
+h1.caixa-pill .register-number { margin-left: 0; padding: 3px 8px; border-radius: 7px; background: var(--primary); color: var(--primary-text); font-size: 14px; font-weight: 700; line-height: 1.2; letter-spacing: .02em; }
+header .connection { height: 36px; border-radius: 12px; font-family: var(--font-display); font-weight: 600; background: var(--card); }
+header .connection:hover { border-color: color-mix(in srgb, var(--primary) 40%, var(--input)); }
+header .icon-button { border-radius: 12px; }
+header .account-badge { border: 2px solid var(--input); background: var(--card); min-height: 36px; padding: 3px 12px 3px 4px; font-family: var(--font-display); font-weight: 600; font-size: 14px; }
+header .avatar { flex-basis: 26px; height: 26px; font-family: var(--font-display); font-weight: 700; font-size: 12px; }
 .header-menu { position: relative; }
 .header-menu summary { list-style: none; cursor: pointer; }
 .header-menu summary::-webkit-details-marker { display: none; }
@@ -114,7 +125,9 @@ header .header-menu summary:focus-visible { outline-color: #d5e9a0; }
 #user-email { margin: 4px 7px 7px; padding: 6px 0 12px; border-bottom: 1px solid var(--border); color: var(--muted); font-size: 12px; overflow-wrap: anywhere; }
 :root[data-theme="dark"] .toolbar select, :root[data-theme="dark"] .history-filters select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%23e9e7df' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E"); }
 @media (max-width: 600px) {
-  header { gap: 16px; flex-wrap: wrap; padding: 12px 20px; }
+  header { gap: 12px; flex-wrap: wrap; height: auto; padding: 10px 16px; }
+  .header-brand { gap: 12px; }
+  .wordmark > span { display: none; }
   .header-actions { margin-left: auto; gap: 4px; }
   #user-name { max-width: 80px; }
   h1 { font-size: 28px; }

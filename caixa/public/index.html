@@ -5,14 +5,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Caixa • Simulador de mercado</title>
   <link rel="icon" type="image/svg+xml" href="icon.svg">
-  <link rel="stylesheet" href="style.css?v=2060f2be7060">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700&family=Figtree:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="style.css?v=cabecalho-reponto-5">
   <script>try { document.documentElement.dataset.theme = localStorage.getItem("theme") === "dark" ? "dark" : "light"; } catch {}</script>
   <script src="preferences.js?v=9db6aea8918e" defer></script>
   <script src="app.js?v=936dedf3c30c" defer></script>
 </head>
 <body>
   <header>
-    <div><span class="eyebrow" data-i18n="SIMULADOR DE MERCADO">SIMULADOR DE MERCADO</span><h1><span data-i18n="Caixa">Caixa</span><span class="register-number">01</span></h1></div>
+    <div class="header-brand">
+      <span class="wordmark" aria-label="Reponto">
+        <svg viewBox="0 0 48 48" fill="none" aria-hidden="true"><circle cx="24" cy="24" r="14" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-dasharray="67.5 20.5" transform="rotate(-3 24 24)"></circle><circle cx="36.5" cy="11.5" r="6" class="ponto-fill"></circle></svg>
+        <span>Re<span class="accent">ponto</span></span>
+      </span>
+      <h1 class="caixa-pill"><span data-i18n="Caixa">Caixa</span><span class="register-number">01</span></h1>
+    </div>
     <div class="header-actions">
       <button id="reponto-link" type="button" class="connection" title="Ir para o Reponto" data-i18n-title="Ir para o Reponto"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="9" rx="1"></rect><rect x="14" y="3" width="7" height="5" rx="1"></rect><rect x="14" y="12" width="7" height="9" rx="1"></rect><rect x="3" y="16" width="7" height="5" rx="1"></rect></svg><span>Reponto</span></button>
       <details id="language-menu" class="header-menu">
