@@ -160,15 +160,17 @@
   .stagger > *:nth-child(9) { animation-delay: 0.42s; }
   .stagger > *:nth-child(10) { animation-delay: 0.47s; }
   .stagger > *:nth-child(n + 11) { animation-delay: 0.52s; }
+  /* Picotado no topo (1ª camada) + o resto do cartão visível (2ª camada).
+     Sem a 2ª camada, tudo abaixo da faixa de 16px ficava transparente. */
   .receipt-edge {
-    -webkit-mask-image: radial-gradient(circle at 8px 8px, transparent 5px, black 5.5px);
-    -webkit-mask-size: 16px 16px;
-    -webkit-mask-repeat: repeat-x;
-    -webkit-mask-position: top left;
-    mask-image: radial-gradient(circle at 8px 8px, transparent 5px, black 5.5px);
-    mask-size: 16px 16px;
-    mask-repeat: repeat-x;
-    mask-position: top left;
+    -webkit-mask-image: radial-gradient(circle at 8px 8px, transparent 5px, black 5.5px), linear-gradient(black, black);
+    -webkit-mask-size: 16px 16px, 100% calc(100% - 16px);
+    -webkit-mask-repeat: repeat-x, no-repeat;
+    -webkit-mask-position: top left, bottom left;
+    mask-image: radial-gradient(circle at 8px 8px, transparent 5px, black 5.5px), linear-gradient(black, black);
+    mask-size: 16px 16px, 100% calc(100% - 16px);
+    mask-repeat: repeat-x, no-repeat;
+    mask-position: top left, bottom left;
   }
 }
 
