@@ -13,7 +13,6 @@ import type {
   SalePage,
   User,
 } from "./types";
-import { getToken } from "./token";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
@@ -28,7 +27,8 @@ class ApiError extends Error {
 }
 
 function token(): string | null {
-  return getToken();
+  if (typeof window === "undefined") return null;
+  return sessionStorage.getItem("reponto_token");
 }
 
 // O login vale enquanto a aba estiver aberta (igual ao caixa): fechou, pede de novo.

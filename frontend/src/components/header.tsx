@@ -18,7 +18,6 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { LOCALES, useI18n } from "@/lib/i18n";
 import { api, setToken } from "@/lib/api";
-import { getToken } from "@/lib/token";
 import type { User } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
@@ -82,9 +81,6 @@ export function Header({ active }: { active?: string }) {
           <Button variant="outline" size="sm" title={t("nav.checkout")} aria-label={t("nav.checkout")} onClick={() => {
             const url = new URL("/", window.location.href);
             url.port = "3301";
-            // Leva o login junto (depois do "#", não vai ao servidor) para o caixa abrir já logado.
-            const current = getToken();
-            if (current) url.hash = "token=" + encodeURIComponent(current);
             window.location.assign(url.href);
           }}>
             <ShoppingBasket className="h-4 w-4" />
