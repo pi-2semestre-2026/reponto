@@ -199,3 +199,18 @@
 ::-webkit-scrollbar-thumb:hover {
   background: hsl(var(--muted-foreground) / 0.5);
 }
+
+/* Barrinha do aviso de boas-vindas: encolhe da largura total até zero. */
+@keyframes toast-progress {
+  from { transform: scaleX(1); }
+  to { transform: scaleX(0); }
+}
+.toast-progress {
+  animation-name: toast-progress;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
+@media (prefers-reduced-motion: reduce) {
+  /* Sem animação, a barrinha fica cheia e parada em vez de sumir na hora. */
+  .toast-progress { animation: none !important; }
+}
