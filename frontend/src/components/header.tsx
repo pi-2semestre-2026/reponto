@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useTheme } from "next-themes";
 import { Check, Gamepad2, Globe, LogOut, Moon, ShoppingBasket, Sun } from "lucide-react";
 import { toast } from "sonner";
+import { BRAND_TOAST_MS, BrandToast } from "@/components/brand-toast";
 import { Wordmark } from "@/components/logo";
 import { Button } from "@/components/ui/button";
 import {
@@ -42,7 +43,9 @@ export function Header({ active }: { active?: string }) {
 
   const logout = () => {
     setToken(null);
-    toast.success(t("common.loading") === "Loading..." ? "Logged out" : "Sessão encerrada");
+    const firstName = (user?.name ?? "").trim().split(/\s+/)[0];
+    const title = firstName ? t("toast.byeName").replace("{name}", firstName) : t("toast.bye");
+    toast.custom(() => <BrandToast title={title} subtitle={t("toast.byeSub")} />, { duration: BRAND_TOAST_MS });
     router.push("/login");
   };
 
