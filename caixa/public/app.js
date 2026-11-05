@@ -34,6 +34,13 @@ let lastHistory = null;
 let lastHistoryKey = '';
 let lastSale = null;
 let historyErrorKey = '';
+// Login vindo do Reponto: o botão "Caixa" passa o token depois do "#", parte do endereço que
+// nunca é enviada ao servidor. Guardamos e apagamos do endereço na hora (não fica no histórico).
+const handoffToken = new URLSearchParams(location.hash.slice(1)).get('token');
+if (handoffToken) {
+  sessionStorage.setItem('caixa-token', handoffToken);
+  history.replaceState(null, '', location.pathname + location.search);
+}
 let token = sessionStorage.getItem('caixa-token') || '';
 let products = [];
 let cart = new Map();
@@ -400,7 +407,11 @@ $('login-form').onsubmit = async (event) => {
   } catch (error) {message(error.message, true);}
   finally {$('login-button').disabled = false;}
 };
-$('reponto-link').onclick = () => {const url = new URL('/dashboard', window.location.href); url.port = '3300'; window.location.assign(url.href);};
+$('reponto-link').onclick = () => {
+  const url = new URL('/dashboard', window.location.href); url.port = '3300';
+  if (token) url.hash = 'token=' + encodeURIComponent(token);
+  window.location.assign(url.href);
+};
 $('logout').onclick = () => {logout(); message('');};
 $('search').oninput = render;
 function searchHistory() {
