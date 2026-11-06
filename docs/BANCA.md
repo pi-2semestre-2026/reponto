@@ -9,7 +9,7 @@ pelos comandos do fim.
 ```bash
 docker compose up -d --build                     # app (3000), API (8000), caixa (3301)
 # esperar o backend treinar o modelo (~3 min): http://localhost:3000/modelo deixa de mostrar "Treinando"
-python scripts/popular_demo.py --email banca@reponto.com.br --days 91   # mercados com 3 meses de vendas
+python scripts/popular_demo.py --email banca@reponto.com.br --days 91   # 3 meses de vendas: ~1 h, faça na véspera
 ```
 
 - Login: `banca@reponto.com.br` / `reponto123`.
