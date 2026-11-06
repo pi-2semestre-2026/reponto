@@ -32,6 +32,13 @@ APP_TZ = timezone(timedelta(hours=-3))
 # Fator por dia da semana (seg=0 ... dom=6)
 WEEKDAY_FACTOR = [0.85, 0.85, 0.95, 1.0, 1.15, 1.35, 0.9]
 
+# Ritmo próprio de alguns produtos (multiplica o fator da loja), para a banca ver a IA aprender:
+# cerveja vende pouco na terça e muito de sexta a domingo; pão é estável, um pouco mais no domingo.
+PRODUCT_WEEKDAY = {
+    "Cerveja Lata 350ml": [0.80, 0.50, 0.70, 0.90, 1.35, 1.95, 1.60],
+    "Pão Francês": [1.10, 1.05, 1.00, 1.00, 0.95, 0.90, 1.30],
+}
+
 # (nome, preço, unidades vendidas por dia em média, unidades por compra (mín, máx), dias de estoque no fim)
 MARKETS = [
     {
@@ -91,7 +98,7 @@ def parse_args():
     p.add_argument("--email", default="demo@reponto.com.br")
     p.add_argument("--password", default="reponto123")
     p.add_argument("--name", default="Conta Demonstração")
-    p.add_argument("--days", type=int, default=60, help="dias de histórico de vendas")
+    p.add_argument("--days", type=int, default=91, help="dias de histórico de vendas (>= 63 para o modelo semanal assumir)")
     p.add_argument("--seed", type=int, default=2026)
     return p.parse_args()
 
@@ -162,7 +169,9 @@ def plan_sales(spec, days, rng):
         day_tickets = [dict() for _ in range(n_tickets)]
 
         for name, _price, rate, (qmin, qmax), _final in spec["products"]:
-            demand = poisson(rng, rate * wf * trend * day_share)
+            own = PRODUCT_WEEKDAY.get(name)
+            pf = own[day.weekday()] / wf * (sum(WEEKDAY_FACTOR) / sum(own)) if own else 1.0
+            demand = poisson(rng, rate * wf * pf * trend * day_share)
             while demand > 0:
                 q = min(demand, rng.randint(qmin, qmax))
                 t = rng.choice(day_tickets)

@@ -15,6 +15,7 @@ from app.services.categorizer import get_categories, keyword_categorize, llm_cat
 from app.services.seed_data import DEFAULT_CATEGORY_NAME
 from simulator import store
 from simulator.engine import SimulationEngine
+from simulator.lab import LabEngine
 from simulator.llm import coach_report
 from simulator.metrics import full_report
 from simulator.scenarios import CUSTOM_MAX_PRODUCTS, SCENARIOS
@@ -134,4 +135,55 @@ async def get_report(sid: str, user=Depends(get_current_user)):
 
 @router.delete("/sessions/{sid}")
 async def delete_session(sid: str, user=Depends(get_current_user)):
+    return {"ok": store.delete(sid)}
+
+
+# ---------------------------------------------------------------- laboratório da banca
+
+
+class LabCreateIn(BaseModel):
+    seed: int | None = None
+    days: int = Field(default=91, ge=28, le=182)
+
+
+class LabShiftIn(BaseModel):
+    kind: str
+
+
+def _lab_or_404(sid: str) -> LabEngine:
+    engine = store.get(sid)
+    if not isinstance(engine, LabEngine):
+        raise HTTPException(status_code=404, detail="Demonstração não encontrada (expirada?)")
+    return engine
+
+
+@router.post("/lab")
+async def create_lab(payload: LabCreateIn, user=Depends(get_current_user)):
+    engine = LabEngine(seed=payload.seed, days=payload.days)
+    sid = store.create(engine)
+    return {"sid": sid, "snapshot": engine.snapshot()}
+
+
+@router.post("/lab/{sid}/step")
+async def step_lab(sid: str, payload: StepIn, user=Depends(get_current_user)):
+    engine = _lab_or_404(sid)
+    for _ in range(payload.days):
+        if engine.done:
+            break
+        engine.step()
+    return {"snapshot": engine.snapshot()}
+
+
+@router.post("/lab/{sid}/shift")
+async def shift_lab(sid: str, payload: LabShiftIn, user=Depends(get_current_user)):
+    engine = _lab_or_404(sid)
+    try:
+        event = engine.apply_shift(payload.kind)
+    except ValueError as e:
+        raise HTTPException(status_code=422, detail=str(e))
+    return {"event": event, "snapshot": engine.snapshot()}
+
+
+@router.delete("/lab/{sid}")
+async def delete_lab(sid: str, user=Depends(get_current_user)):
     return {"ok": store.delete(sid)}
