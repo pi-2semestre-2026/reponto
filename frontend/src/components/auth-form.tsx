@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { BRAND_TOAST_MS, BrandToast } from "@/components/brand-toast";
 import { api, setToken } from "@/lib/api";
 import { useI18n } from "@/lib/i18n";
 
@@ -30,7 +31,14 @@ export function AuthForm({ mode }: { mode: "login" | "register" }) {
           ? await api.login(email, password)
           : await api.register(name, email, password);
       setToken(res.access_token);
-      toast.success(mode === "login" ? t("toast.welcome") : t("toast.welcome"));
+      const fullName = mode === "register" ? name : await api.me().then((u) => u.name).catch(() => "");
+      const firstName = fullName.trim().split(/\s+/)[0] ?? "";
+      const title = firstName
+        ? t(mode === "login" ? "toast.welcomeBack" : "toast.welcomeNew").replace("{name}", firstName)
+        : t("toast.welcome");
+      toast.custom(() => <BrandToast title={title} subtitle={t("toast.welcomeSub")} />, {
+        duration: BRAND_TOAST_MS,
+      });
       router.push("/dashboard");
     } catch (err) {
       toast.error(mode === "login" ? t("toast.loginError") : (err as Error).message);

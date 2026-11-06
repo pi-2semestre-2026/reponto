@@ -1,6 +1,6 @@
 export function getToken(): string | null {
   if (typeof window === "undefined") return null;
-  return localStorage.getItem("reponto_token");
+  return sessionStorage.getItem("reponto_token");
 }
 
 export function requireToken(): string {

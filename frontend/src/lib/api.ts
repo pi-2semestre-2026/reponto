@@ -28,12 +28,14 @@ class ApiError extends Error {
 
 function token(): string | null {
   if (typeof window === "undefined") return null;
-  return localStorage.getItem("reponto_token");
+  return sessionStorage.getItem("reponto_token");
 }
 
+// O login vale enquanto a aba estiver aberta (igual ao caixa): fechou, pede de novo.
 export function setToken(t: string | null) {
-  if (t) localStorage.setItem("reponto_token", t);
-  else localStorage.removeItem("reponto_token");
+  if (t) sessionStorage.setItem("reponto_token", t);
+  else sessionStorage.removeItem("reponto_token");
+  localStorage.removeItem("reponto_token"); // limpa o login salvo pela versão antiga
 }
 
 async function request<T>(method: string, path: string, body?: unknown, params?: Record<string, string | undefined>): Promise<T> {

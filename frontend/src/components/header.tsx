@@ -3,8 +3,9 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useTheme } from "next-themes";
-import { Check, Gamepad2, Globe, LogOut, Moon, Sun } from "lucide-react";
+import { Check, Gamepad2, Globe, LogOut, Moon, ShoppingBasket, Sun } from "lucide-react";
 import { toast } from "sonner";
+import { BRAND_TOAST_MS, BrandToast } from "@/components/brand-toast";
 import { Wordmark } from "@/components/logo";
 import { Button } from "@/components/ui/button";
 import {
@@ -42,7 +43,9 @@ export function Header({ active }: { active?: string }) {
 
   const logout = () => {
     setToken(null);
-    toast.success(t("common.loading") === "Loading..." ? "Logged out" : "Sessão encerrada");
+    const firstName = (user?.name ?? "").trim().split(/\s+/)[0];
+    const title = firstName ? t("toast.byeName").replace("{name}", firstName) : t("toast.bye");
+    toast.custom(() => <BrandToast title={title} subtitle={t("toast.byeSub")} />, { duration: BRAND_TOAST_MS });
     router.push("/login");
   };
 
@@ -65,8 +68,8 @@ export function Header({ active }: { active?: string }) {
               className={cn(
                 "relative rounded-xl px-4 py-2 font-display text-sm font-semibold transition-colors",
                 active === item.href
-                  ? "bg-primary/10 text-primary"
-                  : "text-muted-foreground hover:bg-accent hover:text-foreground"
+                  ? "bg-primary/10 text-primary dark:bg-primary/20"
+                  : "text-muted-foreground hover:bg-accent hover:text-foreground dark:text-foreground/80"
               )}
             >
               {t(item.key)}
@@ -75,6 +78,14 @@ export function Header({ active }: { active?: string }) {
         </nav>
 
         <div className="ml-auto flex items-center gap-1.5">
+          <Button variant="outline" size="sm" title={t("nav.checkout")} aria-label={t("nav.checkout")} onClick={() => {
+            const url = new URL("/", window.location.href);
+            url.port = "3301";
+            window.location.assign(url.href);
+          }}>
+            <ShoppingBasket className="h-4 w-4" />
+            <span className="hidden sm:inline">{t("nav.checkout")}</span>
+          </Button>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" size="icon" title="Language">

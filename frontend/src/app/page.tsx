@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ArrowRight, Brain, LineChart, ShoppingBasket, TrendingUp } from "lucide-react";
+import { ArrowRight, Brain, ClipboardList, LineChart, ShoppingBasket } from "lucide-react";
 import { Wordmark } from "@/components/logo";
 import { PontoDot } from "@/components/ponto-dot";
 import { Button } from "@/components/ui/button";
@@ -11,11 +11,50 @@ import { Badge } from "@/components/ui/badge";
 import { useI18n } from "@/lib/i18n";
 import { getToken } from "@/lib/token";
 
+// Exemplos ilustrativos da lista de compras (mesmas situações e cores de /markets/[id]/compras).
+// Clicar no cartão alterna entre eles.
+const STATUS_VARIANT = { esgotado: "destructive", comprar: "warning", atencao: "info" } as const;
+const SAMPLE_LISTS = [
+  {
+    cycle: "landing.card.cycle",
+    cost: "R$ 183,80",
+    items: [
+      { key: "banana", status: "esgotado", qty: "10", unit: "kg" },
+      { key: "pao", status: "comprar", qty: "60", unit: "un" },
+      { key: "leite", status: "comprar", qty: "12", unit: "un" },
+      { key: "cafe", status: "atencao", qty: "4", unit: "un" },
+    ],
+  },
+  {
+    cycle: "landing.card.cycleBiweekly",
+    cost: "R$ 199,60",
+    items: [
+      { key: "arroz", status: "esgotado", qty: "4", unit: "un" },
+      { key: "feijao", status: "comprar", qty: "8", unit: "un" },
+      { key: "oleo", status: "atencao", qty: "6", unit: "un" },
+      { key: "detergente", status: "comprar", qty: "10", unit: "un" },
+    ],
+  },
+  {
+    cycle: "landing.card.cycleDaily",
+    cost: "R$ 157,50",
+    items: [
+      { key: "pao", status: "esgotado", qty: "80", unit: "un" },
+      { key: "ovo", status: "comprar", qty: "6", unit: "dz" },
+      { key: "tomate", status: "atencao", qty: "5", unit: "kg" },
+      { key: "iogurte", status: "comprar", qty: "12", unit: "un" },
+    ],
+  },
+] as const;
+
 const TICKER_KEYS = ["landing.t1", "landing.t2", "landing.t3", "landing.t4", "landing.t5", "landing.t6", "landing.t7", "landing.t8"];
 
 export default function LandingPage() {
   const router = useRouter();
   const { t } = useI18n();
+  const [listIdx, setListIdx] = useState(0);
+  const sample = SAMPLE_LISTS[listIdx];
+  const nextList = () => setListIdx((i) => (i + 1) % SAMPLE_LISTS.length);
 
   useEffect(() => {
     if (getToken()) router.replace("/dashboard");
@@ -78,54 +117,59 @@ export default function LandingPage() {
 
             <div className="animate-float relative">
               <div className="absolute inset-0 -z-10 rotate-6 rounded-lg border bg-card" />
-              <div className="receipt-edge relative rotate-1 rounded-lg border-2 border-dashed border-border bg-card p-6 shadow-[0_24px_48px_-24px_hsl(var(--foreground)/0.25)]">
+              <button
+                type="button"
+                onClick={nextList}
+                aria-label={t("landing.card.hint")}
+                className="receipt-edge relative block w-full rotate-1 cursor-pointer rounded-lg border-2 border-dashed border-border bg-card p-6 text-left shadow-[0_24px_48px_-24px_hsl(var(--foreground)/0.25)] transition-transform duration-200 hover:-rotate-0 hover:scale-[1.02] active:scale-[0.99]"
+              >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2.5">
-                    <PontoDot className="h-3 w-3" />
-                    <span className="font-display text-lg font-bold">{t("landing.card.product")}</span>
+                    <ClipboardList className="h-5 w-5 text-primary" />
+                    <span className="font-display text-lg font-bold">{t("purchase.title")}</span>
                   </div>
-                  <Badge variant="success">OK</Badge>
+                  <Badge variant="secondary">{t(sample.cycle)}</Badge>
                 </div>
 
                 <div className="my-4 border-t border-dashed" />
 
-                <p className="font-mono text-[11px] uppercase tracking-widest text-muted-foreground">
-                  {t("landing.card.rate")}
-                </p>
-                <div className="mt-1 flex items-baseline gap-2">
-                  <span className="font-mono text-3xl font-semibold">12,4</span>
-                  <span className="font-mono text-sm text-muted-foreground">/d</span>
-                  <span className="ml-auto flex items-center gap-1 font-mono text-xs font-semibold text-primary">
-                    <TrendingUp className="h-3.5 w-3.5" /> +8%
-                  </span>
-                </div>
+                <ul key={listIdx} className="stagger space-y-3">
+                  {sample.items.map((item) => (
+                    <li key={item.key} className="flex items-center gap-3">
+                      <span className="min-w-0 flex-1 truncate text-sm font-semibold">{t(`landing.list.${item.key}`)}</span>
+                      <Badge variant={STATUS_VARIANT[item.status]} className="shrink-0 px-2 py-0 text-[10px]">
+                        {t(`purchase.status.${item.status}`)}
+                      </Badge>
+                      <span className="w-16 shrink-0 text-right font-mono text-sm font-semibold">
+                        {item.qty} <span className="text-xs font-normal text-muted-foreground">{item.unit}</span>
+                      </span>
+                    </li>
+                  ))}
+                </ul>
 
                 <div className="my-4 border-t border-dashed" />
 
-                <p className="font-mono text-[11px] uppercase tracking-widest text-muted-foreground">
-                  {t("landing.card.buy")}
-                </p>
-                <div className="mt-1 flex items-center justify-between">
-                  <span className="font-display text-4xl font-bold">
-                    24 <span className="text-lg font-semibold text-muted-foreground">{t("landing.card.units")}</span>
+                <div className="flex items-baseline justify-between">
+                  <span className="font-mono text-[11px] uppercase tracking-widest text-muted-foreground">
+                    {t("purchase.kpi.cost")}
                   </span>
-                  <Badge variant="secondary">{t("landing.card.cycle")}</Badge>
+                  <span key={listIdx} className="animate-check-pop font-display text-2xl font-bold">
+                    {sample.cost}
+                  </span>
                 </div>
 
-                <div className="my-4 border-t border-dashed" />
-
-                <p className="flex justify-between font-mono text-xs text-muted-foreground">
-                  <span>
-                    {t("landing.card.min")} <span className="font-semibold text-foreground">18</span>
+                <div className="mt-4 flex items-center justify-between">
+                  <span className="font-mono text-[11px] text-muted-foreground">{t("landing.card.hint")}</span>
+                  <span className="flex gap-1.5">
+                    {SAMPLE_LISTS.map((_, i) => (
+                      <span
+                        key={i}
+                        className={`h-1.5 w-1.5 rounded-full ${i === listIdx ? "bg-ponto" : "bg-muted-foreground/30"}`}
+                      />
+                    ))}
                   </span>
-                  <span>
-                    {t("landing.card.max")} <span className="font-semibold text-foreground">60</span>
-                  </span>
-                  <span>
-                    {t("landing.card.safety")} <span className="font-semibold text-foreground">6</span>
-                  </span>
-                </p>
-              </div>
+                </div>
+              </button>
 
               <span className="absolute -right-3 -top-4 rotate-6 rounded-full bg-sun px-3.5 py-1.5 font-display text-xs font-bold uppercase tracking-wide text-[hsl(35_80%_18%)] shadow-md">
                 {t("landing.card.sticker")}
