@@ -164,13 +164,36 @@ async def product_day_totals(session, product_id, start: dt.date, end: dt.date) 
     return {(d if isinstance(d, dt.date) else dt.date.fromisoformat(str(d))): float(q or 0) for d, q in rows}
 
 
-async def weekly_forecast(session, product: Product, first_sale: dt.date | None, today: dt.date, category: str | None, size: int) -> dict | None:
+async def stockout_days(session, product_id, start: dt.date) -> set[dt.date]:
+    """Days on which a sale emptied the shelf (recorded in the audit log as estoque <= 0)."""
+    rows = (
+        await session.execute(
+            select(RecommendationLog.created_at, RecommendationLog.details).where(
+                RecommendationLog.product_id == product_id,
+                RecommendationLog.trigger == "sale",
+                RecommendationLog.created_at >= day_bounds(start, start)[0],
+            )
+        )
+    ).all()
+    days = set()
+    for created_at, details in rows:
+        try:
+            stock = json.loads(details or "{}").get("estoque")
+        except ValueError:
+            continue
+        if stock is not None and float(stock) <= 0:
+            days.add(_local_date(created_at))
+    return days
+
+
+async def weekly_forecast(session, product: Product, first_sale: dt.date | None, today: dt.date, category: str | None, size: int, sold_out: set | None = None) -> dict | None:
     """Validated weekly model for this product, or None (rule-based path)."""
     if first_sale is None or not wm.weekly_model.ready:
         return None
     target_monday = today - dt.timedelta(days=today.weekday())
     start = max(first_sale, target_monday - dt.timedelta(weeks=wm.MAX_HISTORY_WEEKS))
     totals = await product_day_totals(session, product.id, start, target_monday - dt.timedelta(days=1))
+    totals = {d: fm.uncensor(q, d in (sold_out or set())) for d, q in totals.items()}
     weeks = wm.weekly_history(totals, first_sale, target_monday)
     return wm.weekly_model.forecast(weeks, target_monday, category, size)
 
@@ -213,7 +236,7 @@ async def compute_blend(session, product: Product, market: Market) -> dict:
         )
     ).all()
 
-    numerator = 0.0
+    sold_out = await stockout_days(session, product.id, min(window_start, today - dt.timedelta(weeks=wm.MAX_HISTORY_WEEKS)))
     n_sales = 0
     seen_sales: set = set()
     day_totals: dict[dt.date, float] = {}
@@ -221,12 +244,12 @@ async def compute_blend(session, product: Product, market: Market) -> dict:
         sale_date = _local_date(sold_at)
         if sale_date < window_start or sale_date > today:
             continue
-        age = (today - sale_date).days
-        numerator += float(qty) * decay_weight(age, half_life)
         day_totals[sale_date] = day_totals.get(sale_date, 0.0) + float(qty)
         if sale_id not in seen_sales:
             seen_sales.add(sale_id)
             n_sales += 1
+    day_totals = {d: fm.uncensor(q, d in sold_out) for d, q in day_totals.items()}
+    numerator = sum(q * decay_weight((today - d).days, half_life) for d, q in day_totals.items())
 
     denominator = window_denominator(window_days, half_life)
     observed_rate = numerator / denominator if denominator > 0 else 0.0
@@ -249,39 +272,47 @@ async def compute_blend(session, product: Product, market: Market) -> dict:
 
     final_rate = alpha * observed_rate + (1 - alpha) * prior_rate
 
-    # Weekday profile: product -> store -> public dataset (closed days only).
+    # Weekday profile: product's own (recent weeks weigh more) shrunk towards
+    # its category pattern adjusted to the store's rhythm (see forecast_math).
     size = prior_ctx["size_bucket"]
-    dataset_index = fm.dataset_weekday_prior(rate_model, today.month, size, prior_ctx["category_name"])
+    category_index = fm.dataset_weekday_prior(rate_model, today.month, size, prior_ctx["category_name"])
+    typical_index = fm.dataset_weekday_prior(rate_model, today.month, size, None)
     yesterday = today - dt.timedelta(days=1)
-    store_index, store_days = await store_weekday_index(session, market, window_start, yesterday, dataset_index)
+    store_start = today - dt.timedelta(days=obs_window)
+    store_index, store_days = await store_weekday_index(session, market, store_start, yesterday, typical_index)
+    product_prior = fm.category_store_prior(category_index, store_index, typical_index)
     series = fm.daily_series(day_totals, window_start, yesterday)
     if len(series) >= fm.MIN_DAYS_FOR_PROFILE:
-        weekday_index = fm.weekday_profile(series, store_index, fm.PRODUCT_SHRINK_K)
+        weekday_index = fm.weekday_profile(series, product_prior, fm.PRODUCT_SHRINK_K)
         profile_source = "produto"
     elif store_days >= fm.MIN_DAYS_FOR_PROFILE:
-        weekday_index = list(store_index)
+        weekday_index = list(product_prior)
         profile_source = "loja"
     else:
-        weekday_index = list(dataset_index)
+        weekday_index = list(category_index)
         profile_source = "padrao"
+
+    service = fm.service_target(prior_ctx["category_name"], cycle, float(product.price or 0), float(product.cost or 0))
 
     first_local = None
     if first_sale_date is not None:
         first_local = first_sale_date if isinstance(first_sale_date, dt.date) else _local_date(first_sale_date)
-    forecast = await weekly_forecast(session, product, first_local, today, prior_ctx["category_name"], size)
+    forecast = await weekly_forecast(session, product, first_local, today, prior_ctx["category_name"], size, sold_out)
+    if sold_out:
+        notes.append(f"{len(sold_out)} dia(s) em que o produto esgotou: a procura real foi estimada {round(fm.STOCKOUT_UPLIFT * 100)}% acima da venda registrada")
 
     if forecast is not None:
         forecast_source = "modelo"
         final_rate = forecast["weekly"] / 7.0
-        levels = fm.model_stock_levels(final_rate, weekday_index, today, cycle, forecast)
+        levels = fm.model_stock_levels(final_rate, weekday_index, today, cycle, forecast, series, service["level"])
         confidence = "alta" if forecast["weeks"] >= 12 else "media"
         notes.append(
             f"Previsão do modelo semanal validado, a partir de {forecast['weeks']} semanas de vendas deste produto; "
-            f"margem pelo limite de 95% calibrado (×{forecast['q95']:.2f} na faixa {forecast['tier']} un/semana)"
+            f"margem calibrada em dados reais para {round(service['level'] * 100)}% de atendimento (faixa {forecast['tier']} un/semana)"
         )
     else:
         forecast_source = "regra"
-        levels = fm.stock_levels(final_rate, weekday_index, today, cycle, series)
+        levels = fm.stock_levels(final_rate, weekday_index, today, cycle, series, service["level"])
         if levels["safety_method"] == "regra":
             notes.append(f"Menos de {fm.MIN_DAYS_FOR_ERROR} dias de histórico: margem de segurança pela regra fixa (30% do ciclo)")
         confidence = "baixa" if n_sales < 3 else ("media" if n_sales < 10 else "alta")
@@ -301,6 +332,10 @@ async def compute_blend(session, product: Product, market: Market) -> dict:
         "alpha": alpha,
         "final_rate": final_rate,
         "forecast_source": forecast_source,
+        "service_level": service["level"],
+        "perishable": service["perishable"],
+        "shelf_life_days": service["shelf_life_days"],
+        "service_rule": service["rule"],
         "weekly_forecast": forecast["weekly"] if forecast else None,
         "weekly_upper": forecast["upper"] if forecast else None,
         "model_weeks": forecast["weeks"] if forecast else None,
@@ -320,7 +355,8 @@ async def compute_blend(session, product: Product, market: Market) -> dict:
         "projection": levels["projection"],
         "weekday_index": weekday_index,
         "store_weekday_index": store_index,
-        "dataset_weekday_index": dataset_index,
+        "category_weekday_index": category_index,
+        "dataset_weekday_index": category_index,
         "profile_source": profile_source,
         "profile_days": len(series),
         "n_sales": n_sales,
@@ -350,6 +386,7 @@ def profile_payload(blend: dict) -> dict:
         "days_observed": blend["profile_days"],
         "index": [round(v, 3) for v in index],
         "store_index": [round(v, 3) for v in blend["store_weekday_index"]],
+        "category_index": [round(v, 3) for v in blend["category_weekday_index"]],
         "labels": list(fm.WEEKDAY_SHORT),
         "next_days": days,
         "cycle_demand": round(blend["cycle_demand"], 2),
@@ -357,7 +394,9 @@ def profile_payload(blend: dict) -> dict:
         "reorder_demand": round(blend["reorder_demand"], 2),
         "safety_method": blend["safety_method"],
         "sigma_daily": round(blend["sigma_daily"], 3) if blend["sigma_daily"] is not None else None,
-        "service_level_pct": fm.SERVICE_LEVEL_PCT,
+        "service_level_pct": round(blend["service_level"] * 100),
+        "perishable": blend["perishable"],
+        "service_rule": blend["service_rule"],
         **fm.peak_summary(index),
     }
 
@@ -415,6 +454,7 @@ async def recalc_product(session, product: Product, market: Market, trigger: str
             "porte": blend["size_bucket"],
         },
         "notas": blend["notes"],
+        "estoque": float(product.stock or 0),
         "seguranca": round(blend["safety_stock"], 3),
         "metodo_seguranca": blend["safety_method"],
         "erro_diario": round(blend["sigma_daily"], 3) if blend["sigma_daily"] is not None else None,

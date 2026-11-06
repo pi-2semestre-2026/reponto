@@ -44,7 +44,7 @@ from app.services import weekly_model as wm
 
 logger = logging.getLogger("evaluation")
 
-EVAL_VERSION = 2
+EVAL_VERSION = 3
 TEST_WEEKS = 52
 VALIDATION_WEEKS = 52
 REFIT_EVERY = 13
@@ -88,7 +88,8 @@ def load_weekly() -> pd.DataFrame:
     if not path.exists():
         raise FileNotFoundError(f"{path} não encontrado — gere com `python -m pipeline.app_export`")
     w = pd.read_csv(path, parse_dates=["week_start"])
-    w["series"] = w["store_nbr"].astype(str) + "|" + w["family"]
+    segment = w["segment"].astype(str) if "segment" in w else "0"
+    w["series"] = w["store_nbr"].astype(str) + "|" + w["family"] + "|" + segment
     return w
 
 
@@ -250,7 +251,7 @@ def run_backtest() -> dict:
         sid = candidates.index[len(candidates) // 2]
         s = test[test["series"] == sid].sort_values("week_start")
         hist = weekly[(weekly["series"] == sid) & (weekly["week_start"] < test_period[0])].tail(12)
-        store, family = sid.split("|", 1)
+        store, family = sid.split("|")[:2]
         points = [{"week": pd.Timestamp(r.week_start).date().isoformat(), "actual": round(float(r.sales), 1), "lgbm": None, "ma4": None, "upper": None} for r in hist.itertuples(index=False)]
         points += [
             {

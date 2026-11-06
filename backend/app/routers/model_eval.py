@@ -3,6 +3,7 @@ from fastapi import APIRouter, Depends
 from app.routers.dep import get_current_user
 from app.services import evaluation
 from app.services.ml import rate_model
+from app.services.weekly_model import weekly_model
 
 router = APIRouter(prefix="/ml", tags=["ml"])
 
@@ -15,9 +16,10 @@ async def get_evaluation(user=Depends(get_current_user)):
         evaluation.start()
         result = evaluation.status()
     result["production_model"] = {
-        "ready": rate_model.ready,
-        "kind": "LightGBM sazonal (mês × dia da semana × porte da loja)",
-        "overall_mean": rate_model.overall_mean,
+        "ready": weekly_model.ready,
+        "kind": "LightGBM semanal (Tweedie) para produtos com 8+ semanas de vendas; antes disso, padrão sazonal da categoria + vendas recentes",
+        "seasonal_ready": rate_model.ready,
+        "trained_through": weekly_model.meta.get("trained_through"),
     }
     return result
 

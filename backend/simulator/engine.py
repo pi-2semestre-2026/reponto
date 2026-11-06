@@ -60,7 +60,7 @@ class SimulationEngine:
         self.lost_revenue = 0.0
 
         self.state: dict[str, dict] = {
-            p["key"]: {"stock": 0.0, "history": {}, "rec": None, "restocked_today": 0}
+            p["key"]: {"stock": 0.0, "history": {}, "rec": None, "restocked_today": 0, "sold_out": set()}
             for p in self.catalog
         }
         self._seed_shelves()
@@ -95,7 +95,7 @@ class SimulationEngine:
         buys: dict[str, int] = {}
         for p in self.catalog:
             st = self.state[p["key"]]
-            rec = self.brain.recommend(p, st["history"], date, st["stock"], self.store_history)
+            rec = self.brain.recommend(p, st["history"], date, st["stock"], self.store_history, st["sold_out"])
             st["rec"] = rec
             buy = max(0, round(rec["recommended_quantity"] - st["stock"]))
             st["stock"] += buy
@@ -136,6 +136,8 @@ class SimulationEngine:
             sold = min(demand, int(st["stock"]))
             lost = demand - sold
             st["stock"] = max(0.0, st["stock"] - sold)
+            if st["stock"] <= 0:
+                st["sold_out"].add(date)
             if sold > 0:
                 n_tx = max(1, round(sold / p["ups"]))
                 prev = st["history"].get(date, (0.0, 0))

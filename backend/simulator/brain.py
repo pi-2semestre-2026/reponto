@@ -96,7 +96,10 @@ class SimRecommender:
         today: dt.date,
         stock: float,
         store_history: dict[dt.date, float] | None = None,
+        sold_out: set | None = None,
     ) -> dict:
+        if sold_out:
+            history = {d: (fm.uncensor(q, d in sold_out), n) for d, (q, n) in history.items()}
         prior, source, seasonal = self.prior_rate(product["category"], today)
         observed, n_sales, win = self.observed_rate(history, today, stock)
 
@@ -110,18 +113,21 @@ class SimRecommender:
 
         window_start = win["window_start"]
         yesterday = today - dt.timedelta(days=1)
-        dataset_index = fm.dataset_weekday_prior(rate_model, today.month, self.size_bucket, product["category"])
-        store_index = dataset_index
+        category_index = fm.dataset_weekday_prior(rate_model, today.month, self.size_bucket, product["category"])
+        typical_index = fm.dataset_weekday_prior(rate_model, today.month, self.size_bucket, None)
+        store_index = typical_index
         if store_history:
             first = min(store_history)
-            store_series = fm.daily_series(store_history, max(first, window_start), yesterday)
+            store_series = fm.daily_series(store_history, max(first, today - dt.timedelta(days=self.obs_window)), yesterday)
             if len(store_series) >= fm.MIN_DAYS_FOR_PROFILE:
-                store_index = fm.weekday_profile(store_series, dataset_index, fm.STORE_SHRINK_K)
+                store_index = fm.weekday_profile(store_series, typical_index, fm.STORE_SHRINK_K)
+        product_prior = fm.category_store_prior(category_index, store_index, typical_index)
         series = fm.daily_series({d: q for d, (q, _) in history.items()}, window_start, yesterday) if n_sales else []
         if len(series) >= fm.MIN_DAYS_FOR_PROFILE:
-            weekday_index = fm.weekday_profile(series, store_index, fm.PRODUCT_SHRINK_K)
+            weekday_index = fm.weekday_profile(series, product_prior, fm.PRODUCT_SHRINK_K)
         else:
-            weekday_index = list(store_index)
+            weekday_index = list(product_prior)
+        service = fm.service_target(product["category"], cycle, product.get("price"), product.get("cost"))
 
         forecast = None
         sold_days = [d for d, (q, _) in history.items() if q > 0]
@@ -131,10 +137,10 @@ class SimRecommender:
             forecast = wm.weekly_model.forecast(weeks, target_monday, product["category"], self.size_bucket)
         if forecast is not None:
             final = forecast["weekly"] / 7.0
-            levels = fm.model_stock_levels(final, weekday_index, today, cycle, forecast)
+            levels = fm.model_stock_levels(final, weekday_index, today, cycle, forecast, series, service["level"])
             confidence = "alta" if forecast["weeks"] >= 12 else "media"
         else:
-            levels = fm.stock_levels(final, weekday_index, today, cycle, series)
+            levels = fm.stock_levels(final, weekday_index, today, cycle, series, service["level"])
             confidence = "baixa" if n_sales < 3 else ("media" if n_sales < 10 else "alta")
 
         return {
@@ -145,7 +151,12 @@ class SimRecommender:
             "alpha": alpha,
             "final_rate": final,
             "forecast_source": "modelo" if forecast is not None else "regra",
+            "model_weeks": forecast["weeks"] if forecast is not None else None,
+            "weekly_forecast": forecast["weekly"] if forecast is not None else None,
             "weekday_index": weekday_index,
+            "category_index": category_index,
+            "service_level": service["level"],
+            "perishable": service["perishable"],
             "safety_stock": levels["safety_stock"],
             "safety_method": levels["safety_method"],
             "min_stock": levels["min_stock"],

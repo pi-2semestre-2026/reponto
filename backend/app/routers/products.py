@@ -14,6 +14,7 @@ from app.schemas import LearningLogOut, LearningPanelOut, ProductCreateIn, Produ
 from app.services.categorizer import process_product_background
 from app.services.explainer import explain
 from app.services.recommender import compute_blend, formula_string, profile_payload, recalc_product
+from app.services.weekly_model import MIN_WEEKS, weekly_model
 from app.services.seed_data import DEFAULT_CATEGORY_NAME
 
 router = APIRouter(tags=["products"])
@@ -256,6 +257,18 @@ async def learning_panel(
         evolution=evolution,
         logs=[LearningLogOut.model_validate(log) for log in logs],
         profile=profile_payload(blend),
+        forecast={
+            "source": blend["forecast_source"],
+            "weekly": blend["weekly_forecast"],
+            "upper": blend["weekly_upper"],
+            "weeks": blend["model_weeks"],
+            "tier": blend["model_tier"],
+            "q95": blend["model_q95"],
+            "has_last_year": blend["model_has_last_year"],
+            "holiday_days": blend["model_holiday_days"],
+            "min_weeks": MIN_WEEKS,
+            "model_ready": weekly_model.ready,
+        },
     )
 
 

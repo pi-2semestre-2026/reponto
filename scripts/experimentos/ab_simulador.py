@@ -11,10 +11,10 @@ from simulator.metrics import running_summary
 
 prof = pd.read_csv("C:/Projetos/reponto/datasets/favorita/perfil_diario.csv")
 rows = [{"family": r.category, "month": r.month, "weekday": r.weekday, "size_bucket": r.size_bucket, "avg_sales_per_tx": r.index} for r in prof.itertuples()]
-rate_model.ensure(get_settings().ML_MODEL_PATH.replace("model.txt", "seasonal.txt"), rows)
+rate_model.ensure(get_settings().ML_MODEL_PATH, rows)
 assert weekly_model.load(), "weekly model missing"
 
-SEEDS = [11, 23, 37, 41, 59, 61]
+SEEDS = [11, 23, 37]
 DAYS = int(sys.argv[1]) if len(sys.argv) > 1 else 364
 out = []
 for scenario in ("bairro", "medio", "grande"):

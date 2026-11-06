@@ -39,14 +39,21 @@ import pandas as pd
 
 logger = logging.getLogger("weekly_model")
 
-MODEL_VERSION = 1
+MODEL_VERSION = 3
 LEVEL_WEEKS = 8
 MIN_WEEKS = 8
 MAX_HISTORY_WEEKS = 60
 NUM_ROUNDS = 400
 TWEEDIE_POWER = 1.3
 SERVICE_QUANTILE = 0.95
+SERVICE_LEVELS = (0.5, 0.6, 0.7, 0.8, 0.9, 0.95)
 MIN_TIER_ROWS = 300
+# Training: weeks above MAX_TRAIN_RATIO x the recent level are one-off shocks no
+# feature explains (they taught the trees absurd jumps). Production: the forecast
+# is kept within [GUARD_LOW, GUARD_HIGH] x the product's recent level.
+MAX_TRAIN_RATIO = 20.0
+GUARD_LOW = 0.25
+GUARD_HIGH = 4.0
 
 TIER_EDGES = (5.0, 20.0, 200.0, 2000.0)
 TIER_LABELS = ("<5", "5-20", "20-200", "200-2k", ">2k")
@@ -192,7 +199,9 @@ def add_features(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def trainable(features: pd.DataFrame) -> pd.DataFrame:
-    return features[(features["level"] > 0) & features["sales"].notna()]
+    """Rows usable to fit or score: known level, known sales, not an extreme one-off shock."""
+    ok = (features["level"] > 0) & features["sales"].notna()
+    return features[ok & (features["sales"] <= MAX_TRAIN_RATIO * features["level"])]
 
 
 def fit(rows: pd.DataFrame, num_rounds: int = NUM_ROUNDS) -> lgb.Booster:
@@ -212,7 +221,11 @@ def predict(booster: lgb.Booster, rows: pd.DataFrame) -> np.ndarray:
 
 
 def conformal_quantiles(actual, forecast, level, q: float = SERVICE_QUANTILE) -> dict:
-    """Upper multiplier per volume tier: q-th percentile of actual / forecast."""
+    """Multipliers per volume tier: percentiles of actual / forecast.
+
+    "q" is the SERVICE_QUANTILE (95%) bound; "levels" holds every level in
+    SERVICE_LEVELS, used by the newsvendor rule for perishables.
+    """
     actual = np.asarray(actual, dtype=float)
     forecast = np.asarray(forecast, dtype=float)
     level = np.asarray(level, dtype=float)
@@ -223,13 +236,22 @@ def conformal_quantiles(actual, forecast, level, q: float = SERVICE_QUANTILE) ->
     out = {}
     for i, label in enumerate(TIER_LABELS):
         r = ratio[tiers == i]
-        out[label] = {"q": round(float(np.quantile(r, q)), 4) if len(r) >= MIN_TIER_ROWS else round(overall, 4), "n": int(len(r))}
+        src = r if len(r) >= MIN_TIER_ROWS else ratio
+        levels = {str(lv): round(float(np.quantile(src, lv)), 4) for lv in SERVICE_LEVELS} if len(src) else {}
+        out[label] = {"q": round(float(np.quantile(src, q)), 4) if len(src) else 2.0, "levels": levels, "n": int(len(r))}
     # The multiplier must not grow with volume: larger series are relatively more predictable.
     for i in range(len(TIER_LABELS) - 2, -1, -1):
         hi, lo = out[TIER_LABELS[i + 1]], out[TIER_LABELS[i]]
         if lo["q"] < hi["q"]:
             lo["q"] = hi["q"]
-    out["overall"] = {"q": round(overall, 4), "n": int(len(ratio))}
+        for lv in ("0.8", "0.9", "0.95"):
+            if lv in lo["levels"] and lv in hi["levels"] and lo["levels"][lv] < hi["levels"][lv]:
+                lo["levels"][lv] = hi["levels"][lv]
+    out["overall"] = {
+        "q": round(overall, 4),
+        "levels": {str(lv): round(float(np.quantile(ratio, lv)), 4) for lv in SERVICE_LEVELS} if len(ratio) else {},
+        "n": int(len(ratio)),
+    }
     return out
 
 
@@ -297,9 +319,12 @@ class WeeklyModel:
             json.dump({**meta, "version": MODEL_VERSION, "features": FEATURES}, f, ensure_ascii=False)
         self.load()
 
-    def quantile(self, tier: str) -> float:
+    def tier_quantiles(self, tier: str) -> dict:
         q = self.meta.get("quantiles", {})
-        return float((q.get(tier) or q.get("overall") or {"q": 2.0})["q"])
+        return q.get(tier) or q.get("overall") or {"q": 2.0, "levels": {}}
+
+    def quantile(self, tier: str) -> float:
+        return float(self.tier_quantiles(tier)["q"])
 
     def forecast(self, weeks: list[tuple[dt.date, float]], target_monday: dt.date, category: str | None, size_bucket: int) -> dict | None:
         """Forecast for the week starting `target_monday`, or None when the model
@@ -319,7 +344,8 @@ class WeeklyModel:
             return None
         with self._lock:
             booster = self.booster
-        weekly = float(predict(booster, row)[0])
+        raw = float(predict(booster, row)[0])
+        weekly = min(max(raw, GUARD_LOW * level), GUARD_HIGH * level)
         tier = tier_of(level)
         q = self.quantile(tier)
         return {
@@ -327,10 +353,12 @@ class WeeklyModel:
             "level": level,
             "tier": tier,
             "q95": q,
+            "quantiles": self.tier_quantiles(tier).get("levels", {}),
             "upper": weekly * q,
             "weeks": len(weeks),
             "holiday_days": int(row["holiday_days"].iloc[0]),
             "has_last_year": not math.isnan(float(row["r_lag52"].iloc[0])),
+            "guarded": weekly != raw,
         }
 
 

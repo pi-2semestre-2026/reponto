@@ -64,6 +64,12 @@ FAMILY_TO_CATEGORY = {
 }
 
 # One-off shocks that must not shape a "typical" month x weekday pattern.
+# Registration gaps: a run of >= GAP_WEEKS zero weeks inside a series that normally
+# sells >= GAP_MIN_MEDIAN units/week is a recording failure, not zero demand
+# (PRODUCE has many). The series is split there: lags never cross a gap.
+GAP_WEEKS = 3
+GAP_MIN_MEDIAN = 20.0
+
 EXCLUDED_DAYS = pd.to_datetime(["2013-01-01", "2014-01-01", "2015-01-01", "2016-01-01", "2017-01-01"])
 EARTHQUAKE = (pd.Timestamp("2016-04-16"), pd.Timestamp("2016-05-15"))
 
@@ -84,12 +90,32 @@ def store_size_buckets(daily: pd.DataFrame) -> pd.Series:
     return pd.Series(pd.qcut(volume.rank(method="first"), 4, labels=False), index=volume.index).astype(int)
 
 
+def split_at_gaps(weekly: pd.DataFrame) -> pd.DataFrame:
+    """Drop registration-gap weeks and number the remaining stretches (`segment`)."""
+    out = []
+    for _, s in weekly.groupby(SERIES_KEYS, sort=False):
+        s = s.sort_values("week_start").copy()
+        nonzero = s.loc[s["sales"] > 0, "sales"]
+        zero = (s["sales"] == 0).to_numpy()
+        run_id = (zero != pd.Series(zero).shift(fill_value=False).to_numpy()).cumsum()
+        run_len = pd.Series(zero).groupby(run_id).transform("sum").to_numpy()
+        gap = zero & (run_len >= GAP_WEEKS) if len(nonzero) and nonzero.median() >= GAP_MIN_MEDIAN else zero & False
+        s["segment"] = pd.Series(gap).cumsum().to_numpy()
+        s["segment"] = s["segment"].where(~gap).ffill().fillna(0).astype(int)
+        out.append(s[~gap])
+    res = pd.concat(out, ignore_index=True)
+    # renumber segments 0..n per series
+    res["segment"] = res.groupby(SERIES_KEYS)["segment"].rank(method="dense").astype(int) - 1
+    return res
+
+
 def weekly_export(daily: pd.DataFrame, holidays: pd.DataFrame, sizes: pd.Series) -> pd.DataFrame:
     weekly = to_weekly(daily)
     weekly["family"] = weekly["family"].astype(str)
     born = weekly[weekly["sales"] > 0].groupby(SERIES_KEYS)["week_start"].min().rename("born")
     weekly = weekly.merge(born, on=SERIES_KEYS)
     weekly = weekly[weekly["week_start"] >= weekly["born"]].drop(columns=["born", "onpromotion", "n_days"])
+    weekly = split_at_gaps(weekly)
 
     hol = national_holidays(holidays)
     per_week = (hol - pd.to_timedelta(hol.dt.weekday, unit="D")).value_counts()
@@ -97,7 +123,7 @@ def weekly_export(daily: pd.DataFrame, holidays: pd.DataFrame, sizes: pd.Series)
     weekly["category"] = weekly["family"].map(FAMILY_TO_CATEGORY)
     weekly["size_bucket"] = weekly["store_nbr"].map(sizes).astype(int)
     weekly["sales"] = weekly["sales"].round(3)
-    cols = ["store_nbr", "family", "category", "size_bucket", "week_start", "sales", "holiday_days"]
+    cols = ["store_nbr", "family", "segment", "category", "size_bucket", "week_start", "sales", "holiday_days"]
     return weekly[cols].sort_values(["store_nbr", "family", "week_start"]).reset_index(drop=True)
 
 
@@ -148,7 +174,8 @@ def main() -> None:
     profile.to_csv(EXPORT_DIR / "perfil_diario.csv", index=False)
 
     n_series = weekly.groupby(SERIES_KEYS).ngroups
-    print(f"semanal.csv.gz: {len(weekly):,} linhas, {n_series} séries, {weekly['week_start'].nunique()} semanas")
+    n_seg = weekly.groupby(SERIES_KEYS + ["segment"]).ngroups
+    print(f"semanal.csv.gz: {len(weekly):,} linhas, {n_series} séries ({n_seg} trechos sem apagão), {weekly['week_start'].nunique()} semanas")
     print(f"perfil_diario.csv: {len(profile):,} linhas, {profile['category'].nunique()} categorias (inclui {ALL_CATEGORIES})")
     for f in ("semanal.csv.gz", "perfil_diario.csv"):
         print(f"  {f}: {(EXPORT_DIR / f).stat().st_size / 1e6:.2f} MB")
