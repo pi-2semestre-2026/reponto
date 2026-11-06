@@ -57,7 +57,7 @@ TRIGGER_LABELS = {
     "recalc": "Recálculo manual",
     "import": "Importação do ERP",
     "purchase": "Compra recebida",
-    "daily": "Atualização diária (dias da semana)",
+    "daily": "Atualização diária (dias da semana / modelo novo)",
 }
 
 
@@ -497,6 +497,44 @@ async def recalc_product(session, product: Product, market: Market, trigger: str
         blend["n_sales"],
     )
     return log
+
+
+async def refresh_stale_products(session, market: Market, products: list[Product]) -> int:
+    """Recalculate products whose last calculation is from a previous day (the
+    weekday projection moved) or older than the current weekly model (so they
+    switch to it as soon as it is trained). Returns how many were refreshed."""
+    if not products:
+        return 0
+    last_calc = dict(
+        (
+            await session.execute(
+                select(RecommendationLog.product_id, func.max(RecommendationLog.created_at))
+                .where(RecommendationLog.product_id.in_([p.id for p in products]))
+                .group_by(RecommendationLog.product_id)
+            )
+        ).all()
+    )
+    model_time = None
+    generated = wm.weekly_model.meta.get("generated_at") if wm.weekly_model.ready else None
+    if generated:
+        try:
+            model_time = dt.datetime.fromisoformat(generated)
+        except ValueError:
+            model_time = None
+    today = today_local()
+    stale = [
+        p
+        for p in products
+        if p.status == "ready"
+        and (
+            last_calc.get(p.id) is None
+            or local_date(last_calc[p.id]) < today
+            or (model_time is not None and last_calc[p.id] < model_time)
+        )
+    ]
+    for p in stale:
+        await recalc_product(session, p, market, "daily")
+    return len(stale)
 
 
 async def recalc_market_products(trigger: str, market_id) -> None:

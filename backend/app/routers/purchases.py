@@ -6,15 +6,14 @@ import math
 from decimal import Decimal
 
 from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException
-from sqlalchemy import func, select
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.database import get_db
-from app.models import Product, RecommendationLog, StockAdjustment
+from app.models import Product, StockAdjustment
 from app.routers.dep import get_owned_market
 from app.schemas import PurchaseReceiveIn
-from app.services.clock import local_date, today_local
-from app.services.recommender import recalc_product, recalc_products
+from app.services.recommender import recalc_products, refresh_stale_products
 
 router = APIRouter(tags=["purchases"])
 
@@ -31,21 +30,7 @@ async def purchase_list(market=Depends(get_owned_market), db: AsyncSession = Dep
 
     # The reorder point depends on which weekdays come next: refresh products
     # not recalculated today so Monday-heavy items rise before Monday.
-    last_calc = dict(
-        (
-            await db.execute(
-                select(RecommendationLog.product_id, func.max(RecommendationLog.created_at))
-                .join(Product, Product.id == RecommendationLog.product_id)
-                .where(Product.market_id == market.id)
-                .group_by(RecommendationLog.product_id)
-            )
-        ).all()
-    )
-    today = today_local()
-    stale = [p for p in products if last_calc.get(p.id) is None or local_date(last_calc[p.id]) < today]
-    for p in stale:
-        await recalc_product(db, p, market, "daily")
-    if stale:
+    if await refresh_stale_products(db, market, list(products)):
         await db.commit()
 
     cycle = max(1, market.replenishment_cycle_days)
