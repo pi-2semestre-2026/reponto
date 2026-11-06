@@ -114,7 +114,7 @@ export default function ModelPage() {
 
         {ready && lg && ma && (
           <>
-            <div className="grid gap-4 md:grid-cols-3">
+            <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
               <Card className="animate-fade-in-up md:col-span-1">
                 <CardContent className="space-y-1 p-6">
                   <p className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
@@ -122,6 +122,11 @@ export default function ModelPage() {
                   </p>
                   <p className="font-display text-5xl font-bold text-primary">−{pct(data.improvement_vs_ma4_pct, 0)}</p>
                   <p className="text-sm text-muted-foreground">{t("model.kpi.reductionSub")}</p>
+                  {data.improvement_vs_ema_pct != null && (
+                    <p className="pt-1 text-sm font-semibold">
+                      {t("model.kpi.vsEma").replace("{p}", pct(data.improvement_vs_ema_pct, 0))}
+                    </p>
+                  )}
                 </CardContent>
               </Card>
               <Card className="animate-fade-in-up">
@@ -141,7 +146,81 @@ export default function ModelPage() {
                   </p>
                 </CardContent>
               </Card>
+              {data.calibration && (
+                <Card className="animate-fade-in-up">
+                  <CardContent className="space-y-1 p-6">
+                    <p className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                      <ShieldCheck className="h-4 w-4 text-primary" /> {t("model.kpi.coverage")}
+                    </p>
+                    <p className="font-display text-5xl font-bold">{pct(data.calibration.coverage_pct)}</p>
+                    <p className="text-sm text-muted-foreground">
+                      {t("model.kpi.coverageSub").replace("{t}", String(data.calibration.target_pct))}
+                    </p>
+                  </CardContent>
+                </Card>
+              )}
             </div>
+
+            {data.by_tier && data.by_tier.length > 0 && (
+              <Card className="animate-fade-in-up">
+                <CardHeader>
+                  <CardTitle className="text-base">{t("model.tier.title")}</CardTitle>
+                </CardHeader>
+                <CardContent className="p-0">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>{t("model.tier.volume")}</TableHead>
+                        <TableHead className="text-right">{t("model.tier.series")}</TableHead>
+                        <TableHead className="text-right">LightGBM</TableHead>
+                        <TableHead className="text-right">{t("model.series.ma4")}</TableHead>
+                        <TableHead className="text-right">{t("model.tier.ema")}</TableHead>
+                        <TableHead className="text-right">{t("model.tier.coverage")}</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {data.by_tier.map((r) => (
+                        <TableRow key={r.tier}>
+                          <TableCell className="font-semibold">{r.label}</TableCell>
+                          <TableCell className="text-right font-mono">{fmtNum(r.series)}</TableCell>
+                          <TableCell className={`text-right font-mono ${r.lgbm_wape <= Math.min(r.ma4_wape, r.ema_wape) ? "font-bold text-primary" : ""}`}>{pct(r.lgbm_wape)}</TableCell>
+                          <TableCell className="text-right font-mono">{pct(r.ma4_wape)}</TableCell>
+                          <TableCell className="text-right font-mono">{pct(r.ema_wape)}</TableCell>
+                          <TableCell className="text-right font-mono">{pct(r.coverage_pct)}</TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                  <p className="px-6 py-3 text-xs text-muted-foreground">{t("model.tier.note")}</p>
+                </CardContent>
+              </Card>
+            )}
+
+            {data.validation_models && (
+              <Card className="animate-fade-in-up">
+                <CardHeader>
+                  <CardTitle className="text-base">{t("model.val.title")}</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <div className="grid gap-2 sm:grid-cols-2">
+                    {(["validation_models", "models"] as const).map((k) => (
+                      <div key={k} className="rounded-xl border bg-muted/30 p-3">
+                        <p className="mb-2 text-xs font-semibold uppercase text-muted-foreground">
+                          {k === "models" ? t("model.val.test") : t("model.val.validation")}
+                        </p>
+                        {[...(data[k] ?? [])].sort((a, b) => a.wape - b.wape).map((m) => (
+                          <p key={m.key} className="flex justify-between font-mono text-xs">
+                            <span className={m.key === "lgbm" ? "font-bold text-primary" : ""}>{m.name}</span>
+                            <span>{pct(m.wape)}</span>
+                          </p>
+                        ))}
+                      </div>
+                    ))}
+                  </div>
+                  <p className="text-xs text-muted-foreground">{t("model.val.note")}</p>
+                </CardContent>
+              </Card>
+            )}
 
             <Card className="animate-fade-in-up">
               <CardHeader>

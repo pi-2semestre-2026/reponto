@@ -9,14 +9,24 @@ import asyncio
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel, Field
 
+from app.database import SessionLocal
 from app.routers.dep import get_current_user
+from app.services.categorizer import get_categories, keyword_categorize, llm_categorize
+from app.services.seed_data import DEFAULT_CATEGORY_NAME
 from simulator import store
 from simulator.engine import SimulationEngine
+from simulator.lab import LabEngine
 from simulator.llm import coach_report
 from simulator.metrics import full_report
-from simulator.scenarios import SCENARIOS
+from simulator.scenarios import CUSTOM_MAX_PRODUCTS, SCENARIOS
 
 router = APIRouter(prefix="/admin/simulator", tags=["simulator"])
+
+
+class CustomProductIn(BaseModel):
+    name: str = Field(min_length=2, max_length=80)
+    quantity: float = Field(ge=0, le=100_000)
+    price: float | None = Field(default=None, gt=0, le=100_000)
 
 
 class CreateIn(BaseModel):
@@ -24,6 +34,27 @@ class CreateIn(BaseModel):
     days: int = Field(default=90, ge=7, le=1095)
     cycle_days: int = Field(default=7, ge=1, le=30)
     seed: int | None = None
+    products: list[CustomProductIn] | None = Field(default=None, max_length=CUSTOM_MAX_PRODUCTS)
+
+
+async def _categorize_custom(products: list[CustomProductIn]) -> list[dict]:
+    """Same flow as the real app (keywords -> LLM -> default), but read-only:
+    a category the LLM invents here is NOT saved — the game never touches
+    user data."""
+    async with SessionLocal() as session:
+        categories = await get_categories(session)
+
+    async def one(p: CustomProductIn) -> dict:
+        name = p.name.strip()
+        cat = keyword_categorize(name, categories) or await llm_categorize(name, categories)
+        return {
+            "name": name,
+            "quantity": p.quantity,
+            "price": p.price,
+            "category": cat.name if cat else DEFAULT_CATEGORY_NAME,
+        }
+
+    return await asyncio.gather(*(one(p) for p in products))
 
 
 class StepIn(BaseModel):
@@ -53,12 +84,14 @@ async def list_scenarios(user=Depends(get_current_user)):
 
 @router.post("/sessions")
 async def create_session(payload: CreateIn, user=Depends(get_current_user)):
+    custom = await _categorize_custom(payload.products) if payload.products else None
     try:
         engine = SimulationEngine(
             scenario_key=payload.scenario,
             days=payload.days,
             cycle_days=payload.cycle_days,
             seed=payload.seed,
+            custom_products=custom,
         )
     except ValueError as e:
         raise HTTPException(status_code=422, detail=str(e))
@@ -102,4 +135,55 @@ async def get_report(sid: str, user=Depends(get_current_user)):
 
 @router.delete("/sessions/{sid}")
 async def delete_session(sid: str, user=Depends(get_current_user)):
+    return {"ok": store.delete(sid)}
+
+
+# ---------------------------------------------------------------- laboratório da banca
+
+
+class LabCreateIn(BaseModel):
+    seed: int | None = None
+    days: int = Field(default=91, ge=28, le=182)
+
+
+class LabShiftIn(BaseModel):
+    kind: str
+
+
+def _lab_or_404(sid: str) -> LabEngine:
+    engine = store.get(sid)
+    if not isinstance(engine, LabEngine):
+        raise HTTPException(status_code=404, detail="Demonstração não encontrada (expirada?)")
+    return engine
+
+
+@router.post("/lab")
+async def create_lab(payload: LabCreateIn, user=Depends(get_current_user)):
+    engine = LabEngine(seed=payload.seed, days=payload.days)
+    sid = store.create(engine)
+    return {"sid": sid, "snapshot": engine.snapshot()}
+
+
+@router.post("/lab/{sid}/step")
+async def step_lab(sid: str, payload: StepIn, user=Depends(get_current_user)):
+    engine = _lab_or_404(sid)
+    for _ in range(payload.days):
+        if engine.done:
+            break
+        engine.step()
+    return {"snapshot": engine.snapshot()}
+
+
+@router.post("/lab/{sid}/shift")
+async def shift_lab(sid: str, payload: LabShiftIn, user=Depends(get_current_user)):
+    engine = _lab_or_404(sid)
+    try:
+        event = engine.apply_shift(payload.kind)
+    except ValueError as e:
+        raise HTTPException(status_code=422, detail=str(e))
+    return {"event": event, "snapshot": engine.snapshot()}
+
+
+@router.delete("/lab/{sid}")
+async def delete_lab(sid: str, user=Depends(get_current_user)):
     return {"ok": store.delete(sid)}

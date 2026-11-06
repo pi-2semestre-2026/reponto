@@ -145,28 +145,29 @@ reponto/
 
 Autorização: `get_current_user` (`routers/dep.py`) e `get_owned_market`. **Todo recurso é checado por dono** (mercado → produto/venda via join); recurso de outro usuário responde **404**, não 403. Mantenha esse padrão em rotas novas.
 
-### 4.4 Motor de recomendação (`app/services/recommender.py`)
+### 4.4 Motor de recomendação (`app/services/recommender.py` + `forecast_math.py`)
 
+Dois caminhos de previsão, escolhidos por produto:
+
+1. **Modelo semanal** (`weekly_model.py`): produto com **≥ 8 semanas completas** de vendas e modelo carregado. LightGBM Tweedie com offset log(nível), treinado e validado no Favorita (§4.10, §6). `final_rate = previsão_semanal / 7`. A trava de sanidade mantém a previsão em [0,25; 4] × o nível recente.
+2. **Regra** (produtos novos, ou antes de o modelo estar treinado):
 ```
-prior_rate    = baseline(categoria) × fator_sazonal × clientes_por_dia
-fator_sazonal = clamp( LightGBM(mês, dia_semana, porte) / média_geral , 0.5 , 2.0 )
-observed_rate = Σ qty·2^(−idade/meia_vida) / Σ pesos_dos_dias
-                (janela: da 1ª venda até hoje, limitada a OBS_WINDOW_DAYS)
+prior_rate    = baseline(categoria) × fator_do_mês(categoria) × clientes_por_dia
+observed_rate = Σ qty·2^(−idade/meia_vida) / Σ pesos_dos_dias   (janela da 1ª venda, máx. OBS_WINDOW_DAYS)
 alpha         = max(0.3, n_vendas / (n_vendas + 10))
 final_rate    = alpha·observed + (1−alpha)·prior
-safety        = final_rate · ciclo · 0.3
-min / recomendado / max = final·ciclo·{0.4 / 1.2 / 2.0} + safety
-confiança     = baixa (<3 vendas) | media (<10) | alta
 ```
 
-Detalhes que importam:
-- O dataset **só molda a sazonalidade**; o nível absoluto vem dos `baseline_rate` por categoria em `seed_data.py` (unidades/cliente/dia de um SKU típico). Os itens do Kaggle não são os SKUs do usuário.
-- **Fontes de prior** (`RecommendationLog.source`): `model` (LightGBM) → `static` (`CategoryPrior`) → `default` (`DEFAULT_PRIOR=0.08`).
-- Sem vendas na janela: `observed = estoque/ciclo` (se há estoque) ou `0`, com `alpha=0.3`.
-- Vendas canceladas não entram. Vendas retroativas (`sold_at` no passado) respeitam a própria data.
-- `size_bucket_from_customers`: <150 → 0, <400 → 1, <1200 → 2, ≥1200 → 3 (espelha os quartis das lojas do dataset).
-- Recálculos são disparados por: criação de produto, venda, cancelamento, ajuste de estoque, edição de produto, mudança de config do mercado (`TRIGGER_LABELS`). Todo recálculo grava um `RecommendationLog` (append-only).
-- **Sincronia obrigatória com o simulador:** `simulator/brain.py` replica essa fórmula e constantes em memória. Se alterar o recomendador, altere `SimRecommender` também (ou o jogo deixa de medir o sistema real).
+Comum aos dois caminhos:
+- **Perfil por dia da semana**: o perfil do próprio produto, com as semanas recentes pesando mais (meia-vida de 42 dias), é encolhido (k=2) para o padrão da **categoria ajustado ao ritmo da loja** (`category_store_prior`). Foi escolhido no Favorita (`scripts/experimentos/perfil_dia_semana.py`): erro diário 12,2% contra 22,3% com "igual todo dia" e 16,6% com um padrão único. A projeção dia a dia = taxa × índice do dia.
+- **Nível de atendimento** (`service_target`): produto que estraga antes da próxima entrega (`SHELF_LIFE_DAYS`: Padaria 1 dia, Peixes 2, Carnes 3, Hortifrúti 5 ≤ ciclo) segue a regra do jornaleiro, `Cu/(Cu+Co)` com Cu = margem + 50% do preço (cliente perdido) e Co = custo. O resultado fica limitado a [50%, 95%]. Os demais produtos miram 95%.
+- **Margem de segurança**: no caminho regra, `z(nível)·σ_diário·√ciclo` (sem histórico: 30% da demanda do ciclo). No caminho modelo, o quantil calibrado `q(nível)` é dividido em erro de nível (cresce com ciclo/7) e ruído diário (cresce com √ciclo); para ciclo = 7 ele é exatamente o limite calibrado.
+- **Demanda censurada**: dia em que a venda zerou o estoque (detectado pelo campo `estoque` do `RecommendationLog.details` com trigger `sale`) tem a procura estimada em +25% (`STOCKOUT_UPLIFT`). Sem isso, produto que esgota entra numa espiral de subestimar.
+- **Níveis**: no caminho modelo, `recomendado = demanda do ciclo + margem`; no caminho regra, `1,2 × demanda + margem` (com 95%). `mínimo = demanda dos próximos 0,4×ciclo dias + margem`; `máximo = 2 × demanda + margem`.
+- `refresh_stale_products` recalcula na listagem de produtos e na lista de compras quem foi calculado em outro dia ou antes do modelo atual (trigger `daily`).
+- **Fontes** (`RecommendationLog.source`): `modelo_semanal` | `model` (prior sazonal) | `static` | `default`. O log grava o caminho, a previsão semanal, o limite de 95% e o estoque após o cálculo.
+- `size_bucket_from_customers`: <150 → 0, <400 → 1, <1200 → 2, ≥1200 → 3.
+- **Sincronia obrigatória**: `simulator/brain.py` replica tudo isso usando as mesmas funções de `forecast_math`/`weekly_model`. Isso vale também para o laboratório (§7).
 
 ### 4.5 Vendas
 
@@ -184,9 +185,13 @@ A "integração" pedida pelo professor: o lojista já tem os dados no sistema de
 
 Os números vêm de `compute_blend`; o LLM só redige. `verify()` extrai todo número do texto e casa com o fato calculado mais próximo (tolerância 4%); número sem correspondência, ausência da quantidade a comprar ou do ritmo de venda, ou jargão (alpha/prior/blend) → texto do LLM descartado e entra `template_text()` (determinístico). Números do nome do produto ("500ml") são ignorados. Cache em memória por (produto, último log, estoque). Latência típica do LLM: 4–11 s.
 
-### 4.10 Backtest do modelo (`app/services/evaluation.py`)
+### 4.10 Backtest e treino do modelo semanal (`app/services/evaluation.py`)
 
-Responde a tese do artigo: LightGBM vs. média móvel de 4 semanas ("planilha"), mais ingênuo e sazonal ingênuo. Séries semanais loja×item do dataset (500 séries), modelo **global** com atributos sem escala (lags/médias divididos pelo nível das últimas 8 semanas), walk-forward nas últimas 26 semanas com re-treino a cada 4, horizonte de 1 semana, MAE/MAPE/WAPE/viés. Roda em thread na inicialização (~2 min) e grava `ml_data/evaluation.json` + `weekly_model.txt`; só recalcula se `EVAL_VERSION` mudar ou via `POST /ml/evaluation/run`. Resultado atual: WAPE 4,36% vs. 7,95% (−45%), vence em 99,8% das séries. O modelo semanal **ainda não é usado** na recomendação de produção (que segue usando o LightGBM sazonal de `ml.py`).
+Usa os dados reais do Favorita (`datasets/favorita/semanal.csv.gz`, 3.214 trechos limpos de 1.729 séries loja × família). Protocolo: **ano de validação** (escolha do modelo) e **ano de teste** (as últimas 52 semanas, resultado final), ambos em walk-forward com re-treino a cada 13 semanas e horizonte de 1 semana. Os baselines entram nas mesmas linhas: média móvel de 4 semanas, a regra anterior do app (EMA com meia-vida de 30 dias), semana passada e mesma semana do ano anterior. O intervalo é **conformal**, calibrado na validação e com a cobertura medida no teste, em vários níveis (50–95%) por faixa de volume. Ao final, treina o modelo de produção com todos os dados e grava `ml_data/weekly_model.txt` + `.meta.json` e `ml_data/evaluation.json`.
+
+Roda em thread na inicialização (~3 min) se `EVAL_VERSION`/`weekly_model.MODEL_VERSION` mudarem, ou via `POST /ml/evaluation/run`.
+
+Resultado no teste: **WAPE 8,06%** contra 10,24% da regra anterior (−21%) e 10,2% da média móvel; viés ≈ 0; cobertura do limite de 95% de 95,1% (de 94,6% a 96,5% por faixa). Abaixo de 5 un/semana o modelo empata com a média móvel (ruído de contagem).
 
 ### 4.7 Tempo
 
@@ -194,7 +199,7 @@ O banco guarda UTC; o produto fala em "dia do mercado" (`America/Sao_Paulo`, `AP
 
 ## 5. Frontend — arquitetura
 
-- **Rotas** (`src/app`): `/` (landing), `/login`, `/register`, `/dashboard`, `/markets`, `/markets/new`, `/markets/[id]` (produtos, cobertura em dias, venda, importação, painel de aprendizado com explicação), `/markets/[id]/compras` (lista de compras), `/modelo` (validação do modelo), `/sales`, `/categories`, `/admin/simulador`.
+- **Rotas** (`src/app`): `/` (landing), `/login`, `/register`, `/dashboard`, `/markets`, `/markets/new`, `/markets/[id]` (produtos, cobertura em dias, venda, importação, painel de aprendizado com explicação), `/markets/[id]/compras` (lista de compras), `/modelo` (validação do modelo), `/laboratorio` (demonstração da banca), `/sales`, `/categories`, `/admin/simulador`.
 - **Dev com hot reload**: rode só `db` e `backend` no Docker e o frontend no host: `cd frontend && npm ci && npm run dev` (com `NEXT_PUBLIC_API_URL=http://localhost:8000`). Pare o container `frontend` antes (`docker compose stop frontend`) porque ambos usam a porta 3000.
 - Todas as páginas são `"use client"`. Não há middleware; a proteção é feita no cliente (`getToken()` + redirect para `/login`).
 - **Auth**: JWT em `sessionStorage` na chave `reponto_token` (vale enquanto a aba estiver aberta, igual ao caixa). `lib/api.ts` (`api`, `setToken`, `ApiError`) injeta o Bearer; **qualquer 401 limpa o token e redireciona para `/login`**. `lib/token.ts` duplica a leitura do token (usada por páginas e pelo `simulator-api.ts`).
@@ -207,7 +212,9 @@ O banco guarda UTC; o produto fala em "dia do mercado" (`America/Sao_Paulo`, `AP
 
 ## 6. Dataset
 
-`datasets/Store Item Demand Forecasting Challenge/` (Kaggle: `date, store, item, sales`; 10 lojas × 50 itens × 5 anos). Sem categorias de produto. Usado apenas para extrair ritmo sazonal por mês × dia da semana × porte da loja. Trocar de dataset = editar `app/services/datasets.py` (adapter) e, se mudar o layout de features, incrementar `MODEL_VERSION` em `ml.py`. As linhas agregadas antigas são apagadas automaticamente quando o dataset ativo muda.
+- **Favorita** (dados reais de uma rede de supermercados do Equador; ativo): o bruto fica em `data/raw/favorita/` (fora do git). `python -m pipeline.app_export` gera `datasets/favorita/` com `semanal.csv.gz` (treino do modelo semanal) e `perfil_diario.csv` (perfil sazonal por categoria, que o `ml.py` usa para produtos sem histórico). Tratamentos: zeros iniciais removidos, séries cortadas em apagões de registro (3+ semanas zeradas numa série de 20+/semana), perfil sem tendência. Ficha e limitações em `datasets/favorita/README.md`.
+- **Store Item Demand** (Kaggle, sintético): reserva do `datasets.py`, usado só se o Favorita não estiver presente.
+- Trocar de dataset = adapter em `app/services/datasets.py`. O `ml.py` retreina sozinho quando o conjunto de famílias muda (`MODEL_VERSION` = 3).
 
 ## 7. Simulador (`backend/simulator/`, rota `/admin/simulador`)
 
@@ -221,6 +228,7 @@ Jogo que **estressa o recomendador real** contra uma "realidade" estocástica in
 - `llm.py`: coach via OpenRouter com `fallback_coach` local.
 - `scenarios.py`: `bairro` (45 clientes/dia), `medio` (180), `grande` (520) e catálogo de 27 SKUs.
 - Endpoints: `GET /scenarios`, `POST /sessions`, `POST /sessions/{sid}/step`, `GET /sessions/{sid}`, `GET /sessions/{sid}/report`, `DELETE /sessions/{sid}`. Exigem usuário autenticado (qualquer um, não há papel admin).
+- **Laboratório da banca** (`lab.py`, rota `/laboratorio`, endpoints `POST /admin/simulator/lab`, `/lab/{sid}/step`, `/lab/{sid}/shift`, `DELETE /lab/{sid}`): 91 dias em cerca de 1 minuto, com duas lojas gêmeas e a mesma demanda. Uma usa o cérebro real; a outra repõe a média da última semana + 10%. Produtos: cerveja (pico de sexta a domingo, reposição a cada 2 dias), pão (perecível, diário) e leite (controle). O botão "Jogo toda quarta" muda a realidade ao vivo. `scripts/experimentos/rodar_laboratorio.py` roda no terminal. Roteiro de apresentação em `docs/BANCA.md`.
 
 ## 8. Convenções para contribuir
 
@@ -229,14 +237,14 @@ Jogo que **estressa o recomendador real** contra uma "realidade" estocástica in
 - **Frontend**: componentes client, alias `@/`, textos via `t()`, valores monetários/numéricos via `lib/format.ts` (`fmtMoney`, `fmtNum`).
 - **Shell scripts** (`*.sh`) devem ficar com **LF**. Já houve falha de container por CRLF; `.gitattributes` e um `sed` no Dockerfile cobrem isso.
 - **Commits**: mensagens em inglês no padrão Conventional Commits (`feat:`, `fix:`, `chore:`), como no histórico.
-- Branch atual de trabalho: `feat/reponto-poc`; principal: `main`.
+- Branch atual de trabalho: `pipeline-ml` (inclui `main` com o caixa); principal: `main`.
 
 ## 9. Pontos de atenção e dívidas conhecidas
 
-- **Sem testes** (backend ou frontend) e **sem migrations**. Validação hoje é manual/Docker; o simulador e `scripts/simular_vendas.py` servem como teste funcional do recomendador.
+- **Poucos testes**: há `tests/pipeline` (pytest, Fase 1), os testes de integração do caixa (`caixa/README.md`) e os `.cjs` do frontend; não há testes unitários do recomendador. **Sem migrations.** O laboratório, o A/B (`scripts/experimentos/ab_simulador.py`) e `scripts/simular_vendas.py` servem como teste funcional.
 - `scripts/simular_vendas.py` tem `--api` com default `http://localhost:8001` (porta antiga); passe `--api http://localhost:8000`.
 - O `.env` por padrão traz `OPENROUTER_MODEL=deepseek/deepseek-v4-flash` e uma chave real; o default em código é `deepseek/deepseek-chat`.
-- Promessas do artigo/pitch ainda parciais: estoque de segurança ainda é fixo (30% da demanda do ciclo), não derivado do erro de previsão; o perfil por dia da semana vem do dataset, não das vendas da própria loja.
+- Limitações declaradas do modelo: os padrões são do Equador (o feriado usa o calendário brasileiro em produção); cada série do Favorita é família × loja, não SKU; abaixo de 5 un/semana nenhum método supera a média; o +25% de demanda censurada e o custo de "cliente perdido" (50% do preço) são parâmetros de negócio, não estimados. No jogo (`/admin/simulador`) o pão não é descartado no fim do dia, ao contrário do laboratório.
 - `Product.status = "error"` existe nas constantes mas nenhum fluxo o atribui.
 - `RecommendationLog.window_start/window_end` são declarados como `Mapped[dt.date]` mas armazenados em coluna `DateTime`.
 - `SECRET_KEY` tem default fraco e CORS libera apenas `FRONTEND_ORIGINS` (`localhost`/`127.0.0.1` na porta do frontend). Acessar o app por outro host/IP exige ajustar `FRONTEND_ORIGINS` **e** `NEXT_PUBLIC_API_URL` (+ rebuild).

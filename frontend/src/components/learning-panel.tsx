@@ -31,7 +31,7 @@ import {
 import { api } from "@/lib/api";
 import { useI18n } from "@/lib/i18n";
 import { fmtDateTime, fmtNum } from "@/lib/format";
-import type { Explanation, LearningPanel as LearningPanelData, WeekProfile } from "@/lib/types";
+import type { Explanation, ForecastInfo, LearningPanel as LearningPanelData, WeekProfile } from "@/lib/types";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -115,7 +115,15 @@ export function LearningPanelDialog({
 
             {data.profile && <WeekProfileCard profile={data.profile} />}
 
+            {data.forecast?.source === "modelo" ? (
+              <ModelForecastCard forecast={data.forecast} formula={data.formula} />
+            ) : (
             <div>
+              {data.forecast?.model_ready && (
+                <p className="mb-2 rounded-xl bg-muted/50 p-3 text-xs text-muted-foreground">
+                  {t("forecast.ruleNote").replace("{n}", String(data.forecast.min_weeks))}
+                </p>
+              )}
               <p className="mb-2 text-sm font-bold">{t("aiPanel.blend")}</p>
               <div className="space-y-3 rounded-2xl border bg-muted/40 p-4">
                 <BlendRow
@@ -133,6 +141,7 @@ export function LearningPanelDialog({
                 <p className="rounded-xl bg-card p-3 text-center font-mono text-xs">{data.formula}</p>
               </div>
             </div>
+            )}
 
             {data.evolution.length > 1 && (
               <div>
@@ -357,6 +366,29 @@ function WeekProfileCard({ profile }: { profile: WeekProfile }) {
           </BarChart>
         </ResponsiveContainer>
       </div>
+      {profile.category_index && profile.source !== "padrao" && (
+        <div className="mt-4">
+          <p className="mb-1 text-xs font-semibold text-muted-foreground">{t("profile.compareTitle")}</p>
+          <div className="h-36">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart
+                data={profile.labels.map((l, i) => ({
+                  label: l,
+                  loja: Math.round((profile.index[i] - 1) * 100),
+                  categoria: Math.round(((profile.category_index ?? profile.index)[i] - 1) * 100),
+                }))}
+              >
+                <XAxis dataKey="label" tick={{ fontSize: 11 }} />
+                <YAxis tick={{ fontSize: 10 }} width={34} unit="%" />
+                <ReTooltip formatter={(v: number, name: string) => [`${v > 0 ? "+" : ""}${v}%`, name]} />
+                <Bar dataKey="categoria" name={t("profile.compareCategory")} fill="hsl(var(--muted-foreground))" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="loja" name={t("profile.compareStore")} fill="hsl(var(--ponto))" radius={[4, 4, 0, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+          <p className="text-[11px] text-muted-foreground">{t("profile.compareNote")}</p>
+        </div>
+      )}
       <div className="mt-2 grid grid-cols-7 gap-1 text-center">
         {profile.labels.map((l, i) => (
           <div key={l} className={`rounded-lg py-1 ${i === profile.peak_weekday ? "bg-ponto-soft" : "bg-muted/50"}`}>
@@ -369,12 +401,48 @@ function WeekProfileCard({ profile }: { profile: WeekProfile }) {
         {t("profile.minRule")
           .replace("{d}", fmtNum(Math.round(profile.reorder_days * 10) / 10))
           .replace("{q}", fmtNum(Math.round(profile.reorder_demand * 10) / 10))}{" "}
-        {profile.safety_method === "erro" && profile.sigma_daily !== null
+        {profile.safety_method === "modelo"
+          ? t("profile.safetyModel").replace("{p}", String(profile.service_level_pct))
+          : profile.safety_method === "erro" && profile.sigma_daily !== null
           ? t("profile.safetyError")
               .replace("{s}", fmtNum(Math.round(profile.sigma_daily * 10) / 10))
               .replace("{p}", String(profile.service_level_pct))
           : t("profile.safetyRule")}
       </p>
+    </div>
+  );
+}
+
+function ModelForecastCard({ forecast, formula }: { forecast: ForecastInfo; formula: string }) {
+  const { t } = useI18n();
+  const r = (v: number | null) => fmtNum(Math.round((v ?? 0) * 10) / 10);
+  return (
+    <div>
+      <p className="mb-2 flex items-center gap-2 text-sm font-bold">
+        {t("forecast.title")} <Badge variant="ai">{t("forecast.badge")}</Badge>
+      </p>
+      <div className="space-y-3 rounded-2xl border bg-muted/40 p-4">
+        <div className="grid grid-cols-3 gap-3 text-center">
+          <div className="rounded-xl bg-card p-3">
+            <p className="text-[11px] font-semibold uppercase text-muted-foreground">{t("forecast.week")}</p>
+            <p className="font-display text-2xl font-bold">{r(forecast.weekly)}</p>
+          </div>
+          <div className="rounded-xl bg-card p-3">
+            <p className="text-[11px] font-semibold uppercase text-muted-foreground">{t("forecast.upper")}</p>
+            <p className="font-display text-2xl font-bold text-ponto-ink">{r(forecast.upper)}</p>
+          </div>
+          <div className="rounded-xl bg-card p-3">
+            <p className="text-[11px] font-semibold uppercase text-muted-foreground">{t("forecast.weeks")}</p>
+            <p className="font-display text-2xl font-bold">{forecast.weeks}</p>
+          </div>
+        </div>
+        <p className="text-xs text-muted-foreground">
+          {t("forecast.explain")}
+          {forecast.has_last_year ? ` ${t("forecast.lastYear")}` : ""}
+          {forecast.holiday_days ? ` ${t("forecast.holiday").replace("{n}", String(forecast.holiday_days))}` : ""}
+        </p>
+        <p className="rounded-xl bg-card p-3 text-center font-mono text-xs">{formula}</p>
+      </div>
     </div>
   );
 }

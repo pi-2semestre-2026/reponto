@@ -13,7 +13,8 @@ from app.routers.dep import get_current_user, get_owned_market
 from app.schemas import LearningLogOut, LearningPanelOut, ProductCreateIn, ProductCreateOut, ProductOut, ProductUpdateIn, StockAdjustIn
 from app.services.categorizer import process_product_background
 from app.services.explainer import explain
-from app.services.recommender import compute_blend, formula_string, profile_payload, recalc_product
+from app.services.recommender import compute_blend, formula_string, profile_payload, recalc_product, refresh_stale_products
+from app.services.weekly_model import MIN_WEEKS, weekly_model
 from app.services.seed_data import DEFAULT_CATEGORY_NAME
 
 router = APIRouter(tags=["products"])
@@ -145,7 +146,12 @@ async def list_products(
         .options(selectinload(Product.category))
         .order_by(Product.created_at.desc())
     )
-    return result.scalars().all()
+    products = result.scalars().all()
+    # Weekday projection moves every day, and products switch to the weekly model
+    # as soon as it is trained: refresh what is stale (cheap once a day).
+    if await refresh_stale_products(db, market, list(products)):
+        await db.commit()
+    return products
 
 
 @router.patch("/products/{product_id}", response_model=ProductOut)
@@ -256,6 +262,18 @@ async def learning_panel(
         evolution=evolution,
         logs=[LearningLogOut.model_validate(log) for log in logs],
         profile=profile_payload(blend),
+        forecast={
+            "source": blend["forecast_source"],
+            "weekly": blend["weekly_forecast"],
+            "upper": blend["weekly_upper"],
+            "weeks": blend["model_weeks"],
+            "tier": blend["model_tier"],
+            "q95": blend["model_q95"],
+            "has_last_year": blend["model_has_last_year"],
+            "holiday_days": blend["model_holiday_days"],
+            "min_weeks": MIN_WEEKS,
+            "model_ready": weekly_model.ready,
+        },
     )
 
 

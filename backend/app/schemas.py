@@ -207,6 +207,7 @@ class LearningPanelOut(BaseModel):
     evolution: list[dict]
     logs: list[LearningLogOut]
     profile: dict | None = None
+    forecast: dict | None = None
 
 
 class AnalyticsQuery(BaseModel):

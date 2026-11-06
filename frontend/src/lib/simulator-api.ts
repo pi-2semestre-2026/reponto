@@ -101,11 +101,18 @@ export interface SimCoach {
   source: string;
 }
 
+export interface CustomProductIn {
+  name: string;
+  quantity: number;
+  price?: number | null;
+}
+
 export interface CreateSessionIn {
   scenario: string;
   days: number;
   cycle_days: number;
   seed?: number | null;
+  products?: CustomProductIn[] | null;
 }
 
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
@@ -142,4 +149,84 @@ export const simApi = {
   getSession: (sid: string) => request<{ sid: string; snapshot: SimSnapshot }>(`/sessions/${sid}`),
   report: (sid: string) => request<{ report: SimReport; coach: SimCoach }>(`/sessions/${sid}/report`),
   deleteSession: (sid: string) => request<{ ok: boolean }>(`/sessions/${sid}`, { method: "DELETE" }),
+};
+// ---------------------------------------------------------------- laboratório da banca
+
+export interface LabDay {
+  day: number;
+  date: string;
+  weekday: number;
+  label: string;
+  demand: number;
+  ai_forecast: number;
+  noai_forecast: number;
+  ai_sold: number;
+  noai_sold: number;
+  ai_stockout: boolean;
+  noai_stockout: boolean;
+  ai_stock: number;
+  noai_stock: number;
+  source: "modelo" | "regra";
+}
+
+export interface LabProduct {
+  key: string;
+  name: string;
+  category: string;
+  story: string;
+  cycle_days: number;
+  perishable: boolean;
+  labels: string[];
+  true_index: number[];
+  learned_index: number[];
+  pattern_error_pp: number | null;
+  pattern_error_series: { day: number; error_pp: number }[];
+  source: "modelo" | "regra";
+  switched_day: number | null;
+  model_weeks: number;
+  final_rate: number;
+  recommended: number;
+  confidence: string;
+  stock_ai: number;
+  stock_noai: number;
+  history: LabDay[];
+  wape_ai_28: number | null;
+  wape_noai_28: number | null;
+  stockouts_ai: number;
+  stockouts_noai: number;
+}
+
+export interface LabStore {
+  fill_pct: number | null;
+  stockout_days: number;
+  revenue: number;
+  cost: number;
+  lost_r: number;
+  waste_r: number;
+  avg_stock_value: number;
+}
+
+export interface LabSnapshot {
+  kind: "lab";
+  seed: number;
+  day_index: number;
+  total_days: number;
+  date: string;
+  weekday: string;
+  done: boolean;
+  customers_per_day: number;
+  products: LabProduct[];
+  stores: { ai: LabStore; noai: LabStore };
+  shifts: { kind: string; label: string; day: number; date: string; product: string }[];
+  available_shifts: { kind: string; label: string }[];
+}
+
+export const labApi = {
+  create: (seed?: number | null) =>
+    request<{ sid: string; snapshot: LabSnapshot }>("/lab", { method: "POST", body: JSON.stringify({ seed: seed ?? null }) }),
+  step: (sid: string, days: number) =>
+    request<{ snapshot: LabSnapshot }>(`/lab/${sid}/step`, { method: "POST", body: JSON.stringify({ days }) }),
+  shift: (sid: string, kind: string) =>
+    request<{ snapshot: LabSnapshot }>(`/lab/${sid}/shift`, { method: "POST", body: JSON.stringify({ kind }) }),
+  remove: (sid: string) => request<{ ok: boolean }>(`/lab/${sid}`, { method: "DELETE" }),
 };

@@ -85,7 +85,12 @@ def build_facts(product, market, blend: dict) -> dict:
         "dias_reposicao": round(blend["reorder_days"], 1),
         "metodo_seguranca": blend["safety_method"],
         "erro_diario": round(blend["sigma_daily"], 1) if blend["sigma_daily"] is not None else None,
-        "nivel_servico_pct": fm.SERVICE_LEVEL_PCT if blend["safety_method"] == "erro" else None,
+        "nivel_servico_pct": round(blend["service_level"] * 100) if blend["safety_method"] in ("erro", "modelo") else None,
+        "perecivel": blend.get("perishable", False),
+        "fonte_previsao": blend.get("forecast_source", "regra"),
+        "semanas_historico": blend.get("model_weeks"),
+        "previsao_semana": round(blend["weekly_forecast"], 1) if blend.get("weekly_forecast") is not None else None,
+        "limite_semana": round(blend["weekly_upper"], 1) if blend.get("weekly_upper") is not None else None,
     }
 
 
@@ -107,6 +112,9 @@ NUMERIC_FACTS = (
     ("dias_reposicao", "dias cobertos pelo mínimo"),
     ("erro_diario", "erro típico por dia"),
     ("nivel_servico_pct", "nível de serviço"),
+    ("semanas_historico", "semanas de histórico"),
+    ("previsao_semana", "previsão da semana"),
+    ("limite_semana", "limite de 95% da semana"),
 )
 
 
@@ -143,6 +151,13 @@ def template_text(f: dict) -> str:
             f"Essa margem vem do erro típico da previsão, de {fmt(f['erro_diario'])} {u} por dia, "
             f"e protege contra falta em {f['nivel_servico_pct']}% dos ciclos."
         )
+    if f["fonte_previsao"] == "modelo":
+        parts.append(
+            f"A previsão vem do modelo treinado e testado com vendas reais de supermercados, aplicado às últimas "
+            f"{f['semanas_historico']} semanas deste produto na sua loja: {fmt(f['previsao_semana'])} {u} nesta semana, "
+            f"e no máximo {fmt(f['limite_semana'])} em {f['nivel_servico_pct']}% das semanas, que é o que a margem cobre."
+        )
+        return " ".join(parts)
     n = f["vendas_registradas"]
     if n == 0:
         parts.append("Como ainda não há vendas registradas, a estimativa usa o padrão de mercados parecidos.")
@@ -244,6 +259,14 @@ def facts_for_prompt(f: dict) -> str:
             f"A margem de segurança vem do erro típico da previsão: {fmt(f['erro_diario'])} {u} por dia, "
             f"para não faltar em {f['nivel_servico_pct']}% dos ciclos"
         )
+    if f["fonte_previsao"] == "modelo":
+        lines += [
+            f"Origem da previsão: modelo treinado e testado com vendas reais de supermercados, usando as últimas {f['semanas_historico']} semanas deste produto nesta loja",
+            f"Previsão desta semana: {fmt(f['previsao_semana'])} {u}",
+            f"Limite que cobre {f['nivel_servico_pct']}% das semanas: {fmt(f['limite_semana'])} {u} (a margem de segurança cobre esse limite)",
+            f"Confiança: {f['confianca']}",
+        ]
+        return "\n".join(lines)
     lines += [
         f"Vendas da loja usadas no cálculo: {f['vendas_registradas']}",
         f"Peso das vendas da loja na estimativa: {f['peso_vendas_loja_pct']}%",
@@ -262,7 +285,7 @@ SYSTEM_PROMPT = (
     "- Diga quanto comprar (ou que não precisa comprar) e por quê: ritmo de venda e quantos dias o estoque dura.\n"
     "- Cite sempre a venda estimada por dia.\n"
     "- Se houver um dia em que o produto vende mais nesta loja, mencione isso.\n"
-    "- Diga de onde vem a estimativa: vendas da própria loja e padrão de mercados parecidos.\n"
+    "- Diga de onde vem a estimativa: vendas da própria loja e padrão de mercados parecidos (ou o modelo treinado, se for o caso).\n"
     "- 3 ou 4 frases curtas, tom direto e respeitoso, sem listas e sem markdown.\n"
     "- Não use as palavras alpha, prior, blend, LightGBM ou 'taxa observada'."
 )

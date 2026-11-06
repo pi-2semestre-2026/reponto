@@ -115,6 +115,20 @@ export interface LearningPanel {
   evolution: { t: string; final_rate: number; prior_rate: number; observed_rate: number }[];
   logs: LearningLog[];
   profile: WeekProfile | null;
+  forecast?: ForecastInfo | null;
+}
+
+export interface ForecastInfo {
+  source: "modelo" | "regra";
+  weekly: number | null;
+  upper: number | null;
+  weeks: number | null;
+  tier: string | null;
+  q95: number | null;
+  has_last_year: boolean | null;
+  holiday_days: number | null;
+  min_weeks: number;
+  model_ready: boolean;
 }
 
 export interface WeekProfile {
@@ -122,12 +136,13 @@ export interface WeekProfile {
   days_observed: number;
   index: number[];
   store_index: number[];
+  category_index?: number[];
   labels: string[];
   next_days: { date: string; weekday: number; label: string; qty: number }[];
   cycle_demand: number;
   reorder_days: number;
   reorder_demand: number;
-  safety_method: "erro" | "regra";
+  safety_method: "erro" | "regra" | "modelo";
   sigma_daily: number | null;
   service_level_pct: number;
   peak_weekday: number;
@@ -258,7 +273,7 @@ export interface Explanation {
 }
 
 export interface ModelScore {
-  key: "lgbm" | "ma4" | "naive" | "snaive";
+  key: "lgbm" | "ema" | "ma4" | "naive" | "snaive";
   name: string;
   mae: number;
   mape: number;
@@ -293,5 +308,11 @@ export interface Evaluation {
   by_size?: { size_bucket: number; label: string; lgbm_wape: number; ma4_wape: number }[];
   samples?: { label: string; lgbm_wape: number; ma4_wape: number; points: { week: string; actual: number; lgbm: number | null; ma4: number | null }[] }[];
   feature_importance?: { feature: string; label: string; pct: number }[];
-  production_model?: { ready: boolean; kind: string; overall_mean: number | null };
+  production_model?: { ready: boolean; kind: string; seasonal_ready?: boolean; trained_through?: string | null };
+  validation_models?: ModelScore[];
+  improvement_vs_ema_pct?: number | null;
+  improvement_small_vs_ma4_pct?: number | null;
+  calibration?: { target_pct: number; coverage_pct: number; calibrated_on: string; measured_on: string };
+  by_tier?: { tier: string; label: string; rows: number; series: number; lgbm_wape: number; ma4_wape: number; ema_wape: number; q95: number; coverage_pct: number }[];
+  by_category?: { category: string; series: number; lgbm_wape: number; ma4_wape: number; ema_wape: number }[];
 }

@@ -16,26 +16,37 @@ import random
 from simulator.brain import SimRecommender
 from simulator.ground_truth import DemandOracle
 from simulator.metrics import running_summary
-from simulator.scenarios import SCENARIOS, build_catalog
+from simulator.scenarios import SCENARIOS, build_catalog, build_custom_catalog
 
 MIN_DAYS = 7
 MAX_DAYS = 1095
 
 
 class SimulationEngine:
-    def __init__(self, scenario_key: str, days: int, cycle_days: int = 7, seed: int | None = None) -> None:
+    def __init__(
+        self,
+        scenario_key: str,
+        days: int,
+        cycle_days: int = 7,
+        seed: int | None = None,
+        custom_products: list[dict] | None = None,
+    ) -> None:
         scenario = SCENARIOS.get(scenario_key)
         if scenario is None:
             raise ValueError("cenário inválido")
         self.scenario_key = scenario.key
-        self.scenario_name = scenario.name
+        self.scenario_name = f"{scenario.name} · meus produtos" if custom_products else scenario.name
         self.customers_per_day = scenario.customers_per_day
         self.total_days = max(MIN_DAYS, min(MAX_DAYS, int(days)))
         self.cycle_days = max(1, min(30, int(cycle_days)))
         self.seed = seed if seed is not None else random.SystemRandom().randrange(1, 10**6)
 
         self.rng = random.Random(self.seed)
-        self.catalog = build_catalog(scenario, self.rng)
+        self.catalog = (
+            build_custom_catalog(custom_products, self.rng)
+            if custom_products
+            else build_catalog(scenario, self.rng)
+        )
         self.oracle = DemandOracle(self.catalog, self.seed)
         self.brain = SimRecommender(self.customers_per_day, self.cycle_days)
 
@@ -49,7 +60,7 @@ class SimulationEngine:
         self.lost_revenue = 0.0
 
         self.state: dict[str, dict] = {
-            p["key"]: {"stock": 0.0, "history": {}, "rec": None, "restocked_today": 0}
+            p["key"]: {"stock": 0.0, "history": {}, "rec": None, "restocked_today": 0, "sold_out": set()}
             for p in self.catalog
         }
         self._seed_shelves()
@@ -62,8 +73,12 @@ class SimulationEngine:
     def _seed_shelves(self) -> None:
         """The owner opens the market with a stocked shelf — like the real
         onboarding flow, where a product is created with initial stock.
-        Owner intuition = category-typical pace (no oracle info)."""
+        Owner intuition = category-typical pace (no oracle info), unless the
+        owner typed the quantity he actually has."""
         for p in self.catalog:
+            if "initial_stock" in p:
+                self.state[p["key"]]["stock"] = p["initial_stock"]
+                continue
             prior, _, _ = self.brain.prior_rate(p["category"], self.start_date)
             self.state[p["key"]]["stock"] = round(2.0 * self.cycle_days * prior, 1)
 
@@ -80,7 +95,7 @@ class SimulationEngine:
         buys: dict[str, int] = {}
         for p in self.catalog:
             st = self.state[p["key"]]
-            rec = self.brain.recommend(p, st["history"], date, st["stock"], self.store_history)
+            rec = self.brain.recommend(p, st["history"], date, st["stock"], self.store_history, st["sold_out"])
             st["rec"] = rec
             buy = max(0, round(rec["recommended_quantity"] - st["stock"]))
             st["stock"] += buy
@@ -121,6 +136,8 @@ class SimulationEngine:
             sold = min(demand, int(st["stock"]))
             lost = demand - sold
             st["stock"] = max(0.0, st["stock"] - sold)
+            if st["stock"] <= 0:
+                st["sold_out"].add(date)
             if sold > 0:
                 n_tx = max(1, round(sold / p["ups"]))
                 prev = st["history"].get(date, (0.0, 0))
