@@ -6,6 +6,8 @@ dependencies = ["pandas==2.2.3", "numpy==2.1.3", "pyarrow>=18"]
 
 [project.optional-dependencies]
 dev = ["jupyterlab", "matplotlib", "pytest"]
+# Download of the item-level Favorita dataset (scripts/baixar_favorita_itens.py).
+dados = ["kagglehub>=1.0", "py7zr>=1.0"]
 
 [build-system]
 requires = ["setuptools>=68"]
