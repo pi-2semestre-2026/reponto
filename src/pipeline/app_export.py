@@ -72,6 +72,9 @@ GAP_MIN_MEDIAN = 20.0
 
 EXCLUDED_DAYS = pd.to_datetime(["2013-01-01", "2014-01-01", "2015-01-01", "2016-01-01", "2017-01-01"])
 EARTHQUAKE = (pd.Timestamp("2016-04-16"), pd.Timestamp("2016-05-15"))
+# Weeks (Monday labels) whose sales the earthquake distorted: kept in the file (they are
+# history for the lags) but flagged `shock` so they are never used as training targets.
+SHOCK_WEEKS = (pd.Timestamp("2016-04-11"), pd.Timestamp("2016-05-09"))
 
 
 def national_holidays(holidays: pd.DataFrame) -> pd.Series:
@@ -90,6 +93,9 @@ def store_size_buckets(daily: pd.DataFrame) -> pd.Series:
     return pd.Series(pd.qcut(volume.rank(method="first"), 4, labels=False), index=volume.index).astype(int)
 
 
+GAP_WEEKS_FOUND: list[tuple[str, pd.Timestamp]] = []
+
+
 def split_at_gaps(weekly: pd.DataFrame) -> pd.DataFrame:
     """Drop registration-gap weeks and number the remaining stretches (`segment`)."""
     out = []
@@ -103,6 +109,8 @@ def split_at_gaps(weekly: pd.DataFrame) -> pd.DataFrame:
         s["segment"] = pd.Series(gap).cumsum().to_numpy()
         s["segment"] = s["segment"].where(~gap).ffill().fillna(0).astype(int)
         out.append(s[~gap])
+        if gap.any():
+            GAP_WEEKS_FOUND.extend((k, w) for k, w in zip(s.loc[gap, "store_nbr"].astype(str) + "|" + s.loc[gap, "family"], s.loc[gap, "week_start"]))
     res = pd.concat(out, ignore_index=True)
     # renumber segments 0..n per series
     res["segment"] = res.groupby(SERIES_KEYS)["segment"].rank(method="dense").astype(int) - 1
@@ -114,7 +122,13 @@ def weekly_export(daily: pd.DataFrame, holidays: pd.DataFrame, sizes: pd.Series)
     weekly["family"] = weekly["family"].astype(str)
     born = weekly[weekly["sales"] > 0].groupby(SERIES_KEYS)["week_start"].min().rename("born")
     weekly = weekly.merge(born, on=SERIES_KEYS)
-    weekly = weekly[weekly["week_start"] >= weekly["born"]].drop(columns=["born", "onpromotion", "n_days"])
+    weekly = weekly[weekly["week_start"] >= weekly["born"]].drop(columns=["born"])
+    # Promotion intensity: items of the family on promotion, per day of the week.
+    # The app has no promotion field, so in production the model is asked for a
+    # week WITHOUT promotion: it learns how much promotions inflate sales and
+    # forecasts the normal-week demand instead of chasing past promo spikes.
+    weekly["promo"] = (weekly["onpromotion"] / weekly["n_days"]).round(3)
+    weekly = weekly.drop(columns=["onpromotion", "n_days"])
     weekly = split_at_gaps(weekly)
 
     hol = national_holidays(holidays)
@@ -123,7 +137,8 @@ def weekly_export(daily: pd.DataFrame, holidays: pd.DataFrame, sizes: pd.Series)
     weekly["category"] = weekly["family"].map(FAMILY_TO_CATEGORY)
     weekly["size_bucket"] = weekly["store_nbr"].map(sizes).astype(int)
     weekly["sales"] = weekly["sales"].round(3)
-    cols = ["store_nbr", "family", "segment", "category", "size_bucket", "week_start", "sales", "holiday_days"]
+    weekly["shock"] = weekly["week_start"].between(*SHOCK_WEEKS).astype(int)
+    cols = ["store_nbr", "family", "segment", "category", "size_bucket", "week_start", "sales", "promo", "holiday_days", "shock"]
     return weekly[cols].sort_values(["store_nbr", "family", "week_start"]).reset_index(drop=True)
 
 
@@ -132,8 +147,8 @@ def daily_profile(daily: pd.DataFrame, sizes: pd.Series) -> pd.DataFrame:
 
     Each series-day is divided by the series' centered one-year moving average,
     so growth over 2013-2017 does not leak into the month effect. Only days after
-    the series starts selling count; 1 January (stores closed) and the 2016
-    earthquake month are left out.
+    the series starts selling count; 1 January (stores closed), the 2016
+    earthquake month and registration gaps (run weekly_export first) are left out.
     """
     df = daily[["date", "store_nbr", "family", "sales"]].copy()
     df["family"] = df["family"].astype(str)
@@ -146,6 +161,12 @@ def daily_profile(daily: pd.DataFrame, sizes: pd.Series) -> pd.DataFrame:
     )
     df = df[(df["trend"] > 0) & ~df["date"].isin(EXCLUDED_DAYS)]
     df = df[~df["date"].between(*EARTHQUAKE)]
+    if GAP_WEEKS_FOUND:  # registration gaps found by weekly_export: not demand, not seasonality
+        gaps = pd.DataFrame(GAP_WEEKS_FOUND, columns=["sid", "week_start"]).assign(gap=True)
+        df["sid"] = df["store_nbr"].astype(str) + "|" + df["family"]
+        df["week_start"] = df["date"] - pd.to_timedelta(df["date"].dt.weekday, unit="D")
+        df = df.merge(gaps, on=["sid", "week_start"], how="left")
+        df = df[df["gap"].isna()].drop(columns=["sid", "week_start", "gap"])
     df["index"] = (df["sales"] / df["trend"]).clip(upper=10)
     df["category"] = df["family"].map(FAMILY_TO_CATEGORY)
     df["size_bucket"] = df["store_nbr"].map(sizes).astype(int)

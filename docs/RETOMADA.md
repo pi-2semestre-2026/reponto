@@ -38,3 +38,26 @@ Requisitos do professor, todos atendidos:
 - Testes unitários do recomendador (`forecast_math`) com pytest.
 - No jogo `/admin/simulador`, descartar a sobra de pão no fim do dia, como o laboratório faz.
 - `caixa/test_sync.cjs` falha (`empty-markets` indefinido) desde os commits de interface do colega no `main` (pasta `caixa/` idêntica ao main): avisar o colega.
+
+## Frente A (dados de treino) — 2026-11-10
+
+Pergunta do usuário: como resolver o problema dos dados de treino que prejudicam a previsão?
+Plano: **A** (terminar a limpeza) → **C** (recalibrar a margem com o erro da própria loja) → **B** (dados por item).
+
+Frente A concluída, com cada mudança testada na validação (`scripts/experimentos/frente_a.py`):
+
+| Validação | WAPE | séries < 200/sem | semanas sem promoção | viés |
+|---|---|---|---|---|
+| atual | 8,89 | 23,77 | 16,37 | +0,89 |
+| sem terremoto no treino | 8,91 | 23,75 | 16,34 | +0,90 |
+| + promoção bruta | 9,33 | 23,62 | 16,23 | +0,08 |
+| + promoção sem escala | 9,04 | 23,57 | 16,73 | +0,56 |
+
+- **Ficou:** semanas do terremoto fora do treino, mas **dentro da calibração**. Na primeira tentativa elas saíram também da calibração e a cobertura caiu para 94,0%. Também ficou o perfil diário sem os apagões, com reingestão por conteúdo.
+- **Não ficou:** promoção como atributo. Não ganha de forma clara, e o app não registra promoções; a coluna fica no export.
+- **Teste final:** WAPE 8,02% (antes 8,06%), −22% contra a regra anterior, cobertura de 94,9%, viés −0,2%.
+- **Conclusão:** a limpeza barata se esgotou. O que falta é dado mais parecido com um SKU de mercadinho (frente B) ou dado da própria loja (frente C).
+
+**Frente B:** o usuário precisa baixar o *Favorita Grocery Sales Forecasting* (Kaggle, por item, ~5 GB) para `data/raw/`. Ele entra como fonte principal do modelo semanal, e o recorte atual continua alimentando o perfil por categoria.
+
+**Frente C:** recalibrar os quantis da margem com os resíduos (previsto × vendido) de cada loja, semana a semana, e mostrar a cobertura da loja no painel e no laboratório.

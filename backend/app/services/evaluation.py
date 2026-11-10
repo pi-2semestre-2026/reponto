@@ -44,7 +44,7 @@ from app.services import weekly_model as wm
 
 logger = logging.getLogger("evaluation")
 
-EVAL_VERSION = 3
+EVAL_VERSION = 4
 TEST_WEEKS = 52
 VALIDATION_WEEKS = 52
 REFIT_EVERY = 13

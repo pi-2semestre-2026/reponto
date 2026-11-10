@@ -191,7 +191,7 @@ Usa os dados reais do Favorita (`datasets/favorita/semanal.csv.gz`, 3.214 trecho
 
 Roda em thread na inicialização (~3 min) se `EVAL_VERSION`/`weekly_model.MODEL_VERSION` mudarem, ou via `POST /ml/evaluation/run`.
 
-Resultado no teste: **WAPE 8,06%** contra 10,24% da regra anterior (−21%) e 10,2% da média móvel; viés ≈ 0; cobertura do limite de 95% de 95,1% (de 94,6% a 96,5% por faixa). Abaixo de 5 un/semana o modelo empata com a média móvel (ruído de contagem).
+Resultado no teste: **WAPE 8,02%** contra 10,24% da regra anterior (−22%) e 10,2% da média móvel; viés −0,2%; cobertura do limite de 95% de 94,9% (de 94,6% a 96,4% por faixa). Abaixo de 5 un/semana o modelo empata com a média móvel (ruído de contagem). As semanas do terremoto de 2016 (`shock`) ficam fora do **treino** (`fit_rows`), mas entram na **calibração**: choques acontecem na vida real e a margem precisa vê-los.
 
 ### 4.7 Tempo
 
@@ -212,9 +212,9 @@ O banco guarda UTC; o produto fala em "dia do mercado" (`America/Sao_Paulo`, `AP
 
 ## 6. Dataset
 
-- **Favorita** (dados reais de uma rede de supermercados do Equador; ativo): o bruto fica em `data/raw/favorita/` (fora do git). `python -m pipeline.app_export` gera `datasets/favorita/` com `semanal.csv.gz` (treino do modelo semanal) e `perfil_diario.csv` (perfil sazonal por categoria, que o `ml.py` usa para produtos sem histórico). Tratamentos: zeros iniciais removidos, séries cortadas em apagões de registro (3+ semanas zeradas numa série de 20+/semana), perfil sem tendência. Ficha e limitações em `datasets/favorita/README.md`.
+- **Favorita** (dados reais de uma rede de supermercados do Equador; ativo): o bruto fica em `data/raw/favorita/` (fora do git). `python -m pipeline.app_export` gera `datasets/favorita/` com `semanal.csv.gz` (treino do modelo semanal) e `perfil_diario.csv` (perfil sazonal por categoria, que o `ml.py` usa para produtos sem histórico). Tratamentos: zeros iniciais removidos, séries cortadas em apagões de registro (3+ semanas zeradas numa série de 20+/semana), semanas do terremoto marcadas (`shock`), perfil sem tendência e sem os apagões. A coluna `promo` é exportada, mas **não** é usada pelo modelo: testada na validação (`scripts/experimentos/frente_a.py`), não ganhou de forma clara, e o app não registra promoções. O backend reingere o perfil e retreina o `ml.py` quando o **conteúdo** do arquivo muda, não só quando mudam as categorias. Ficha e limitações em `datasets/favorita/README.md`.
 - **Store Item Demand** (Kaggle, sintético): reserva do `datasets.py`, usado só se o Favorita não estiver presente.
-- Trocar de dataset = adapter em `app/services/datasets.py`. O `ml.py` retreina sozinho quando o conjunto de famílias muda (`MODEL_VERSION` = 3).
+- Trocar de dataset = adapter em `app/services/datasets.py`. O `ml.py` retreina sozinho quando o conjunto de famílias ou os valores do perfil mudam (`MODEL_VERSION` = 4).
 
 ## 7. Simulador (`backend/simulator/`, rota `/admin/simulador`)
 

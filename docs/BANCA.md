@@ -45,9 +45,9 @@ python scripts/popular_demo.py --email banca@reponto.com.br --days 91   # 3 mese
 
 | O que mostrar | Número | O que significa |
 |---|---|---|
-| Erro do modelo × regra anterior do app | **8,06% × 10,24% (−21%)** | Erra 1/5 a menos que a regra antiga |
-| Erro × média móvel (o que faria uma planilha) | 8,06% × 10,20% | Ganha da planilha |
-| Margem de 95% acerta | **95,1%** das semanas | A margem de segurança é honesta, nem exagerada nem curta |
+| Erro do modelo × regra anterior do app | **8,02% × 10,24% (−22%)** | Erra 1/5 a menos que a regra antiga |
+| Erro × média móvel (o que faria uma planilha) | 8,02% × 10,20% | Ganha da planilha |
+| Margem de 95% acerta | **94,9%** das semanas | A margem de segurança é honesta, nem exagerada nem curta |
 | Por volume (tabela) | vence em todas as faixas; empata abaixo de 5/semana | Honestidade: produto que vende 2 por semana é quase sorte |
 | Validação × teste | escolhido no ano de validação, confirmado no ano de teste | O número não é otimista: o teste ficou guardado |
 

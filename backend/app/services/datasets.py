@@ -125,6 +125,10 @@ class FavoritaAdapter:
     def families(self) -> list[str]:
         return sorted(pd.read_csv(self.path(), usecols=["category"])["category"].unique().tolist())
 
+    def fingerprint(self) -> float:
+        """Sum of the profile values: changes when the export is regenerated with different data."""
+        return float(pd.read_csv(self.path(), usecols=["index"])["index"].sum())
+
     def aggregate(self) -> list[AggregateRow]:
         df = pd.read_csv(self.path())
         if df.empty:
@@ -170,7 +174,16 @@ async def run_ingestion() -> int:
             )
         ).scalar() or 0
         total = (await session.execute(select(func.count(DatasetAggregate.id)))).scalar() or 0
-        if ours > 0 and ours == total:
+        fingerprint = adapter.fingerprint() if hasattr(adapter, "fingerprint") else None
+        stored = None
+        if fingerprint is not None and ours > 0:
+            stored = (
+                await session.execute(
+                    select(func.sum(DatasetAggregate.avg_sales_per_tx)).where(DatasetAggregate.family.in_(families))
+                )
+            ).scalar()
+        same_content = fingerprint is None or (stored is not None and abs(float(stored) - fingerprint) < 1e-3)
+        if ours > 0 and ours == total and same_content:
             logger.info("dataset já ingerido (%d linhas) — pulando leitura dos CSVs", ours)
             return ours
 
