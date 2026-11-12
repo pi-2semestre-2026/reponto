@@ -359,6 +359,10 @@ async def explain(session, product, market, last_log_id: int | None, refresh: bo
     result["facts"] = facts
     result["llm_enabled"] = bool(settings.OPENROUTER_API_KEY)
     result["elapsed_ms"] = round((time.perf_counter() - started) * 1000)
+    # The LLM was expected but did not answer (network, provider down): show the
+    # template now, but do not keep it, so the next opening tries the LLM again.
+    if result["llm_enabled"] and not candidate:
+        return result
     if len(_cache) >= CACHE_MAX:
         _cache.pop(next(iter(_cache)))
     _cache[key] = result
