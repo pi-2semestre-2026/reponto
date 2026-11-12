@@ -40,15 +40,16 @@ python scripts/popular_demo.py --email banca@reponto.com.br --days 91   # 3 mese
 
 ## 3. O modelo funciona? (4 min): `/modelo`, prova com dados reais
 
-> "Não testamos com dados inventados. Usamos 4,5 anos de vendas reais de 54 supermercados (dataset
-> Favorita): 1.729 séries de produto × loja."
+> "Não testamos com dados inventados. Usamos 4,5 anos de vendas reais de uma rede de supermercados
+> (dataset Favorita): 4.000 produtos em suas lojas, cada um uma série loja × produto, como no app."
 
 | O que mostrar | Número | O que significa |
 |---|---|---|
-| Erro do modelo × regra anterior do app | **8,02% × 10,24% (−22%)** | Erra 1/5 a menos que a regra antiga |
-| Erro × média móvel (o que faria uma planilha) | 8,02% × 10,20% | Ganha da planilha |
-| Margem de 95% acerta | **94,9%** das semanas | A margem de segurança é honesta, nem exagerada nem curta |
-| Por volume (tabela) | vence em todas as faixas; empata abaixo de 5/semana | Honestidade: produto que vende 2 por semana é quase sorte |
+| Erro do modelo × regra anterior do app | **20,3% × 23,1% (−12%)** | Erra 1/8 a menos que a regra antiga, por produto |
+| Erro × média móvel (o que faria uma planilha) | 20,3% × 23,3% (−13%) | Ganha da planilha |
+| Séries em que o modelo vence a planilha | **76%** | Não é uma média boa puxada por poucos produtos |
+| Margem de 95% acerta | **94,1%** das semanas | A margem de segurança é honesta, nem exagerada nem curta |
+| Por volume (tabela) | vence a partir de 5/semana; abaixo disso a regra simples é levemente melhor | Honestidade: produto que vende 2 por semana é quase sorte |
 | Validação × teste | escolhido no ano de validação, confirmado no ano de teste | O número não é otimista: o teste ficou guardado |
 
 **Prova extra do "ritmo da semana"** (Fase 3, `scripts/experimentos/perfil_dia_semana.py`): distribuir a
@@ -76,12 +77,13 @@ venda da semana pelos dias com o padrão de cada produto e loja erra **12,2%**. 
 | Procura atendida | ~93% | ~89% |
 | Dias com falta de produto | ~45 | ~90 |
 | Vendas perdidas | ~R$ 2,1 mil | ~R$ 8,3 mil |
-| Lucro | **+7%** | — |
+| Lucro | **+5%** | — |
 
 ## 5. Decisões de engenharia que valem perguntas (2 min)
 
 - **Validação sem vazamento:** cada previsão só usa semanas anteriores, e o modelo foi escolhido na validação e reportado no teste.
 - **Qualidade dos dados:** encontramos semanas de "apagão de registro" no Favorita (a série zera por semanas e volta). Elas ensinavam ao modelo saltos de 50× e foram tratadas como falha, não como demanda zero.
+- **Dados do nível certo:** o primeiro modelo foi treinado com *famílias* de produto por loja e, medido em produtos individuais, perdia para a média móvel. Trocamos o treino para dados **por item** (outro dataset da mesma rede). O erro caiu 7% na validação e ele passou a vencer. Misturar os dois níveis piorava.
 - **Perecíveis:** o pão não mira 95% de atendimento. A regra do jornaleiro equilibra o custo de jogar fora com o de perder o cliente.
 - **Demanda censurada:** quando esgota, a venda registrada é só um piso da procura. Sem corrigir isso, o sistema entra numa espiral de comprar cada vez menos.
 - **Trava de sanidade:** a previsão nunca passa de 4× (nem fica abaixo de ¼) do ritmo recente do produto.
@@ -89,7 +91,7 @@ venda da semana pelos dias com o padrão de cada produto e loja erra **12,2%**. 
 ## 6. Limitações (dizer antes que perguntem)
 
 - Os dados de treino são do Equador. Natal e fim de semana se transferem bem, mas Carnaval, Dia das Mães e Black Friday não estão nos dados. Em produção, o feriado usa o calendário do Brasil e o ritmo da semana vem da própria loja.
-- O Favorita mede famílias de produto por loja, não itens. Por isso o modelo usa atributos sem escala e foi avaliado por faixa de volume.
+- Os dados são de produtos de supermercados maiores que um mercadinho. Por isso o modelo usa atributos sem escala e foi avaliado por faixa de volume.
 - O nível inicial de um produto novo ainda vem de referências por categoria; ele se ajusta com as vendas.
 - O laboratório usa um mercado simulado. O ganho real precisa ser confirmado num piloto com uma loja de verdade.
 

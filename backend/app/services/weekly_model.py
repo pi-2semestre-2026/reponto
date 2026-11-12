@@ -39,7 +39,7 @@ import pandas as pd
 
 logger = logging.getLogger("weekly_model")
 
-MODEL_VERSION = 4
+MODEL_VERSION = 5
 LEVEL_WEEKS = 8
 MIN_WEEKS = 8
 MAX_HISTORY_WEEKS = 60
@@ -260,7 +260,13 @@ def conformal_quantiles(actual, forecast, level, q: float = SERVICE_QUANTILE) ->
     out = {}
     for i, label in enumerate(TIER_LABELS):
         r = ratio[tiers == i]
-        src = r if len(r) >= MIN_TIER_ROWS else ratio
+        # Too few rows: borrow the NEIGHBOUR tiers (closest volume first), never the
+        # overall pool — the overall bound is driven by the noisy small series and,
+        # pushed down by the monotonic rule below, would inflate every larger tier.
+        src, lo_t, hi_t = r, i, i
+        while len(src) < MIN_TIER_ROWS and (lo_t > 0 or hi_t < len(TIER_LABELS) - 1):
+            lo_t, hi_t = max(0, lo_t - 1), min(len(TIER_LABELS) - 1, hi_t + 1)
+            src = ratio[(tiers >= lo_t) & (tiers <= hi_t)]
         levels = {str(lv): round(float(np.quantile(src, lv)), 4) for lv in SERVICE_LEVELS} if len(src) else {}
         out[label] = {"q": round(float(np.quantile(src, q)), 4) if len(src) else 2.0, "levels": levels, "n": int(len(r))}
     # The multiplier must not grow with volume: larger series are relatively more predictable.

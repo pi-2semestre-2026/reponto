@@ -44,7 +44,19 @@ from app.services import weekly_model as wm
 
 logger = logging.getLogger("evaluation")
 
-EVAL_VERSION = 4
+EVAL_VERSION = 5
+# Training/validation data. Item level (store x product) was chosen over the family
+# level on the validation year (scripts/experimentos/frente_b.py): the family-trained
+# model did not transfer to single products (worse than the moving average there).
+TRAINING_DATASETS = ("favorita_itens", "favorita")
+
+
+def training_dataset() -> str:
+    """First available dataset of TRAINING_DATASETS."""
+    for name in TRAINING_DATASETS:
+        if dataset_file(name).exists():
+            return name
+    return TRAINING_DATASETS[-1]
 TEST_WEEKS = 52
 VALIDATION_WEEKS = 52
 REFIT_EVERY = 13
@@ -79,17 +91,19 @@ def _result_path() -> str:
 # ---------------------------------------------------------------- data
 
 
-def dataset_file() -> Path:
-    return Path(get_settings().DATASET_DIR) / "favorita" / "semanal.csv.gz"
+def dataset_file(name: str = "favorita") -> Path:
+    """`favorita` = loja x família; `favorita_itens` = loja x item (pipeline.app_export_itens)."""
+    return Path(get_settings().DATASET_DIR) / name / "semanal.csv.gz"
 
 
-def load_weekly() -> pd.DataFrame:
-    path = dataset_file()
+def load_weekly(name: str = "favorita") -> pd.DataFrame:
+    path = dataset_file(name)
     if not path.exists():
-        raise FileNotFoundError(f"{path} não encontrado — gere com `python -m pipeline.app_export`")
+        raise FileNotFoundError(f"{path} não encontrado — gere com `python -m pipeline.app_export` (ou app_export_itens)")
     w = pd.read_csv(path, parse_dates=["week_start"])
     segment = w["segment"].astype(str) if "segment" in w else "0"
-    w["series"] = w["store_nbr"].astype(str) + "|" + w["family"] + "|" + segment
+    unit = ("i" + w["item_nbr"].astype(str)) if "item_nbr" in w else w["family"]
+    w["series"] = w["store_nbr"].astype(str) + "|" + unit + "|" + segment
     return w
 
 
@@ -169,7 +183,9 @@ def gain(base: float | None, new: float | None) -> float | None:
 
 def run_backtest() -> dict:
     started = time.perf_counter()
-    weekly = load_weekly()
+    source = training_dataset()
+    weekly = load_weekly(source)
+    by_item = "item_nbr" in weekly
     data = wm.add_features(weekly)
     data["ema"] = ema_forecast(data)
     data = wm.trainable(data)
@@ -251,7 +267,9 @@ def run_backtest() -> dict:
         sid = candidates.index[len(candidates) // 2]
         s = test[test["series"] == sid].sort_values("week_start")
         hist = weekly[(weekly["series"] == sid) & (weekly["week_start"] < test_period[0])].tail(12)
-        store, family = sid.split("|")[:2]
+        store = sid.split("|")[0]
+        info = weekly.loc[weekly["series"] == sid].iloc[0]
+        family = f"{info['family']} (item {int(info['item_nbr'])})" if by_item else info["family"]
         points = [{"week": pd.Timestamp(r.week_start).date().isoformat(), "actual": round(float(r.sales), 1), "lgbm": None, "ma4": None, "upper": None} for r in hist.itertuples(index=False)]
         points += [
             {
@@ -265,7 +283,7 @@ def run_backtest() -> dict:
         ]
         samples.append(
             {
-                "label": f"{label} · loja {store}, {family.title()}",
+                "label": f"{label} · loja {store}, {family.capitalize() if by_item else family.title()}",
                 "lgbm_wape": wape_of(s, "lgbm"),
                 "ma4_wape": wape_of(s, "ma4"),
                 "coverage_pct": round(float(s["covered"].mean() * 100), 1),
@@ -284,7 +302,7 @@ def run_backtest() -> dict:
             "trained_through": trained_through,
             "quantiles": production_quantiles,
             "service_quantile": wm.SERVICE_QUANTILE,
-            "dataset": "Favorita (datasets/favorita/semanal.csv.gz)",
+            "dataset": f"Favorita (datasets/{source}/semanal.csv.gz)",
             "generated_at": dt.datetime.now(dt.timezone.utc).isoformat(),
         },
     )
@@ -302,10 +320,12 @@ def run_backtest() -> dict:
         "generated_at": dt.datetime.now(dt.timezone.utc).isoformat(),
         "elapsed_s": round(time.perf_counter() - started, 1),
         "dataset": {
-            "name": "Favorita — Store Sales (Kaggle), rede de supermercados do Equador",
+            "name": ("Favorita — Grocery Sales (Kaggle), produtos de uma rede de supermercados do Equador" if by_item
+                     else "Favorita — Store Sales (Kaggle), rede de supermercados do Equador"),
+            "level": "item" if by_item else "familia",
             "stores": int(weekly["store_nbr"].nunique()),
-            "items": int(weekly["family"].nunique()),
-            "series": int(weekly["series"].nunique()),
+            "items": int(weekly["item_nbr"].nunique() if by_item else weekly["family"].nunique()),
+            "series": int(weekly.groupby(["store_nbr", "item_nbr" if by_item else "family"]).ngroups),
             "weeks": int(weekly["week_start"].nunique()),
             "first_week": pd.Timestamp(weekly["week_start"].min()).date().isoformat(),
             "last_week": pd.Timestamp(weekly["week_start"].max()).date().isoformat(),
@@ -371,7 +391,7 @@ def load_result() -> dict | None:
 def _run_and_save() -> None:
     path = _result_path()
     try:
-        logger.info("backtest started (Favorita, validation %d + test %d weeks)", VALIDATION_WEEKS, TEST_WEEKS)
+        logger.info("backtest started (%s, validation %d + test %d weeks)", training_dataset(), VALIDATION_WEEKS, TEST_WEEKS)
         result = run_backtest()
         os.makedirs(os.path.dirname(path), exist_ok=True)
         with open(path, "w", encoding="utf8") as f:

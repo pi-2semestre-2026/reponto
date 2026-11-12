@@ -61,3 +61,24 @@ Frente A concluída, com cada mudança testada na validação (`scripts/experime
 **Frente B:** o usuário precisa baixar o *Favorita Grocery Sales Forecasting* (Kaggle, por item, ~5 GB) para `data/raw/`. Ele entra como fonte principal do modelo semanal, e o recorte atual continua alimentando o perfil por categoria.
 
 **Frente C:** recalibrar os quantis da margem com os resíduos (previsto × vendido) de cada loja, semana a semana, e mostrar a cobertura da loja no painel e no laboratório.
+
+## Frente B (dados por item) — 2026-11-12 ✅
+
+- **Dados:** `scripts/baixar_favorita_itens.py` (kagglehub; token em `~/.kaggle/access_token.txt`, regras aceitas na conta *pcavalheiroo*) → `pipeline.itens` (125 mi de linhas → 23,4 mi de semanas, 174.595 séries loja × item) → `pipeline.app_export_itens` (4.000 séries estratificadas, 3 MB, `datasets/favorita_itens/`).
+- **Decisão na validação** (`scripts/experimentos/frente_b.py`, mesmas séries por item):
+
+| Treino | WAPE validação | WAPE teste |
+|---|---|---|
+| família (anterior) | 21,78 | 23,49 |
+| item | 19,54 | 21,77 |
+| família + item | 20,73 | 22,32 |
+| EMA (regra anterior) | 21,02 | 24,53 |
+
+  O modelo treinado por família **não se transferia** para produto individual: perdia para a média móvel.
+- **Produção** (`TRAINING_DATASETS`): teste por item com WAPE 20,3% contra 23,1% da regra anterior (−12%), vence a média móvel em 76% das séries, cobertura de 94,1%.
+- **Bug corrigido na calibração:** uma faixa com poucas linhas usava o resíduo geral, e a regra monotônica inflava as faixas maiores (cobertura de 97–99%). Agora ela empresta da faixa vizinha.
+- **A/B do jogo:** atendimento 92,6% contra 90,1%; vendas perdidas −26%; lucro +1%; vence em todos os cenários, inclusive o "grande, a cada 3 dias", que antes perdia.
+- **Laboratório:** atendimento ~93% contra ~89%; lucro +5%.
+- O mercado da demonstração precisa ser populado **na véspera**: semanas sem venda depois da população derrubam a previsão, e isso é comportamento correto.
+
+**Próximo: frente C** — recalibrar a margem com o erro (previsto × vendido) de cada loja.
