@@ -39,8 +39,10 @@ class User(Base):
     hashed_password: Mapped[str] = mapped_column(String(255))
     created_at: Mapped[dt.datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
 
+    # Collections load only on request ("select"): eager "selectin" here made every
+    # authenticated request read user -> markets -> products -> every audit log.
     markets: Mapped[list["Market"]] = relationship(
-        back_populates="owner", lazy="selectin", cascade="all, delete-orphan", passive_deletes=True
+        back_populates="owner", lazy="select", cascade="all, delete-orphan", passive_deletes=True
     )
 
 
@@ -54,7 +56,7 @@ class Category(Base):
     is_seed: Mapped[bool] = mapped_column(Boolean, default=False)
     created_at: Mapped[dt.datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
 
-    products: Mapped[list["Product"]] = relationship(back_populates="category", lazy="selectin")
+    products: Mapped[list["Product"]] = relationship(back_populates="category", lazy="select")
 
 
 class Market(Base):
@@ -71,7 +73,7 @@ class Market(Base):
 
     owner: Mapped[User] = relationship(back_populates="markets", lazy="selectin")
     products: Mapped[list["Product"]] = relationship(
-        back_populates="market", lazy="selectin", cascade="all, delete-orphan", passive_deletes=True
+        back_populates="market", lazy="select", cascade="all, delete-orphan", passive_deletes=True
     )
 
 
@@ -102,7 +104,7 @@ class Product(Base):
     market: Mapped[Market] = relationship(back_populates="products", lazy="selectin")
     category: Mapped[Category | None] = relationship(back_populates="products", lazy="selectin")
     recommendation_logs: Mapped[list["RecommendationLog"]] = relationship(
-        back_populates="product", cascade="all, delete-orphan", lazy="selectin"
+        back_populates="product", cascade="all, delete-orphan", lazy="select", passive_deletes=True
     )
 
     @property
@@ -197,7 +199,7 @@ class RecommendationLog(Base):
     details: Mapped[str] = mapped_column(Text, default="{}")
     created_at: Mapped[dt.datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
 
-    product: Mapped[Product] = relationship(back_populates="recommendation_logs", lazy="selectin")
+    product: Mapped[Product] = relationship(back_populates="recommendation_logs", lazy="select")
 
 
 class DatasetAggregate(Base):

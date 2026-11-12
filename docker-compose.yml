@@ -55,6 +55,8 @@ services:
   caixa:
     # Caixa de mercado (PDV simulado). Fala com o backend pelo proxy /api/ do Nginx.
     build: ./caixa
+    environment:
+      FRONTEND_PORT: ${FRONTEND_PORT:-3000}
     ports:
       - "${CAIXA_PORT:-3301}:80"
     depends_on:
