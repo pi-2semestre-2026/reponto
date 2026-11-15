@@ -91,3 +91,63 @@ Ideia: recalibrar o multiplicador da margem de 95% com o erro de cada loja, refa
 - **Em lojas diferentes das do treino** (`scripts/experimentos/frente_c_simulador.py`, 9 lojas simuladas): a margem geral cobre **93,6%** da procura real (a 1,7 p.p. da meta). Ajustada com as semanas 9–30, ela cobre só 89,1% (5,9 p.p.). O ajuste aprendeu com meses calmos e encolheu a margem antes de dezembro.
 - **Conclusão:** o erro muda ao longo do ano, e calibrar com poucos meses de uma loja é arriscado. A calibração geral (um ano inteiro de 4.000 séries) se transfere bem e fica.
 - **Possível evolução:** acompanhar a cobertura medida em cada loja e só *aumentar* a margem com evidência longa (≥ 1 ano), sem nunca reduzi-la.
+
+## ⏸ PAUSA em 2026-11-15 — LEIA ISTO PRIMEIRO
+
+### Pedido do usuário em andamento (texto dele)
+> "Pode começar pelo 1 [regerar o mercado da demonstração], quero deixar o Reponto o mais completo e profissional possível para apresentação em banca. Além disso quero personalizar mais as variações para um escopo muito maior, como por exemplo, quando o VR caiu, então a demanda é maior, ou quando é ano novo, etc. Além disso analisar todo o acabamento do projeto por completo, para deixar 100% funcional e o mais completo possível quanto à visão de negócio. Pode fazer todos os push também."
+
+O usuário autorizou fazer os pushes desta tarefa.
+
+### Estado no momento da pausa
+- Branch `pipeline-ml`, em dia com o remoto até `3ad90c3`.
+- **O mercado da demonstração está INCOMPLETO:** a geração foi interrompida (~1.000 de ~4.700 vendas). Antes de qualquer demo, apague os mercados da conta `banca@reponto.com.br` (`DELETE /markets/{id}`) e rode `python scripts/popular_demo.py --email banca@reponto.com.br --name "Banca Reponto" --days 91`. Depois do conserto de desempenho deve levar bem menos que 1 h; cronometre.
+- **WIP não validado:** `src/pipeline/eventos.py`, `datasets/favorita/eventos.csv` e `reports/eventos_validacao.csv` (calendário comercial, passo 2 abaixo).
+
+### Passo 2 — Calendário comercial (em andamento)
+Desenho decidido:
+1. **Datas brasileiras** em `backend/app/services/calendario.py` (novo):
+   - salário (5º dia útil, mais os 2 dias seguintes);
+   - adiantamento (dia 20, mais o dia seguinte);
+   - VR/VA (dia configurável por mercado; campo novo `Market.vr_day` via `COLUMN_PATCHES` no `bootstrap.py`; 0 = desligado);
+   - semana do Natal (18–23/12), véspera de Natal, Réveillon, Ano Novo;
+   - Carnaval (sáb–ter), Páscoa (qui–sáb), Dia das Mães (sex–dom do 2º domingo de maio), Dia dos Pais (agosto), Black Friday;
+   - feriado e véspera de feriado (usar `weekly_model.br_national_holidays`).
+2. **Efeito de partida por categoria** medido no Favorita (`python -m pipeline.eventos` → `datasets/favorita/eventos.csv`), com as datas análogas do Equador: pagamento nos dias 15 e último do mês, Natal, Carnaval, Sexta Santa, Dia de la Madre, Black Friday. **Pendente: corrigir o método.**
+   - Problema: o efeito ainda é medido contra as semanas antes **e depois** da data, mas o app só conhece as anteriores. Isso infla o fim de ano (véspera de Natal e Réveillon pioraram na validação).
+   - Correção: medir contra as 4 semanas **anteriores** (usar `base_causal` para `ratio`) e tirar o Ano Novo do total da validação. Meu patch falhou no último `replace` e o arquivo **não foi alterado**.
+   - Resultado da primeira rodada, ainda viciado: total 19,1% → 16,3% nos dias de evento. Feriado 24,6 → 17,2; semana do Natal 28,9 → 15,7; pagamento 14,3 → 13,3; Carnaval e véspera de Natal pioraram.
+   - **Só adotar** os eventos que melhorarem no teste; os outros ficam com efeito 1,0, e a loja aprende.
+3. **Cada loja aprende o próprio efeito:**
+   - `efeito_loja = (n·observado + k·referência)/(n + k)`, com `n` = dias de evento já vistos e `k` ≈ 6.
+   - O "observado" é a venda do dia ÷ a venda esperada (ritmo da semana × nível recente).
+   - Usar a demanda já corrigida para o esgotamento (`uncensor`).
+4. **Aplicar na projeção diária** (`forecast_math.project`):
+   - multiplicador por dia, produto dos eventos do dia, com teto de 3×;
+   - no caminho **modelo**, os eventos que o modelo semanal já enxerga (feriados, semana do ano/Natal) só redistribuem dentro da semana, mantendo o total previsto;
+   - pagamento, VR, Dia das Mães/Pais e Black Friday somam por cima;
+   - no caminho **regra**, tudo multiplica.
+5. **Sincronia:** `simulator/brain.py`, `simulator/lab.py` e o laboratório precisam usar o mesmo calendário.
+6. **Laboratório:** a realidade ganha o VR (por exemplo, mercearia e bebidas +35% nos 3 dias após o dia do VR) e o salário. Mostrar "efeito do VR aprendido × real" no cartão do produto.
+7. **Interface:**
+   - painel do produto com a lista "Próximas datas que mexem neste produto" (data, nome, +x%, fonte loja/referência);
+   - configurações do mercado com o campo "dia do VR/VA";
+   - explicação em texto citando a próxima data relevante do ciclo;
+   - i18n pt/en.
+8. **Demonstração:** `popular_demo.py` aplica efeitos de salário, VR e feriado nas vendas geradas, para o painel mostrar o efeito aprendido. Regerar a demonstração **depois** disso.
+
+### Passo 3 — Revisão completa de acabamento e negócio (não iniciada)
+Percorrer todas as telas (painel, mercados, produto, lista de compras, vendas, categorias, importação, `/modelo`, `/laboratorio`, simulador, caixa). Procurar erros, textos, estados vazios, tempo de resposta, consistência pt/en e lacunas de negócio, por exemplo:
+- custo/margem nos relatórios e valor do estoque parado;
+- alertas de validade;
+- exportar a lista de compras;
+- fornecedores e prazo de entrega (*lead time*, campo novo previsto na Fase 4 do PLANO_ML).
+
+Corrigir, testar no Docker, rodar os testes do caixa e do pipeline, atualizar `CLAUDE.md`, `docs/BANCA.md` e esta página, e dar push.
+
+### Lembretes operacionais
+- **Docker Desktop:** se `docker info` falhar, abra `"%LOCALAPPDATA%\Programs\DockerDesktop\Docker Desktop.exe"`.
+- **Testes do caixa:** rodam com `docker compose -f docker-compose.yml -f caixa/compose.sem-ia.yml up -d backend`. **Avise o usuário antes**, porque isso derruba o app por cerca de 1 min. Depois, volte com `docker compose up -d backend`.
+- **Modelo e experimentos locais:** `backend/ml_data/`, com `PYTHONPATH=backend DATASET_DIR=$PWD/datasets ML_MODEL_PATH=$PWD/backend/ml_data/model.txt`.
+- **Rede da faculdade:** bloqueia o openrouter.ai, e a explicação cai no texto padrão. O usuário usa o roteador do celular.
+- O colega mexe no `caixa/`. Mudei o link de volta, que agora passa pelo nginx `/reponto` com `FRONTEND_PORT`.
