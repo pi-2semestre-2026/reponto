@@ -82,3 +82,12 @@ Frente A concluída, com cada mudança testada na validação (`scripts/experime
 - O mercado da demonstração precisa ser populado **na véspera**: semanas sem venda depois da população derrubam a previsão, e isso é comportamento correto.
 
 **Próximo: frente C** — recalibrar a margem com o erro (previsto × vendido) de cada loja.
+
+## Frente C (margem por loja) — 2026-11-15: testada e NÃO adotada
+
+Ideia: recalibrar o multiplicador da margem de 95% com o erro de cada loja, refazendo as previsões das semanas passadas e encolhendo para o fator geral com k semanas a priori.
+
+- **No Favorita** (`scripts/experimentos/frente_c.py`, 53 lojas): a margem geral já fica, em média, a 1,0–1,1 p.p. da meta em cada loja. O ajuste não melhora (1,1–1,25 p.p.), porque as lojas são da mesma rede.
+- **Em lojas diferentes das do treino** (`scripts/experimentos/frente_c_simulador.py`, 9 lojas simuladas): a margem geral cobre **93,6%** da procura real (a 1,7 p.p. da meta). Ajustada com as semanas 9–30, ela cobre só 89,1% (5,9 p.p.). O ajuste aprendeu com meses calmos e encolheu a margem antes de dezembro.
+- **Conclusão:** o erro muda ao longo do ano, e calibrar com poucos meses de uma loja é arriscado. A calibração geral (um ano inteiro de 4.000 séries) se transfere bem e fica.
+- **Possível evolução:** acompanhar a cobertura medida em cada loja e só *aumentar* a margem com evidência longa (≥ 1 ano), sem nunca reduzi-la.
