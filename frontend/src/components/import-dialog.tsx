@@ -282,7 +282,7 @@ export function ImportDialog({
               <Button variant="ghost" onClick={reset} disabled={step === "importing"}>
                 <RotateCcw /> {t("import.another")}
               </Button>
-              <Button variant="press" onClick={runImport} disabled={step === "importing"}>
+              <Button variant="press" onClick={runImport} disabled={step === "importing" || preview.valid_rows === 0}>
                 {step === "importing" ? <Loader2 className="animate-spin" /> : <Upload />}
                 {t("import.confirm").replace("{n}", fmtNum(preview.valid_rows))}
               </Button>

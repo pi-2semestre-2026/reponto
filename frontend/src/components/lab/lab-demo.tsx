@@ -353,7 +353,7 @@ function ProductPanel({ p, day, shifts }: { p: LabProduct; day: number; shifts: 
               .replace("{pp}", signed(learnedPeak.ia))
               .replace("{low}", learnedLow.label)
               .replace("{lp}", signed(learnedLow.ia))}{" "}
-            {t("lab.patternError").replace("{e}", pct(p.pattern_error_pp))}
+            {t("lab.patternError").replace("{e}", p.pattern_error_pp == null ? "—" : fmtNum(p.pattern_error_pp))}
           </p>
         </div>
         <div>
@@ -364,7 +364,7 @@ function ProductPanel({ p, day, shifts }: { p: LabProduct; day: number; shifts: 
                 <CartesianGrid strokeDasharray="3 3" vertical={false} />
                 <XAxis dataKey="tick" tick={{ fontSize: 9 }} interval={Math.max(0, Math.floor(history.length / 8))} />
                 <YAxis tick={{ fontSize: 10 }} width={38} />
-                <ReTooltip />
+                <ReTooltip formatter={(v: number) => fmtNum(Math.round(v * 10) / 10)} />
                 <Legend wrapperStyle={{ fontSize: 11 }} />
                 {shifts.map((s) => {
                   const h = history.find((x) => x.day === s.day);
@@ -457,7 +457,7 @@ function LearningCurve({ snap }: { snap: LabSnapshot }) {
               <CartesianGrid strokeDasharray="3 3" vertical={false} />
               <XAxis dataKey="day" tick={{ fontSize: 10 }} />
               <YAxis tick={{ fontSize: 10 }} width={38} unit="pp" />
-              <ReTooltip />
+              <ReTooltip formatter={(v: number) => fmtNum(Math.round(v * 10) / 10)} />
               <Legend wrapperStyle={{ fontSize: 11 }} />
               {snap.shifts.map((s) => (
                 <ReferenceLine key={s.day} x={s.day + 1} stroke={C_NOAI} strokeDasharray="4 3" />

@@ -39,8 +39,12 @@ export function Header({ active }: { active?: string }) {
 
   useEffect(() => {
     setMounted(true);
+    if (!sessionStorage.getItem("reponto_token")) {
+      router.replace("/login");
+      return;
+    }
     api.me().then(setUser).catch(() => {});
-  }, []);
+  }, [router]);
 
   const logout = () => {
     setToken(null);
@@ -89,7 +93,7 @@ export function Header({ active }: { active?: string }) {
           </Button>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon" title="Language">
+              <Button variant="ghost" size="icon" title={t("nav.language")}>
                 <Globe className="h-5 w-5" />
               </Button>
             </DropdownMenuTrigger>
@@ -132,7 +136,7 @@ export function Header({ active }: { active?: string }) {
                 <Gamepad2 /> {t("nav.simulator")}
               </DropdownMenuItem>
               <DropdownMenuItem onClick={logout}>
-                <LogOut /> {locale === "pt" ? "Sair" : "Sign out"}
+                <LogOut /> {t("nav.logout")}
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

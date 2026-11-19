@@ -51,6 +51,7 @@ export function ReportPanel({ sid, onNewGame }: { sid: string; onNewGame: () => 
   const { t } = useI18n();
   const [data, setData] = useState<{ report: SimReport; coach: SimCoach } | null>(null);
   const [loading, setLoading] = useState(true);
+  const [failed, setFailed] = useState(false);
 
   useEffect(() => {
     let active = true;
@@ -62,12 +63,23 @@ export function ReportPanel({ sid, onNewGame }: { sid: string; onNewGame: () => 
         setData(d);
         if (d.report.verdict.level === "acertivo") burstConfetti();
       })
-      .catch(() => {})
+      .catch(() => active && setFailed(true))
       .finally(() => active && setLoading(false));
     return () => {
       active = false;
     };
   }, [sid]);
+
+  if (failed) {
+    return (
+      <div className="mx-auto flex w-full max-w-5xl flex-col items-center gap-4 py-20 text-center">
+        <p className="font-display text-lg font-bold">{t("common.error")}</p>
+        <Button variant="press" onClick={onNewGame}>
+          {t("sim.report.newGame")}
+        </Button>
+      </div>
+    );
+  }
 
   if (loading || !data) {
     return (
@@ -116,7 +128,7 @@ export function ReportPanel({ sid, onNewGame }: { sid: string; onNewGame: () => 
           </div>
           <div className="grid grid-cols-3 gap-3 text-center sm:gap-6">
             <Metric label={t("sim.report.wapeWeek")} value={fmtPct(report.summary.rate_wape_pct ?? report.summary.wape_clean_pct)} />
-            <Metric label={t("sim.report.bias")} value={fmtPct(report.summary.bias_clean_pct ?? report.summary.bias_pct)} />
+            <Metric label={t("sim.report.bias")} value={fmtPct(report.summary.bias_clean_pct ?? report.summary.bias_pct, true)} />
             <Metric label={t("sim.service")} value={fmtPct(report.summary.service_pct)} />
           </div>
         </CardContent>
@@ -241,7 +253,7 @@ export function ReportPanel({ sid, onNewGame }: { sid: string; onNewGame: () => 
                   <TableCell>
                     <WapeCell pct={c.rate_wape_pct ?? c.wape_clean_pct ?? c.wape_pct} />
                   </TableCell>
-                  <TableCell className="font-mono text-xs">{fmtPct(c.bias_pct)}</TableCell>
+                  <TableCell className="font-mono text-xs">{fmtPct(c.bias_pct, true)}</TableCell>
                   <TableCell className="font-mono text-xs">{fmtPct(c.stockout_pct)}</TableCell>
                   <TableCell className="text-right font-mono text-xs">{c.samples}</TableCell>
                 </TableRow>
@@ -287,10 +299,10 @@ function Metric({ label, value }: { label: string; value: string }) {
 
 function WapeCell({ pct }: { pct: number | null }) {
   const color = pct == null ? "text-muted-foreground" : pct <= 20 ? "text-primary" : pct <= 35 ? "text-amber-600" : "text-destructive";
-  return <span className={`font-mono text-xs font-bold ${color}`}>{fmtPct(pct)}</span>;
+  return <span className={`font-mono text-xs font-bold ${color}`}>{fmtPct(pct, true)}</span>;
 }
 
-function fmtPct(v: number | null | undefined): string {
+function fmtPct(v: number | null | undefined, signed = false): string {
   if (v == null) return "—";
-  return `${v > 0 && !v.toString().startsWith("-") ? "+" : ""}${v}%`;
+  return `${signed && v > 0 ? "+" : ""}${fmtNum(v)}%`;
 }

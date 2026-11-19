@@ -63,12 +63,15 @@ async function request<T>(method: string, path: string, body?: unknown, params?:
   const data = await res.json().catch(() => ({}));
   if (!res.ok) {
     const detail = (data as { detail?: unknown }).detail;
-    if (res.status === 401 && typeof window !== "undefined") {
+    // 401 em rota protegida = sessão encerrada. Em /auth/* é só senha errada: a tela de login trata.
+    if (res.status === 401 && typeof window !== "undefined" && !path.startsWith("/auth/")) {
       setToken(null);
       window.location.href = "/login";
     }
+    const first = Array.isArray(detail) ? (detail[0] as { msg?: unknown } | undefined) : undefined;
     const message = typeof detail === "string" ? detail
       : detail && typeof detail === "object" && "message" in detail && typeof detail.message === "string" ? detail.message
+      : first && typeof first.msg === "string" ? `Dados inválidos: ${first.msg}`
       : `Erro ${res.status}`;
     throw new ApiError(res.status, message, detail);
   }

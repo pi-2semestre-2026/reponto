@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
@@ -21,6 +21,10 @@ export function AuthForm({ mode }: { mode: "login" | "register" }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  useEffect(() => {
+    if (sessionStorage.getItem("reponto_token")) router.replace("/dashboard");
+  }, [router]);
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();

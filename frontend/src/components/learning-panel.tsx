@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
 import {
   Brain,
   CalendarDays,
@@ -77,7 +78,10 @@ export function LearningPanelDialog({
       api
         .learning(productId)
         .then(setData)
-        .catch(() => {})
+        .catch((e) => {
+          toast.error((e as Error).message || t("common.error"));
+          onOpenChange(false);
+        })
         .finally(() => setLoading(false));
     }
   }, [open, productId]);
@@ -175,7 +179,7 @@ export function LearningPanelDialog({
                 <Metric
                   label={t("aiPanel.safety")}
                   value={
-                    data.logs[0] ? fmtNum(JSON.parse(data.logs[0].details).seguranca ?? "0") : "—"
+                    data.logs[0] ? fmtNum(JSON.parse(data.logs[0].details || "{}").seguranca ?? "0") : "—"
                   }
                 />
               </div>
@@ -553,12 +557,13 @@ function Metric({
   variant?: "success" | "warning" | "destructive";
   small?: boolean;
 }) {
+  const { t } = useI18n();
   return (
     <div className={`rounded-2xl border bg-card p-3 ${highlight ? "ring-2 ring-primary/40" : ""}`}>
       <p className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">{label}</p>
       {badge ? (
         <Badge variant={variant} className="mt-1">
-          {badge === "alta" ? "Alta" : badge === "media" ? "Média" : "Baixa"}
+          {t(`market.confidence.${badge}`)}
         </Badge>
       ) : (
         <p className={`mt-1 font-black ${small ? "text-xs" : "text-lg"}`}>{value}</p>

@@ -26,7 +26,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Progress } from "@/components/ui/progress";
 import { toast } from "sonner";
-import { fmtMoney } from "@/lib/format";
+import { fmtMoney, fmtNum } from "@/lib/format";
 import { useI18n } from "@/lib/i18n";
 import {
   simApi,
@@ -547,7 +547,7 @@ function GameHud({ snap }: { snap: SimSnapshot }) {
           <div className="ml-auto flex flex-wrap items-center gap-2">
             <HudChip label={t("sim.wape")} value={fmtPct(wape)} className={wapeColor} />
             <HudChip label={t("sim.service")} value={fmtPct(snap.summary.service_pct)} />
-            <HudChip label={t("sim.bias")} value={fmtPct(snap.summary.bias_pct)} />
+            <HudChip label={t("sim.bias")} value={fmtPct(snap.summary.bias_pct, true)} />
           </div>
         </div>
 
@@ -708,7 +708,7 @@ function EventToasts({ toasts }: { toasts: ToastItem[] }) {
 }
 
 
-function fmtPct(v: number | null | undefined): string {
+function fmtPct(v: number | null | undefined, signed = false): string {
   if (v == null) return "—";
-  return `${v > 0 ? "+" : ""}${v}%`;
+  return `${signed && v > 0 ? "+" : ""}${fmtNum(v)}%`;
 }

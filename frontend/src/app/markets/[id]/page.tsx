@@ -79,6 +79,7 @@ export default function MarketPage() {
   const [deleteProduct, setDeleteProduct] = useState<Product | null>(null);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [importOpen, setImportOpen] = useState(false);
+  const [loadFailed, setLoadFailed] = useState(false);
 
   const hadProcessing = useRef(false);
   const requestVersion = useRef(0);
@@ -90,6 +91,7 @@ export default function MarketPage() {
       if (version !== requestVersion.current) return false;
       const me = m.find((x) => x.id === marketId) ?? null;
       setMarket(me);
+      setLoadFailed(me === null);
       setProducts(ps);
       const processing = ps.some((p) => p.status === "processing");
       if (processing) hadProcessing.current = true;
@@ -99,7 +101,10 @@ export default function MarketPage() {
       }
       return processing;
     } catch (e) {
-      if (version === requestVersion.current) toast.error((e as Error).message);
+      if (version === requestVersion.current) {
+        toast.error((e as Error).message);
+        setLoadFailed(true);
+      }
       return false;
     }
   }, [marketId, t]);
@@ -113,6 +118,20 @@ export default function MarketPage() {
       unsubscribe();
     };
   }, [load]);
+
+  if (market === null && loadFailed) {
+    return (
+      <div className="min-h-screen">
+        <Header active="/markets" />
+        <main className="container py-16 text-center">
+          <p className="font-display text-2xl font-bold">{t("market.notFound")}</p>
+          <Button variant="press" className="mt-6" onClick={() => router.push("/markets")}>
+            {t("market.backToList")}
+          </Button>
+        </main>
+      </div>
+    );
+  }
 
   if (market === null && products === null) {
     return (
@@ -203,7 +222,7 @@ export default function MarketPage() {
                       ["name", t("common.name")], ["category", t("nav.categories")],
                       ["price", t("market.salePrice")], ["cost", t("market.purchaseCost")],
                       ["stock", t("common.stock")], ["coverage", t("market.coverage")],
-                      ["status", "Status"], ["learned_rate", t("market.learnedRate")],
+                      ["status", t("purchase.col.status")], ["learned_rate", t("market.learnedRate")],
                     ] as const).map(([key, label]) => {
                       const direction = productSort?.key === key ? productSort.direction : null;
                       const Icon = direction === "asc" ? ArrowUp : direction === "desc" ? ArrowDown : ArrowUpDown;
@@ -270,10 +289,14 @@ export default function MarketPage() {
         desc={t("product.delete.desc")}
         onConfirm={async () => {
           if (!deleteProduct) return;
-          await api.deleteProduct(deleteProduct.id);
-          toast.success(t("toast.deleted"));
-          setDeleteProduct(null);
-          load();
+          try {
+            await api.deleteProduct(deleteProduct.id);
+            toast.success(t("toast.deleted"));
+            setDeleteProduct(null);
+            load();
+          } catch (e) {
+            toast.error((e as Error).message);
+          }
         }}
       />
       {market && (
@@ -726,7 +749,7 @@ function MarketSettingsDialog({
       await api.updateMarket(market.id, {
         name,
         location,
-        customers_per_day: parseInt(customers, 10),
+        customers_per_day: Math.max(1, parseInt(customers, 10) || 1),
         cycle_unit: cycle,
         replenishment_cycle_days: 7,
         vr_day: Math.min(31, Math.max(0, parseInt(vrDay || "0", 10) || 0)),

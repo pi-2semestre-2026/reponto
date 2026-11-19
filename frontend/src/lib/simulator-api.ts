@@ -130,7 +130,8 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
     let detail = res.statusText;
     try {
       const body = await res.json();
-      detail = body.detail ?? detail;
+      const d = body.detail;
+      detail = typeof d === "string" ? d : Array.isArray(d) && d[0]?.msg ? String(d[0].msg) : detail;
     } catch {}
     throw new Error(detail);
   }
