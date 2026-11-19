@@ -130,7 +130,8 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
     let detail = res.statusText;
     try {
       const body = await res.json();
-      detail = body.detail ?? detail;
+      const d = body.detail;
+      detail = typeof d === "string" ? d : Array.isArray(d) && d[0]?.msg ? String(d[0].msg) : detail;
     } catch {}
     throw new Error(detail);
   }
@@ -194,6 +195,16 @@ export interface LabProduct {
   wape_noai_28: number | null;
   stockouts_ai: number;
   stockouts_noai: number;
+  calendar?: LabCalendarRow[];
+}
+
+export interface LabCalendarRow {
+  event: string;
+  label: string;
+  real: number;
+  learned: number;
+  reference: number;
+  n: number;
 }
 
 export interface LabStore {
@@ -203,6 +214,7 @@ export interface LabStore {
   cost: number;
   lost_r: number;
   waste_r: number;
+  gross_profit: number;
   avg_stock_value: number;
 }
 

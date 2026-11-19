@@ -13,27 +13,27 @@ Bebidas,0,2,3,0.7939,424
 Bebidas,0,2,4,1.0942,424
 Bebidas,0,2,5,1.6197,424
 Bebidas,0,2,6,0.7843,424
-Bebidas,0,3,0,0.8197,464
-Bebidas,0,3,1,0.8185,472
+Bebidas,0,3,0,0.8232,462
+Bebidas,0,3,1,0.822,470
 Bebidas,0,3,2,0.7845,478
 Bebidas,0,3,3,0.8637,478
 Bebidas,0,3,4,1.2099,472
 Bebidas,0,3,5,1.7568,464
 Bebidas,0,3,6,0.7621,482
-Bebidas,0,4,0,0.6298,398
-Bebidas,0,4,1,0.7092,416
-Bebidas,0,4,2,0.7088,418
-Bebidas,0,4,3,0.8039,400
-Bebidas,0,4,4,1.2265,406
-Bebidas,0,4,5,1.488,406
-Bebidas,0,4,6,0.6302,406
-Bebidas,0,5,0,0.7317,432
-Bebidas,0,5,1,0.6748,432
-Bebidas,0,5,2,0.6774,424
-Bebidas,0,5,3,0.7341,416
-Bebidas,0,5,4,1.2319,436
-Bebidas,0,5,5,1.5905,418
-Bebidas,0,5,6,0.7333,400
+Bebidas,0,4,0,0.6427,390
+Bebidas,0,4,1,0.7231,408
+Bebidas,0,4,2,0.7262,408
+Bebidas,0,4,3,0.8246,390
+Bebidas,0,4,4,1.2511,398
+Bebidas,0,4,5,1.5179,398
+Bebidas,0,4,6,0.6429,398
+Bebidas,0,5,0,0.742,426
+Bebidas,0,5,1,0.6843,426
+Bebidas,0,5,2,0.6871,418
+Bebidas,0,5,3,0.7448,410
+Bebidas,0,5,4,1.2549,428
+Bebidas,0,5,5,1.6215,410
+Bebidas,0,5,6,0.7482,392
 Bebidas,0,6,0,0.7016,470
 Bebidas,0,6,1,0.7227,452
 Bebidas,0,6,2,0.7249,458
@@ -41,13 +41,13 @@ Bebidas,0,6,3,0.8246,484
 Bebidas,0,6,4,1.1839,458
 Bebidas,0,6,5,1.588,450
 Bebidas,0,6,6,0.8517,468
-Bebidas,0,7,0,0.7505,478
-Bebidas,0,7,1,0.75,470
-Bebidas,0,7,2,0.769,490
-Bebidas,0,7,3,0.8607,472
-Bebidas,0,7,4,1.1476,482
-Bebidas,0,7,5,1.7114,486
-Bebidas,0,7,6,0.9381,486
+Bebidas,0,7,0,0.7601,472
+Bebidas,0,7,1,0.7597,464
+Bebidas,0,7,2,0.7785,484
+Bebidas,0,7,3,0.8718,466
+Bebidas,0,7,4,1.1621,476
+Bebidas,0,7,5,1.7328,480
+Bebidas,0,7,6,0.9498,480
 Bebidas,0,8,0,0.7211,440
 Bebidas,0,8,1,0.7851,442
 Bebidas,0,8,2,0.692,416
@@ -132,34 +132,34 @@ Bebidas,1,7,3,0.871,546
 Bebidas,1,7,4,1.1996,548
 Bebidas,1,7,5,1.6455,548
 Bebidas,1,7,6,0.7952,548
-Bebidas,1,8,0,0.714,496
-Bebidas,1,8,1,0.7248,496
-Bebidas,1,8,2,0.7693,470
-Bebidas,1,8,3,0.7882,466
-Bebidas,1,8,4,1.1123,490
-Bebidas,1,8,5,1.4676,516
-Bebidas,1,8,6,0.6034,494
-Bebidas,1,9,0,0.7259,438
-Bebidas,1,9,1,0.7861,442
-Bebidas,1,9,2,0.7664,418
-Bebidas,1,9,3,0.8048,418
-Bebidas,1,9,4,1.0445,418
-Bebidas,1,9,5,1.4683,392
-Bebidas,1,9,6,0.7026,414
-Bebidas,1,10,0,0.718,418
-Bebidas,1,10,1,0.7175,414
-Bebidas,1,10,2,0.7317,438
-Bebidas,1,10,3,0.8415,464
-Bebidas,1,10,4,1.1698,442
-Bebidas,1,10,5,1.4652,444
-Bebidas,1,10,6,0.7097,418
-Bebidas,1,11,0,0.834,418
-Bebidas,1,11,1,0.7532,418
-Bebidas,1,11,2,0.8319,418
-Bebidas,1,11,3,0.8513,392
-Bebidas,1,11,4,1.0787,414
-Bebidas,1,11,5,1.4048,438
-Bebidas,1,11,6,0.7591,442
+Bebidas,1,8,0,0.7409,478
+Bebidas,1,8,1,0.7521,478
+Bebidas,1,8,2,0.7999,452
+Bebidas,1,8,3,0.8126,452
+Bebidas,1,8,4,1.145,476
+Bebidas,1,8,5,1.5085,502
+Bebidas,1,8,6,0.621,480
+Bebidas,1,9,0,0.757,420
+Bebidas,1,9,1,0.8194,424
+Bebidas,1,9,2,0.8009,400
+Bebidas,1,9,3,0.8495,396
+Bebidas,1,9,4,1.1025,396
+Bebidas,1,9,5,1.5389,374
+Bebidas,1,9,6,0.7345,396
+Bebidas,1,10,0,0.7466,402
+Bebidas,1,10,1,0.7426,400
+Bebidas,1,10,2,0.7558,424
+Bebidas,1,10,3,0.8677,450
+Bebidas,1,10,4,1.2081,428
+Bebidas,1,10,5,1.5272,426
+Bebidas,1,10,6,0.7417,400
+Bebidas,1,11,0,0.8461,412
+Bebidas,1,11,1,0.7679,410
+Bebidas,1,11,2,0.8481,410
+Bebidas,1,11,3,0.8691,384
+Bebidas,1,11,4,1.0999,406
+Bebidas,1,11,5,1.4309,430
+Bebidas,1,11,6,0.7731,434
 Bebidas,1,12,0,1.3774,438
 Bebidas,1,12,1,1.5825,464
 Bebidas,1,12,2,1.6895,420
@@ -188,34 +188,34 @@ Bebidas,2,3,3,0.888,572
 Bebidas,2,3,4,1.1783,572
 Bebidas,2,3,5,1.7989,572
 Bebidas,2,3,6,0.7792,598
-Bebidas,2,4,0,0.6324,494
-Bebidas,2,4,1,0.6926,520
-Bebidas,2,4,2,0.7155,520
-Bebidas,2,4,3,0.7435,494
-Bebidas,2,4,4,1.0732,494
-Bebidas,2,4,5,1.5417,494
-Bebidas,2,4,6,0.6301,494
-Bebidas,2,5,0,0.666,520
-Bebidas,2,5,1,0.6399,520
-Bebidas,2,5,2,0.7133,520
-Bebidas,2,5,3,0.7243,520
-Bebidas,2,5,4,1.1167,546
-Bebidas,2,5,5,1.6028,520
-Bebidas,2,5,6,0.7049,494
-Bebidas,2,6,0,0.7517,572
-Bebidas,2,6,1,0.7061,546
-Bebidas,2,6,2,0.7067,546
-Bebidas,2,6,3,0.7489,572
-Bebidas,2,6,4,1.1182,546
-Bebidas,2,6,5,1.741,546
-Bebidas,2,6,6,0.8559,572
-Bebidas,2,7,0,0.779,572
-Bebidas,2,7,1,0.7469,572
-Bebidas,2,7,2,0.7935,598
-Bebidas,2,7,3,0.7912,572
-Bebidas,2,7,4,1.1684,572
-Bebidas,2,7,5,1.7557,572
-Bebidas,2,7,6,0.9134,572
+Bebidas,2,4,0,0.6402,488
+Bebidas,2,4,1,0.7007,514
+Bebidas,2,4,2,0.7239,514
+Bebidas,2,4,3,0.7496,490
+Bebidas,2,4,4,1.082,490
+Bebidas,2,4,5,1.5543,490
+Bebidas,2,4,6,0.6353,490
+Bebidas,2,5,0,0.6764,512
+Bebidas,2,5,1,0.6498,512
+Bebidas,2,5,2,0.7245,512
+Bebidas,2,5,3,0.7385,510
+Bebidas,2,5,4,1.1376,536
+Bebidas,2,5,5,1.6342,510
+Bebidas,2,5,6,0.7165,486
+Bebidas,2,6,0,0.765,562
+Bebidas,2,6,1,0.7166,538
+Bebidas,2,6,2,0.7172,538
+Bebidas,2,6,3,0.7595,564
+Bebidas,2,6,4,1.1348,538
+Bebidas,2,6,5,1.7669,538
+Bebidas,2,6,6,0.8712,562
+Bebidas,2,7,0,0.7845,568
+Bebidas,2,7,1,0.7548,566
+Bebidas,2,7,2,0.8015,592
+Bebidas,2,7,3,0.7996,566
+Bebidas,2,7,4,1.1808,566
+Bebidas,2,7,5,1.7743,566
+Bebidas,2,7,6,0.9231,566
 Bebidas,2,8,0,0.7359,520
 Bebidas,2,8,1,0.7152,520
 Bebidas,2,8,2,0.7405,494
@@ -349,27 +349,27 @@ Carnes e Aves,0,2,3,1.0564,424
 Carnes e Aves,0,2,4,0.9145,424
 Carnes e Aves,0,2,5,1.1744,424
 Carnes e Aves,0,2,6,1.1461,424
-Carnes e Aves,0,3,0,0.9276,464
-Carnes e Aves,0,3,1,0.9308,472
+Carnes e Aves,0,3,0,0.9316,462
+Carnes e Aves,0,3,1,0.9347,470
 Carnes e Aves,0,3,2,0.8214,478
 Carnes e Aves,0,3,3,1.0246,478
 Carnes e Aves,0,3,4,0.9079,472
 Carnes e Aves,0,3,5,1.1345,464
 Carnes e Aves,0,3,6,1.1607,482
-Carnes e Aves,0,4,0,0.8831,398
-Carnes e Aves,0,4,1,0.9197,416
-Carnes e Aves,0,4,2,0.7767,418
-Carnes e Aves,0,4,3,0.9655,400
-Carnes e Aves,0,4,4,0.885,406
-Carnes e Aves,0,4,5,1.0751,406
-Carnes e Aves,0,4,6,1.0778,406
-Carnes e Aves,0,5,0,0.9275,432
-Carnes e Aves,0,5,1,0.9132,432
-Carnes e Aves,0,5,2,0.7905,424
-Carnes e Aves,0,5,3,1.014,416
-Carnes e Aves,0,5,4,0.9066,436
-Carnes e Aves,0,5,5,1.1392,418
-Carnes e Aves,0,5,6,1.143,400
+Carnes e Aves,0,4,0,0.9012,390
+Carnes e Aves,0,4,1,0.9377,408
+Carnes e Aves,0,4,2,0.7957,408
+Carnes e Aves,0,4,3,0.9903,390
+Carnes e Aves,0,4,4,0.9027,398
+Carnes e Aves,0,4,5,1.0968,398
+Carnes e Aves,0,4,6,1.0995,398
+Carnes e Aves,0,5,0,0.9406,426
+Carnes e Aves,0,5,1,0.9261,426
+Carnes e Aves,0,5,2,0.8019,418
+Carnes e Aves,0,5,3,1.0289,410
+Carnes e Aves,0,5,4,0.9236,428
+Carnes e Aves,0,5,5,1.1614,410
+Carnes e Aves,0,5,6,1.1664,392
 Carnes e Aves,0,6,0,0.9453,470
 Carnes e Aves,0,6,1,0.9513,452
 Carnes e Aves,0,6,2,0.8021,458
@@ -377,13 +377,13 @@ Carnes e Aves,0,6,3,1.0453,484
 Carnes e Aves,0,6,4,0.913,458
 Carnes e Aves,0,6,5,1.1174,450
 Carnes e Aves,0,6,6,1.19,468
-Carnes e Aves,0,7,0,0.9512,478
-Carnes e Aves,0,7,1,0.9614,470
-Carnes e Aves,0,7,2,0.8314,490
-Carnes e Aves,0,7,3,1.0379,472
-Carnes e Aves,0,7,4,0.9465,482
-Carnes e Aves,0,7,5,1.0835,486
-Carnes e Aves,0,7,6,1.1504,486
+Carnes e Aves,0,7,0,0.9633,472
+Carnes e Aves,0,7,1,0.9739,464
+Carnes e Aves,0,7,2,0.8417,484
+Carnes e Aves,0,7,3,1.0513,466
+Carnes e Aves,0,7,4,0.9584,476
+Carnes e Aves,0,7,5,1.0971,480
+Carnes e Aves,0,7,6,1.1648,480
 Carnes e Aves,0,8,0,0.9534,440
 Carnes e Aves,0,8,1,0.976,442
 Carnes e Aves,0,8,2,0.807,416
@@ -468,34 +468,34 @@ Carnes e Aves,1,7,3,1.0136,546
 Carnes e Aves,1,7,4,1.0891,548
 Carnes e Aves,1,7,5,1.1597,548
 Carnes e Aves,1,7,6,1.0489,548
-Carnes e Aves,1,8,0,0.8498,496
-Carnes e Aves,1,8,1,0.8623,496
-Carnes e Aves,1,8,2,0.8135,470
-Carnes e Aves,1,8,3,0.9634,466
-Carnes e Aves,1,8,4,1.021,490
-Carnes e Aves,1,8,5,1.0993,516
-Carnes e Aves,1,8,6,0.9796,494
-Carnes e Aves,1,9,0,0.8187,438
-Carnes e Aves,1,9,1,0.8715,442
-Carnes e Aves,1,9,2,0.8002,418
-Carnes e Aves,1,9,3,0.9454,418
-Carnes e Aves,1,9,4,0.9732,418
-Carnes e Aves,1,9,5,1.0827,392
-Carnes e Aves,1,9,6,0.9962,414
-Carnes e Aves,1,10,0,0.8171,418
-Carnes e Aves,1,10,1,0.8518,414
-Carnes e Aves,1,10,2,0.8049,438
-Carnes e Aves,1,10,3,1.0122,464
-Carnes e Aves,1,10,4,1.0298,442
-Carnes e Aves,1,10,5,1.0987,444
-Carnes e Aves,1,10,6,1.0019,418
-Carnes e Aves,1,11,0,0.8795,418
-Carnes e Aves,1,11,1,0.8871,418
-Carnes e Aves,1,11,2,0.8502,418
-Carnes e Aves,1,11,3,1.0049,392
-Carnes e Aves,1,11,4,1.0282,414
-Carnes e Aves,1,11,5,1.163,438
-Carnes e Aves,1,11,6,1.0688,442
+Carnes e Aves,1,8,0,0.8818,478
+Carnes e Aves,1,8,1,0.8948,478
+Carnes e Aves,1,8,2,0.8459,452
+Carnes e Aves,1,8,3,0.9932,452
+Carnes e Aves,1,8,4,1.051,476
+Carnes e Aves,1,8,5,1.13,502
+Carnes e Aves,1,8,6,1.0081,480
+Carnes e Aves,1,9,0,0.8538,420
+Carnes e Aves,1,9,1,0.9085,424
+Carnes e Aves,1,9,2,0.8363,400
+Carnes e Aves,1,9,3,0.9979,396
+Carnes e Aves,1,9,4,1.0272,396
+Carnes e Aves,1,9,5,1.1348,374
+Carnes e Aves,1,9,6,1.0415,396
+Carnes e Aves,1,10,0,0.8496,402
+Carnes e Aves,1,10,1,0.8816,400
+Carnes e Aves,1,10,2,0.8315,424
+Carnes e Aves,1,10,3,1.0437,450
+Carnes e Aves,1,10,4,1.0635,428
+Carnes e Aves,1,10,5,1.1451,426
+Carnes e Aves,1,10,6,1.047,400
+Carnes e Aves,1,11,0,0.8923,412
+Carnes e Aves,1,11,1,0.9044,410
+Carnes e Aves,1,11,2,0.8668,410
+Carnes e Aves,1,11,3,1.0258,384
+Carnes e Aves,1,11,4,1.0485,406
+Carnes e Aves,1,11,5,1.1846,430
+Carnes e Aves,1,11,6,1.0885,434
 Carnes e Aves,1,12,0,1.08,438
 Carnes e Aves,1,12,1,1.1208,464
 Carnes e Aves,1,12,2,1.0152,420
@@ -524,34 +524,34 @@ Carnes e Aves,2,3,3,0.9209,572
 Carnes e Aves,2,3,4,1.0033,572
 Carnes e Aves,2,3,5,1.1149,572
 Carnes e Aves,2,3,6,1.1703,598
-Carnes e Aves,2,4,0,0.9058,494
-Carnes e Aves,2,4,1,0.8803,520
-Carnes e Aves,2,4,2,0.8272,520
-Carnes e Aves,2,4,3,0.8897,494
-Carnes e Aves,2,4,4,0.978,494
-Carnes e Aves,2,4,5,1.0799,494
-Carnes e Aves,2,4,6,1.1136,494
-Carnes e Aves,2,5,0,0.9022,520
-Carnes e Aves,2,5,1,0.8685,520
-Carnes e Aves,2,5,2,0.8343,520
-Carnes e Aves,2,5,3,0.8963,520
-Carnes e Aves,2,5,4,1.0147,546
-Carnes e Aves,2,5,5,1.0971,520
-Carnes e Aves,2,5,6,1.1342,494
-Carnes e Aves,2,6,0,0.9047,572
-Carnes e Aves,2,6,1,0.8814,546
-Carnes e Aves,2,6,2,0.8313,546
-Carnes e Aves,2,6,3,0.8995,572
-Carnes e Aves,2,6,4,1.0551,546
-Carnes e Aves,2,6,5,1.1123,546
-Carnes e Aves,2,6,6,1.1663,572
-Carnes e Aves,2,7,0,0.9236,572
-Carnes e Aves,2,7,1,0.8727,572
-Carnes e Aves,2,7,2,0.8658,598
-Carnes e Aves,2,7,3,0.9534,572
-Carnes e Aves,2,7,4,1.0942,572
-Carnes e Aves,2,7,5,1.08,572
-Carnes e Aves,2,7,6,1.1238,572
+Carnes e Aves,2,4,0,0.9169,488
+Carnes e Aves,2,4,1,0.8906,514
+Carnes e Aves,2,4,2,0.8369,514
+Carnes e Aves,2,4,3,0.897,490
+Carnes e Aves,2,4,4,0.9859,490
+Carnes e Aves,2,4,5,1.0887,490
+Carnes e Aves,2,4,6,1.1227,490
+Carnes e Aves,2,5,0,0.9163,512
+Carnes e Aves,2,5,1,0.8821,512
+Carnes e Aves,2,5,2,0.8474,512
+Carnes e Aves,2,5,3,0.9138,510
+Carnes e Aves,2,5,4,1.0337,536
+Carnes e Aves,2,5,5,1.1186,510
+Carnes e Aves,2,5,6,1.1528,486
+Carnes e Aves,2,6,0,0.9208,562
+Carnes e Aves,2,6,1,0.8945,538
+Carnes e Aves,2,6,2,0.8437,538
+Carnes e Aves,2,6,3,0.9122,564
+Carnes e Aves,2,6,4,1.0708,538
+Carnes e Aves,2,6,5,1.1289,538
+Carnes e Aves,2,6,6,1.187,562
+Carnes e Aves,2,7,0,0.9301,568
+Carnes e Aves,2,7,1,0.882,566
+Carnes e Aves,2,7,2,0.8746,592
+Carnes e Aves,2,7,3,0.9635,566
+Carnes e Aves,2,7,4,1.1058,566
+Carnes e Aves,2,7,5,1.0914,566
+Carnes e Aves,2,7,6,1.1358,566
 Carnes e Aves,2,8,0,0.9363,520
 Carnes e Aves,2,8,1,0.8892,520
 Carnes e Aves,2,8,2,0.8572,494
@@ -685,27 +685,27 @@ Congelados e Frios,0,2,3,0.8051,636
 Congelados e Frios,0,2,4,0.8627,636
 Congelados e Frios,0,2,5,1.1982,636
 Congelados e Frios,0,2,6,1.0737,636
-Congelados e Frios,0,3,0,0.8569,696
-Congelados e Frios,0,3,1,0.8652,708
+Congelados e Frios,0,3,0,0.8606,693
+Congelados e Frios,0,3,1,0.8689,705
 Congelados e Frios,0,3,2,0.8278,717
 Congelados e Frios,0,3,3,0.8408,717
 Congelados e Frios,0,3,4,0.8924,708
 Congelados e Frios,0,3,5,1.2421,696
 Congelados e Frios,0,3,6,1.1072,723
-Congelados e Frios,0,4,0,0.7922,597
-Congelados e Frios,0,4,1,0.7967,624
-Congelados e Frios,0,4,2,0.7291,627
-Congelados e Frios,0,4,3,0.7809,600
-Congelados e Frios,0,4,4,0.8585,609
-Congelados e Frios,0,4,5,1.182,609
-Congelados e Frios,0,4,6,1.0346,609
-Congelados e Frios,0,5,0,0.8336,648
-Congelados e Frios,0,5,1,0.8119,648
-Congelados e Frios,0,5,2,0.728,636
-Congelados e Frios,0,5,3,0.7817,624
-Congelados e Frios,0,5,4,0.8451,654
-Congelados e Frios,0,5,5,1.1829,627
-Congelados e Frios,0,5,6,1.1533,600
+Congelados e Frios,0,4,0,0.8085,585
+Congelados e Frios,0,4,1,0.8123,612
+Congelados e Frios,0,4,2,0.7469,612
+Congelados e Frios,0,4,3,0.8009,585
+Congelados e Frios,0,4,4,0.8758,597
+Congelados e Frios,0,4,5,1.2057,597
+Congelados e Frios,0,4,6,1.0554,597
+Congelados e Frios,0,5,0,0.8454,639
+Congelados e Frios,0,5,1,0.8234,639
+Congelados e Frios,0,5,2,0.7384,627
+Congelados e Frios,0,5,3,0.7931,615
+Congelados e Frios,0,5,4,0.8609,642
+Congelados e Frios,0,5,5,1.206,615
+Congelados e Frios,0,5,6,1.1768,588
 Congelados e Frios,0,6,0,0.8436,705
 Congelados e Frios,0,6,1,0.8394,678
 Congelados e Frios,0,6,2,0.7486,687
@@ -713,13 +713,13 @@ Congelados e Frios,0,6,3,0.7745,726
 Congelados e Frios,0,6,4,0.8164,687
 Congelados e Frios,0,6,5,1.1843,675
 Congelados e Frios,0,6,6,1.1974,702
-Congelados e Frios,0,7,0,0.8827,717
-Congelados e Frios,0,7,1,0.85,705
-Congelados e Frios,0,7,2,0.8001,735
-Congelados e Frios,0,7,3,0.7888,708
-Congelados e Frios,0,7,4,0.8354,723
-Congelados e Frios,0,7,5,1.1446,729
-Congelados e Frios,0,7,6,1.1189,729
+Congelados e Frios,0,7,0,0.8939,708
+Congelados e Frios,0,7,1,0.861,696
+Congelados e Frios,0,7,2,0.8101,726
+Congelados e Frios,0,7,3,0.799,699
+Congelados e Frios,0,7,4,0.846,714
+Congelados e Frios,0,7,5,1.1589,720
+Congelados e Frios,0,7,6,1.1328,720
 Congelados e Frios,0,8,0,0.8513,660
 Congelados e Frios,0,8,1,0.8437,663
 Congelados e Frios,0,8,2,0.7653,624
@@ -804,34 +804,34 @@ Congelados e Frios,1,7,3,0.7746,819
 Congelados e Frios,1,7,4,0.9152,822
 Congelados e Frios,1,7,5,1.1664,822
 Congelados e Frios,1,7,6,0.9838,822
-Congelados e Frios,1,8,0,0.8278,744
-Congelados e Frios,1,8,1,0.7907,744
-Congelados e Frios,1,8,2,0.7829,705
-Congelados e Frios,1,8,3,0.7458,699
-Congelados e Frios,1,8,4,0.8836,735
-Congelados e Frios,1,8,5,1.0757,774
-Congelados e Frios,1,8,6,0.8989,741
-Congelados e Frios,1,9,0,0.8151,657
-Congelados e Frios,1,9,1,0.801,663
-Congelados e Frios,1,9,2,0.745,627
-Congelados e Frios,1,9,3,0.7282,627
-Congelados e Frios,1,9,4,0.8014,627
-Congelados e Frios,1,9,5,1.0536,588
-Congelados e Frios,1,9,6,0.9533,621
-Congelados e Frios,1,10,0,0.7832,627
-Congelados e Frios,1,10,1,0.7495,621
-Congelados e Frios,1,10,2,0.7327,657
-Congelados e Frios,1,10,3,0.7738,696
-Congelados e Frios,1,10,4,0.8737,663
-Congelados e Frios,1,10,5,1.0789,666
-Congelados e Frios,1,10,6,0.9613,627
-Congelados e Frios,1,11,0,0.8235,627
-Congelados e Frios,1,11,1,0.7938,627
-Congelados e Frios,1,11,2,0.7859,627
-Congelados e Frios,1,11,3,0.7595,588
-Congelados e Frios,1,11,4,0.8284,621
-Congelados e Frios,1,11,5,1.0647,657
-Congelados e Frios,1,11,6,0.9806,663
+Congelados e Frios,1,8,0,0.859,717
+Congelados e Frios,1,8,1,0.8205,717
+Congelados e Frios,1,8,2,0.8141,678
+Congelados e Frios,1,8,3,0.7689,678
+Congelados e Frios,1,8,4,0.9096,714
+Congelados e Frios,1,8,5,1.1057,753
+Congelados e Frios,1,8,6,0.9251,720
+Congelados e Frios,1,9,0,0.85,630
+Congelados e Frios,1,9,1,0.835,636
+Congelados e Frios,1,9,2,0.7785,600
+Congelados e Frios,1,9,3,0.7687,594
+Congelados e Frios,1,9,4,0.846,594
+Congelados e Frios,1,9,5,1.1043,561
+Congelados e Frios,1,9,6,0.9966,594
+Congelados e Frios,1,10,0,0.8143,603
+Congelados e Frios,1,10,1,0.7757,600
+Congelados e Frios,1,10,2,0.7569,636
+Congelados e Frios,1,10,3,0.7978,675
+Congelados e Frios,1,10,4,0.9023,642
+Congelados e Frios,1,10,5,1.1245,639
+Congelados e Frios,1,10,6,1.0046,600
+Congelados e Frios,1,11,0,0.8355,618
+Congelados e Frios,1,11,1,0.8093,615
+Congelados e Frios,1,11,2,0.8013,615
+Congelados e Frios,1,11,3,0.7753,576
+Congelados e Frios,1,11,4,0.8448,609
+Congelados e Frios,1,11,5,1.0846,645
+Congelados e Frios,1,11,6,0.9987,651
 Congelados e Frios,1,12,0,1.7633,657
 Congelados e Frios,1,12,1,1.9644,696
 Congelados e Frios,1,12,2,1.8756,630
@@ -860,34 +860,34 @@ Congelados e Frios,2,3,3,0.8298,858
 Congelados e Frios,2,3,4,0.9161,858
 Congelados e Frios,2,3,5,1.1919,858
 Congelados e Frios,2,3,6,1.1137,897
-Congelados e Frios,2,4,0,0.8215,741
-Congelados e Frios,2,4,1,0.8006,780
-Congelados e Frios,2,4,2,0.8102,780
-Congelados e Frios,2,4,3,0.8029,741
-Congelados e Frios,2,4,4,0.9116,741
-Congelados e Frios,2,4,5,1.1623,741
-Congelados e Frios,2,4,6,1.0735,741
-Congelados e Frios,2,5,0,0.8311,780
-Congelados e Frios,2,5,1,0.7935,780
-Congelados e Frios,2,5,2,0.8078,780
-Congelados e Frios,2,5,3,0.7833,780
-Congelados e Frios,2,5,4,0.9181,819
-Congelados e Frios,2,5,5,1.1799,780
-Congelados e Frios,2,5,6,1.1251,741
-Congelados e Frios,2,6,0,0.8314,858
-Congelados e Frios,2,6,1,0.7894,819
-Congelados e Frios,2,6,2,0.7991,819
-Congelados e Frios,2,6,3,0.7624,858
-Congelados e Frios,2,6,4,0.9033,819
-Congelados e Frios,2,6,5,1.2004,819
-Congelados e Frios,2,6,6,1.1446,858
-Congelados e Frios,2,7,0,0.8665,858
-Congelados e Frios,2,7,1,0.8175,858
-Congelados e Frios,2,7,2,0.813,897
-Congelados e Frios,2,7,3,0.7866,858
-Congelados e Frios,2,7,4,0.9188,858
-Congelados e Frios,2,7,5,1.1671,858
-Congelados e Frios,2,7,6,1.11,858
+Congelados e Frios,2,4,0,0.8316,732
+Congelados e Frios,2,4,1,0.81,771
+Congelados e Frios,2,4,2,0.8197,771
+Congelados e Frios,2,4,3,0.8095,735
+Congelados e Frios,2,4,4,0.919,735
+Congelados e Frios,2,4,5,1.1718,735
+Congelados e Frios,2,4,6,1.0823,735
+Congelados e Frios,2,5,0,0.844,768
+Congelados e Frios,2,5,1,0.8059,768
+Congelados e Frios,2,5,2,0.8205,768
+Congelados e Frios,2,5,3,0.7986,765
+Congelados e Frios,2,5,4,0.9352,804
+Congelados e Frios,2,5,5,1.203,765
+Congelados e Frios,2,5,6,1.1436,729
+Congelados e Frios,2,6,0,0.8462,843
+Congelados e Frios,2,6,1,0.8011,807
+Congelados e Frios,2,6,2,0.811,807
+Congelados e Frios,2,6,3,0.7732,846
+Congelados e Frios,2,6,4,0.9168,807
+Congelados e Frios,2,6,5,1.2183,807
+Congelados e Frios,2,6,6,1.1649,843
+Congelados e Frios,2,7,0,0.8726,852
+Congelados e Frios,2,7,1,0.8261,849
+Congelados e Frios,2,7,2,0.8213,888
+Congelados e Frios,2,7,3,0.7949,849
+Congelados e Frios,2,7,4,0.9286,849
+Congelados e Frios,2,7,5,1.1795,849
+Congelados e Frios,2,7,6,1.1218,849
 Congelados e Frios,2,8,0,0.8385,780
 Congelados e Frios,2,8,1,0.8124,780
 Congelados e Frios,2,8,2,0.8024,741
@@ -1007,132 +1007,132 @@ Congelados e Frios,3,12,3,1.6435,714
 Congelados e Frios,3,12,4,1.9118,672
 Congelados e Frios,3,12,5,2.0517,714
 Congelados e Frios,3,12,6,2.1621,672
-Diversos,0,1,0,0.8855,825
-Diversos,0,1,1,0.8844,826
-Diversos,0,1,2,0.8113,793
-Diversos,0,1,3,0.7846,823
-Diversos,0,1,4,0.8069,845
-Diversos,0,1,5,1.2918,866
-Diversos,0,1,6,1.3405,829
-Diversos,0,2,0,0.7778,830
-Diversos,0,2,1,0.8006,776
-Diversos,0,2,2,0.6849,776
-Diversos,0,2,3,0.6818,776
-Diversos,0,2,4,0.7786,776
-Diversos,0,2,5,1.1439,776
-Diversos,0,2,6,0.9947,776
-Diversos,0,3,0,0.7982,852
-Diversos,0,3,1,0.8166,873
-Diversos,0,3,2,0.8142,882
-Diversos,0,3,3,0.884,882
-Diversos,0,3,4,0.8597,849
-Diversos,0,3,5,1.3171,833
-Diversos,0,3,6,1.285,871
-Diversos,0,4,0,0.7293,699
-Diversos,0,4,1,0.7317,732
-Diversos,0,4,2,0.6587,754
-Diversos,0,4,3,0.6551,721
-Diversos,0,4,4,0.7124,734
-Diversos,0,4,5,1.0933,730
-Diversos,0,4,6,1.0819,730
-Diversos,0,5,0,0.8571,780
-Diversos,0,5,1,0.7345,780
-Diversos,0,5,2,0.7171,748
-Diversos,0,5,3,0.69,732
-Diversos,0,5,4,0.7613,774
-Diversos,0,5,5,1.1323,756
-Diversos,0,5,6,1.1424,719
-Diversos,0,6,0,0.7919,863
-Diversos,0,6,1,0.7734,826
-Diversos,0,6,2,0.7028,836
-Diversos,0,6,3,0.7235,886
-Diversos,0,6,4,0.7145,837
-Diversos,0,6,5,1.0766,806
-Diversos,0,6,6,1.156,841
-Diversos,0,7,0,0.9494,850
-Diversos,0,7,1,0.9266,836
-Diversos,0,7,2,0.8335,877
-Diversos,0,7,3,0.7996,857
-Diversos,0,7,4,0.8682,875
-Diversos,0,7,5,1.2713,880
-Diversos,0,7,6,1.3954,880
-Diversos,0,8,0,0.8508,800
-Diversos,0,8,1,0.7677,800
-Diversos,0,8,2,0.768,750
-Diversos,0,8,3,0.7831,720
-Diversos,0,8,4,0.8282,761
-Diversos,0,8,5,1.1845,806
-Diversos,0,8,6,1.232,787
-Diversos,0,9,0,0.9839,671
-Diversos,0,9,1,0.945,702
-Diversos,0,9,2,0.8879,666
-Diversos,0,9,3,0.9511,665
-Diversos,0,9,4,0.905,665
-Diversos,0,9,5,1.4362,616
-Diversos,0,9,6,1.5321,635
-Diversos,0,10,0,0.9379,675
-Diversos,0,10,1,0.8624,645
-Diversos,0,10,2,0.9261,684
-Diversos,0,10,3,0.9486,734
-Diversos,0,10,4,1.0583,718
-Diversos,0,10,5,1.4138,729
-Diversos,0,10,6,1.5487,675
-Diversos,0,11,0,0.9168,694
-Diversos,0,11,1,0.8618,691
-Diversos,0,11,2,0.7929,691
-Diversos,0,11,3,0.7321,641
-Diversos,0,11,4,0.764,660
-Diversos,0,11,5,1.1657,698
-Diversos,0,11,6,1.3277,733
-Diversos,0,12,0,1.0648,699
-Diversos,0,12,1,1.0809,752
-Diversos,0,12,2,1.1034,715
-Diversos,0,12,3,1.0252,708
-Diversos,0,12,4,1.0217,638
-Diversos,0,12,5,1.4569,692
-Diversos,0,12,6,1.4376,611
-Diversos,1,1,0,0.9396,1050
-Diversos,1,1,1,0.8885,1051
-Diversos,1,1,2,0.8935,1014
-Diversos,1,1,3,0.8391,1061
-Diversos,1,1,4,0.8641,1095
-Diversos,1,1,5,1.2793,1106
-Diversos,1,1,6,1.3324,1050
-Diversos,1,2,0,0.7606,1054
-Diversos,1,2,1,0.8019,995
-Diversos,1,2,2,0.7348,995
-Diversos,1,2,3,0.6739,995
-Diversos,1,2,4,0.8067,998
-Diversos,1,2,5,1.1446,998
-Diversos,1,2,6,0.9662,995
-Diversos,1,3,0,0.9362,1112
-Diversos,1,3,1,0.8926,1122
-Diversos,1,3,2,0.9599,1122
-Diversos,1,3,3,0.874,1122
-Diversos,1,3,4,0.9164,1089
-Diversos,1,3,5,1.4259,1079
-Diversos,1,3,6,1.2307,1138
-Diversos,1,4,0,0.7029,912
-Diversos,1,4,1,0.6616,961
-Diversos,1,4,2,0.6833,994
-Diversos,1,4,3,0.6267,945
-Diversos,1,4,4,0.7796,945
-Diversos,1,4,5,1.018,944
-Diversos,1,4,6,0.9929,944
-Diversos,1,5,0,0.7461,1012
-Diversos,1,5,1,0.717,1012
-Diversos,1,5,2,0.7439,980
-Diversos,1,5,3,0.6985,976
-Diversos,1,5,4,0.7912,1035
-Diversos,1,5,5,1.1212,1007
-Diversos,1,5,6,1.0697,954
-Diversos,1,6,0,0.7934,1149
-Diversos,1,6,1,0.7961,1097
-Diversos,1,6,2,0.8439,1094
-Diversos,1,6,3,0.7364,1152
-Diversos,1,6,4,0.832,1094
-Diversos,1,6,5,1.234,1065
-Diversos,1,6,6,1.1651,1118
+Diversos,0,1,0,0.9414,776
+Diversos,0,1,1,0.9402,777
+Diversos,0,1,2,0.8636,745
+Diversos,0,1,3,0.8332,775
+Diversos,0,1,4,0.8566,796
+Diversos,0,1,5,1.3709,816
+Diversos,0,1,6,1.4085,789
+Diversos,0,2,0,0.8562,754
+Diversos,0,2,1,0.8863,701
+Diversos,0,2,2,0.7582,701
+Diversos,0,2,3,0.7548,701
+Diversos,0,2,4,0.8619,701
+Diversos,0,2,5,1.2663,701
+Diversos,0,2,6,1.1011,701
+Diversos,0,3,0,0.8587,792
+Diversos,0,3,1,0.8779,812
+Diversos,0,3,2,0.8631,832
+Diversos,0,3,3,0.9371,832
+Diversos,0,3,4,0.9124,800
+Diversos,0,3,5,1.3976,785
+Diversos,0,3,6,1.3767,813
+Diversos,0,4,0,0.8357,610
+Diversos,0,4,1,0.8329,643
+Diversos,0,4,2,0.7606,653
+Diversos,0,4,3,0.7509,629
+Diversos,0,4,4,0.8007,653
+Diversos,0,4,5,1.2298,649
+Diversos,0,4,6,1.217,649
+Diversos,0,5,0,0.9605,696
+Diversos,0,5,1,0.8232,696
+Diversos,0,5,2,0.8078,664
+Diversos,0,5,3,0.7904,639
+Diversos,0,5,4,0.8808,669
+Diversos,0,5,5,1.3149,651
+Diversos,0,5,6,1.3163,624
+Diversos,0,6,0,0.8416,812
+Diversos,0,6,1,0.8232,776
+Diversos,0,6,2,0.7456,788
+Diversos,0,6,3,0.765,838
+Diversos,0,6,4,0.758,789
+Diversos,0,6,5,1.1448,758
+Diversos,0,6,6,1.2417,783
+Diversos,0,7,0,0.9653,836
+Diversos,0,7,1,0.9435,821
+Diversos,0,7,2,0.85,860
+Diversos,0,7,3,0.8149,841
+Diversos,0,7,4,0.8833,860
+Diversos,0,7,5,1.2919,866
+Diversos,0,7,6,1.418,866
+Diversos,0,8,0,0.9015,755
+Diversos,0,8,1,0.8123,756
+Diversos,0,8,2,0.8159,706
+Diversos,0,8,3,0.834,676
+Diversos,0,8,4,0.8802,716
+Diversos,0,8,5,1.2562,760
+Diversos,0,8,6,1.3084,741
+Diversos,0,9,0,0.9973,662
+Diversos,0,9,1,0.9586,692
+Diversos,0,9,2,0.9001,657
+Diversos,0,9,3,0.9627,657
+Diversos,0,9,4,0.916,657
+Diversos,0,9,5,1.4551,608
+Diversos,0,9,6,1.5516,627
+Diversos,0,10,0,0.9477,668
+Diversos,0,10,1,0.8705,639
+Diversos,0,10,2,0.937,676
+Diversos,0,10,3,0.9604,725
+Diversos,0,10,4,1.0717,709
+Diversos,0,10,5,1.4315,720
+Diversos,0,10,6,1.5696,666
+Diversos,0,11,0,0.9384,678
+Diversos,0,11,1,0.8822,675
+Diversos,0,11,2,0.8117,675
+Diversos,0,11,3,0.7473,628
+Diversos,0,11,4,0.7794,647
+Diversos,0,11,5,1.1878,685
+Diversos,0,11,6,1.3517,720
+Diversos,0,12,0,1.0929,681
+Diversos,0,12,1,1.1089,733
+Diversos,0,12,2,1.1336,696
+Diversos,0,12,3,1.055,688
+Diversos,0,12,4,1.0531,619
+Diversos,0,12,5,1.5002,672
+Diversos,0,12,6,1.4787,594
+Diversos,1,1,0,1.0267,961
+Diversos,1,1,1,0.9707,962
+Diversos,1,1,2,0.9784,926
+Diversos,1,1,3,0.915,973
+Diversos,1,1,4,0.9405,1006
+Diversos,1,1,5,1.3899,1018
+Diversos,1,1,6,1.4247,982
+Diversos,1,2,0,0.878,913
+Diversos,1,2,1,0.9343,854
+Diversos,1,2,2,0.8562,854
+Diversos,1,2,3,0.7851,854
+Diversos,1,2,4,0.9394,857
+Diversos,1,2,5,1.3329,857
+Diversos,1,2,6,1.1257,854
+Diversos,1,3,0,1.0338,1007
+Diversos,1,3,1,0.9838,1018
+Diversos,1,3,2,1.0386,1037
+Diversos,1,3,3,0.9456,1037
+Diversos,1,3,4,0.994,1004
+Diversos,1,3,5,1.5463,995
+Diversos,1,3,6,1.3545,1034
+Diversos,1,4,0,0.8525,752
+Diversos,1,4,1,0.7947,800
+Diversos,1,4,2,0.8355,813
+Diversos,1,4,3,0.7563,783
+Diversos,1,4,4,0.9175,803
+Diversos,1,4,5,1.1997,801
+Diversos,1,4,6,1.1702,801
+Diversos,1,5,0,0.8821,856
+Diversos,1,5,1,0.8477,856
+Diversos,1,5,2,0.8847,824
+Diversos,1,5,3,0.8512,801
+Diversos,1,5,4,0.9749,840
+Diversos,1,5,5,1.3905,812
+Diversos,1,5,6,1.3117,778
+Diversos,1,6,0,0.8496,1073
+Diversos,1,6,1,0.8553,1021
+Diversos,1,6,2,0.9069,1018
+Diversos,1,6,3,0.7884,1076
+Diversos,1,6,4,0.8942,1018
+Diversos,1,6,5,1.3289,989
+Diversos,1,6,6,1.2733,1023
 Diversos,1,7,0,0.9742,1131
 Diversos,1,7,1,0.9565,1128
 Diversos,1,7,2,0.9968,1189
@@ -1140,167 +1140,167 @@ Diversos,1,7,3,0.9241,1160
 Diversos,1,7,4,0.9629,1163
 Diversos,1,7,5,1.4136,1160
 Diversos,1,7,6,1.3948,1160
-Diversos,1,8,0,0.8354,1045
-Diversos,1,8,1,0.7872,1043
-Diversos,1,8,2,0.8249,985
-Diversos,1,8,3,0.7171,955
-Diversos,1,8,4,0.7738,1010
-Diversos,1,8,5,1.1338,1071
-Diversos,1,8,6,1.0102,1042
-Diversos,1,9,0,1.0183,892
-Diversos,1,9,1,1.0164,923
-Diversos,1,9,2,1.0025,868
-Diversos,1,9,3,0.8895,866
-Diversos,1,9,4,0.8728,866
-Diversos,1,9,5,1.4499,808
-Diversos,1,9,6,1.3782,837
-Diversos,1,10,0,0.9251,866
-Diversos,1,10,1,0.8283,837
-Diversos,1,10,2,0.9451,893
-Diversos,1,10,3,0.9233,954
-Diversos,1,10,4,0.966,925
-Diversos,1,10,5,1.2966,926
-Diversos,1,10,6,1.3313,866
-Diversos,1,11,0,0.8725,876
-Diversos,1,11,1,0.905,875
-Diversos,1,11,2,0.8902,876
-Diversos,1,11,3,0.8102,817
-Diversos,1,11,4,0.8099,846
-Diversos,1,11,5,1.2778,903
-Diversos,1,11,6,1.3156,934
-Diversos,1,12,0,1.1432,902
-Diversos,1,12,1,1.169,961
-Diversos,1,12,2,1.1485,903
-Diversos,1,12,3,1.0174,877
-Diversos,1,12,4,1.0926,816
-Diversos,1,12,5,1.4979,875
-Diversos,1,12,6,1.3503,786
-Diversos,2,1,0,0.9,1176
-Diversos,2,1,1,0.8773,1176
-Diversos,2,1,2,0.8885,1148
-Diversos,2,1,3,0.9019,1204
-Diversos,2,1,4,0.9074,1231
-Diversos,2,1,5,1.3428,1238
-Diversos,2,1,6,1.4631,1176
-Diversos,2,2,0,0.7379,1181
-Diversos,2,2,1,0.8276,1120
-Diversos,2,2,2,0.7391,1120
-Diversos,2,2,3,0.6763,1122
-Diversos,2,2,4,0.7833,1122
-Diversos,2,2,5,1.0909,1120
-Diversos,2,2,6,0.9544,1120
-Diversos,2,3,0,0.8965,1247
-Diversos,2,3,1,0.856,1247
-Diversos,2,3,2,0.9228,1246
-Diversos,2,3,3,0.8463,1246
-Diversos,2,3,4,0.8814,1221
-Diversos,2,3,5,1.3084,1221
-Diversos,2,3,6,1.3812,1283
-Diversos,2,4,0,0.6682,1038
-Diversos,2,4,1,0.7216,1099
-Diversos,2,4,2,0.7235,1125
-Diversos,2,4,3,0.6851,1064
-Diversos,2,4,4,0.7441,1063
-Diversos,2,4,5,1.0635,1063
-Diversos,2,4,6,0.9994,1063
-Diversos,2,5,0,0.7606,1125
-Diversos,2,5,1,0.7486,1125
-Diversos,2,5,2,0.7627,1100
-Diversos,2,5,3,0.6681,1101
-Diversos,2,5,4,0.8009,1163
-Diversos,2,5,5,1.1339,1127
-Diversos,2,5,6,1.062,1066
-Diversos,2,6,0,0.7889,1252
-Diversos,2,6,1,0.7446,1190
-Diversos,2,6,2,0.7945,1189
-Diversos,2,6,3,0.721,1250
-Diversos,2,6,4,0.786,1189
-Diversos,2,6,5,1.1828,1164
-Diversos,2,6,6,1.2234,1226
-Diversos,2,7,0,0.9087,1225
-Diversos,2,7,1,0.9039,1226
-Diversos,2,7,2,0.9042,1288
-Diversos,2,7,3,0.8715,1252
-Diversos,2,7,4,0.9301,1251
-Diversos,2,7,5,1.3063,1250
-Diversos,2,7,6,1.3416,1250
-Diversos,2,8,0,0.8287,1129
-Diversos,2,8,1,0.7856,1128
-Diversos,2,8,2,0.8405,1067
-Diversos,2,8,3,0.7528,1042
-Diversos,2,8,4,0.8486,1104
-Diversos,2,8,5,1.1553,1166
-Diversos,2,8,6,1.1368,1130
-Diversos,2,9,0,0.9631,982
-Diversos,2,9,1,0.9619,1008
-Diversos,2,9,2,1.0046,946
-Diversos,2,9,3,0.9008,945
-Diversos,2,9,4,0.9442,945
-Diversos,2,9,5,1.475,884
-Diversos,2,9,6,1.4776,920
-Diversos,2,10,0,0.9515,945
-Diversos,2,10,1,0.9009,920
-Diversos,2,10,2,0.9519,982
-Diversos,2,10,3,0.925,1044
-Diversos,2,10,4,1.0103,1008
-Diversos,2,10,5,1.3574,1007
-Diversos,2,10,6,1.5447,945
-Diversos,2,11,0,0.9798,942
-Diversos,2,11,1,0.9122,942
-Diversos,2,11,2,0.9483,942
-Diversos,2,11,3,0.8106,881
-Diversos,2,11,4,0.9134,917
-Diversos,2,11,5,1.3242,979
-Diversos,2,11,6,1.4672,1005
-Diversos,2,12,0,1.192,978
-Diversos,2,12,1,1.1608,1039
-Diversos,2,12,2,1.2223,967
-Diversos,2,12,3,1.0596,940
-Diversos,2,12,4,1.1717,880
-Diversos,2,12,5,1.5068,941
-Diversos,2,12,6,1.6154,855
-Diversos,3,1,0,0.8868,1358
-Diversos,3,1,1,0.8114,1358
-Diversos,3,1,2,0.9024,1326
-Diversos,3,1,3,0.8305,1397
-Diversos,3,1,4,0.959,1427
-Diversos,3,1,5,1.4419,1428
-Diversos,3,1,6,1.6233,1358
-Diversos,3,2,0,0.7658,1358
-Diversos,3,2,1,0.8135,1288
-Diversos,3,2,2,0.7218,1288
-Diversos,3,2,3,0.6513,1288
-Diversos,3,2,4,0.7808,1288
-Diversos,3,2,5,1.1431,1288
-Diversos,3,2,6,1.1225,1288
-Diversos,3,3,0,0.8442,1428
-Diversos,3,3,1,0.8322,1428
-Diversos,3,3,2,0.8789,1428
-Diversos,3,3,3,0.7676,1428
-Diversos,3,3,4,0.9141,1400
-Diversos,3,3,5,1.4443,1400
-Diversos,3,3,6,1.5257,1470
-Diversos,3,4,0,0.6353,1190
-Diversos,3,4,1,0.6508,1260
-Diversos,3,4,2,0.7053,1288
-Diversos,3,4,3,0.6362,1218
-Diversos,3,4,4,0.7712,1218
-Diversos,3,4,5,1.1016,1218
-Diversos,3,4,6,1.1556,1218
-Diversos,3,5,0,0.707,1288
-Diversos,3,5,1,0.6336,1288
-Diversos,3,5,2,0.7311,1260
-Diversos,3,5,3,0.6469,1260
-Diversos,3,5,4,0.8342,1330
-Diversos,3,5,5,1.1673,1288
-Diversos,3,5,6,1.1054,1218
-Diversos,3,6,0,0.7487,1428
-Diversos,3,6,1,0.7454,1358
-Diversos,3,6,2,0.7966,1358
-Diversos,3,6,3,0.7258,1428
-Diversos,3,6,4,0.8588,1358
-Diversos,3,6,5,1.2641,1330
-Diversos,3,6,6,1.3105,1400
+Diversos,1,8,0,0.9337,935
+Diversos,1,8,1,0.88,933
+Diversos,1,8,2,0.9286,875
+Diversos,1,8,3,0.8038,852
+Diversos,1,8,4,0.8617,907
+Diversos,1,8,5,1.2544,968
+Diversos,1,8,6,1.121,939
+Diversos,1,9,0,1.0611,856
+Diversos,1,9,1,1.0577,887
+Diversos,1,9,2,1.0446,833
+Diversos,1,9,3,0.9349,824
+Diversos,1,9,4,0.9173,824
+Diversos,1,9,5,1.5155,773
+Diversos,1,9,6,1.4384,802
+Diversos,1,10,0,0.9629,832
+Diversos,1,10,1,0.859,807
+Diversos,1,10,2,0.9791,862
+Diversos,1,10,3,0.9543,923
+Diversos,1,10,4,0.9984,895
+Diversos,1,10,5,1.349,890
+Diversos,1,10,6,1.389,830
+Diversos,1,11,0,0.895,854
+Diversos,1,11,1,0.9327,849
+Diversos,1,11,2,0.9185,849
+Diversos,1,11,3,0.8368,791
+Diversos,1,11,4,0.8366,819
+Diversos,1,11,5,1.3187,875
+Diversos,1,11,6,1.3563,906
+Diversos,1,12,0,1.1547,893
+Diversos,1,12,1,1.18,952
+Diversos,1,12,2,1.1601,894
+Diversos,1,12,3,1.0267,869
+Diversos,1,12,4,1.1048,807
+Diversos,1,12,5,1.5134,866
+Diversos,1,12,6,1.3625,779
+Diversos,2,1,0,0.9809,1079
+Diversos,2,1,1,0.9562,1079
+Diversos,2,1,2,0.9695,1052
+Diversos,2,1,3,0.98,1108
+Diversos,2,1,4,0.9859,1133
+Diversos,2,1,5,1.4582,1140
+Diversos,2,1,6,1.5628,1101
+Diversos,2,2,0,0.8602,1013
+Diversos,2,2,1,0.9726,953
+Diversos,2,2,2,0.8686,953
+Diversos,2,2,3,0.7945,955
+Diversos,2,2,4,0.9203,955
+Diversos,2,2,5,1.2768,957
+Diversos,2,2,6,1.117,957
+Diversos,2,3,0,0.9955,1123
+Diversos,2,3,1,0.9497,1124
+Diversos,2,3,2,1.0042,1145
+Diversos,2,3,3,0.9209,1145
+Diversos,2,3,4,0.9609,1120
+Diversos,2,3,5,1.4315,1116
+Diversos,2,3,6,1.5343,1155
+Diversos,2,4,0,0.8208,845
+Diversos,2,4,1,0.8773,904
+Diversos,2,4,2,0.8974,907
+Diversos,2,4,3,0.836,872
+Diversos,2,4,4,0.8848,894
+Diversos,2,4,5,1.2645,894
+Diversos,2,4,6,1.1884,894
+Diversos,2,5,0,0.92,930
+Diversos,2,5,1,0.9055,930
+Diversos,2,5,2,0.926,906
+Diversos,2,5,3,0.835,881
+Diversos,2,5,4,1.0124,920
+Diversos,2,5,5,1.4456,884
+Diversos,2,5,6,1.335,848
+Diversos,2,6,0,0.8726,1132
+Diversos,2,6,1,0.8227,1077
+Diversos,2,6,2,0.878,1076
+Diversos,2,6,3,0.7926,1137
+Diversos,2,6,4,0.8677,1077
+Diversos,2,6,5,1.3087,1052
+Diversos,2,6,6,1.3785,1088
+Diversos,2,7,0,0.93,1197
+Diversos,2,7,1,0.9305,1191
+Diversos,2,7,2,0.9302,1252
+Diversos,2,7,3,0.8973,1216
+Diversos,2,7,4,0.9577,1215
+Diversos,2,7,5,1.3439,1215
+Diversos,2,7,6,1.3802,1215
+Diversos,2,8,0,0.9111,1027
+Diversos,2,8,1,0.8629,1027
+Diversos,2,8,2,0.9284,966
+Diversos,2,8,3,0.8327,942
+Diversos,2,8,4,0.9341,1003
+Diversos,2,8,5,1.2661,1064
+Diversos,2,8,6,1.2496,1028
+Diversos,2,9,0,0.977,968
+Diversos,2,9,1,0.9764,993
+Diversos,2,9,2,1.0197,932
+Diversos,2,9,3,0.9143,931
+Diversos,2,9,4,0.9584,931
+Diversos,2,9,5,1.497,871
+Diversos,2,9,6,1.4987,907
+Diversos,2,10,0,0.9638,933
+Diversos,2,10,1,0.9118,909
+Diversos,2,10,2,0.9637,970
+Diversos,2,10,3,0.9367,1031
+Diversos,2,10,4,1.0235,995
+Diversos,2,10,5,1.3765,993
+Diversos,2,10,6,1.5662,932
+Diversos,2,11,0,0.9871,935
+Diversos,2,11,1,0.92,934
+Diversos,2,11,2,0.9564,934
+Diversos,2,11,3,0.818,873
+Diversos,2,11,4,0.9214,909
+Diversos,2,11,5,1.3352,971
+Diversos,2,11,6,1.4804,996
+Diversos,2,12,0,1.2081,965
+Diversos,2,12,1,1.1755,1026
+Diversos,2,12,2,1.239,954
+Diversos,2,12,3,1.071,930
+Diversos,2,12,4,1.1865,869
+Diversos,2,12,5,1.5246,930
+Diversos,2,12,6,1.6326,846
+Diversos,3,1,0,0.9665,1246
+Diversos,3,1,1,0.8843,1246
+Diversos,3,1,2,0.9857,1214
+Diversos,3,1,3,0.9029,1285
+Diversos,3,1,4,1.0407,1315
+Diversos,3,1,5,1.5646,1316
+Diversos,3,1,6,1.7303,1274
+Diversos,3,2,0,0.8949,1162
+Diversos,3,2,1,0.9596,1092
+Diversos,3,2,2,0.8513,1092
+Diversos,3,2,3,0.7682,1092
+Diversos,3,2,4,0.921,1092
+Diversos,3,2,5,1.3483,1092
+Diversos,3,2,6,1.324,1092
+Diversos,3,3,0,0.936,1288
+Diversos,3,3,1,0.9227,1288
+Diversos,3,3,2,0.9537,1316
+Diversos,3,3,3,0.8329,1316
+Diversos,3,3,4,0.9936,1288
+Diversos,3,3,5,1.5699,1288
+Diversos,3,3,6,1.6863,1330
+Diversos,3,4,0,0.7826,966
+Diversos,3,4,1,0.7916,1036
+Diversos,3,4,2,0.8768,1036
+Diversos,3,4,3,0.7796,994
+Diversos,3,4,4,0.9191,1022
+Diversos,3,4,5,1.3129,1022
+Diversos,3,4,6,1.3772,1022
+Diversos,3,5,0,0.8558,1064
+Diversos,3,5,1,0.7669,1064
+Diversos,3,5,2,0.8892,1036
+Diversos,3,5,3,0.8086,1008
+Diversos,3,5,4,1.0567,1050
+Diversos,3,5,5,1.4916,1008
+Diversos,3,5,6,1.3938,966
+Diversos,3,6,0,0.8124,1316
+Diversos,3,6,1,0.8124,1246
+Diversos,3,6,2,0.8682,1246
+Diversos,3,6,3,0.7876,1316
+Diversos,3,6,4,0.936,1246
+Diversos,3,6,5,1.3804,1218
+Diversos,3,6,6,1.4561,1260
 Diversos,3,7,0,0.8858,1400
 Diversos,3,7,1,0.8766,1400
 Diversos,3,7,2,0.9567,1470
@@ -1308,13 +1308,13 @@ Diversos,3,7,3,0.8629,1428
 Diversos,3,7,4,0.9518,1428
 Diversos,3,7,5,1.4107,1428
 Diversos,3,7,6,1.4659,1428
-Diversos,3,8,0,0.8311,1288
-Diversos,3,8,1,0.8053,1288
-Diversos,3,8,2,0.842,1218
-Diversos,3,8,3,0.7351,1190
-Diversos,3,8,4,0.8958,1260
-Diversos,3,8,5,1.1738,1330
-Diversos,3,8,6,1.2083,1288
+Diversos,3,8,0,0.9103,1176
+Diversos,3,8,1,0.882,1176
+Diversos,3,8,2,0.9272,1106
+Diversos,3,8,3,0.8115,1078
+Diversos,3,8,4,0.9832,1148
+Diversos,3,8,5,1.2817,1218
+Diversos,3,8,6,1.3234,1176
 Diversos,3,9,0,0.9731,1120
 Diversos,3,9,1,0.9572,1148
 Diversos,3,9,2,0.9896,1078
@@ -1343,244 +1343,244 @@ Diversos,3,12,3,1.0199,1078
 Diversos,3,12,4,1.2144,1008
 Diversos,3,12,5,1.5653,1078
 Diversos,3,12,6,1.7129,980
-Festa e Papelaria,0,1,0,0.5543,501
-Festa e Papelaria,0,1,1,0.6584,502
-Festa e Papelaria,0,1,2,0.6285,461
-Festa e Papelaria,0,1,3,0.6924,472
-Festa e Papelaria,0,1,4,0.7835,498
-Festa e Papelaria,0,1,5,1.1125,519
-Festa e Papelaria,0,1,6,1.0165,498
-Festa e Papelaria,0,2,0,0.4851,510
-Festa e Papelaria,0,2,1,0.4224,472
-Festa e Papelaria,0,2,2,0.3771,472
-Festa e Papelaria,0,2,3,0.4174,472
-Festa e Papelaria,0,2,4,0.3985,472
-Festa e Papelaria,0,2,5,0.7057,472
-Festa e Papelaria,0,2,6,0.6854,472
-Festa e Papelaria,0,3,0,0.7413,511
-Festa e Papelaria,0,3,1,0.7393,531
-Festa e Papelaria,0,3,2,0.7281,551
-Festa e Papelaria,0,3,3,0.7537,551
-Festa e Papelaria,0,3,4,0.839,513
-Festa e Papelaria,0,3,5,1.2334,490
-Festa e Papelaria,0,3,6,1.0072,511
-Festa e Papelaria,0,4,0,0.9117,398
-Festa e Papelaria,0,4,1,0.8632,417
-Festa e Papelaria,0,4,2,0.7561,439
-Festa e Papelaria,0,4,3,0.8476,421
-Festa e Papelaria,0,4,4,0.9279,437
-Festa e Papelaria,0,4,5,1.2292,439
-Festa e Papelaria,0,4,6,1.0596,439
-Festa e Papelaria,0,5,0,0.8039,482
-Festa e Papelaria,0,5,1,0.8441,482
-Festa e Papelaria,0,5,2,0.5542,443
-Festa e Papelaria,0,5,3,0.5942,420
-Festa e Papelaria,0,5,4,0.6806,442
-Festa e Papelaria,0,5,5,0.739,442
-Festa e Papelaria,0,5,6,0.9291,424
-Festa e Papelaria,0,6,0,0.5471,539
-Festa e Papelaria,0,6,1,0.5621,522
-Festa e Papelaria,0,6,2,0.524,535
-Festa e Papelaria,0,6,3,0.5212,576
-Festa e Papelaria,0,6,4,0.5535,537
-Festa e Papelaria,0,6,5,0.9523,496
-Festa e Papelaria,0,6,6,0.7627,514
-Festa e Papelaria,0,7,0,0.6488,560
-Festa e Papelaria,0,7,1,0.6596,539
-Festa e Papelaria,0,7,2,0.6774,566
-Festa e Papelaria,0,7,3,0.7518,567
-Festa e Papelaria,0,7,4,0.8321,586
-Festa e Papelaria,0,7,5,1.1923,597
-Festa e Papelaria,0,7,6,0.972,598
-Festa e Papelaria,0,8,0,0.8041,523
-Festa e Papelaria,0,8,1,0.8711,532
-Festa e Papelaria,0,8,2,0.7274,491
-Festa e Papelaria,0,8,3,0.7594,452
-Festa e Papelaria,0,8,4,0.8043,477
-Festa e Papelaria,0,8,5,1.0857,507
-Festa e Papelaria,0,8,6,1.0296,507
-Festa e Papelaria,0,9,0,1.162,399
-Festa e Papelaria,0,9,1,1.0883,431
-Festa e Papelaria,0,9,2,1.1129,408
-Festa e Papelaria,0,9,3,1.1899,415
-Festa e Papelaria,0,9,4,1.1024,415
-Festa e Papelaria,0,9,5,1.8191,376
-Festa e Papelaria,0,9,6,1.4998,376
-Festa e Papelaria,0,10,0,0.8986,431
-Festa e Papelaria,0,10,1,0.9067,390
-Festa e Papelaria,0,10,2,0.9516,415
-Festa e Papelaria,0,10,3,0.984,448
-Festa e Papelaria,0,10,4,1.0995,450
-Festa e Papelaria,0,10,5,1.5498,466
-Festa e Papelaria,0,10,6,1.5148,431
-Festa e Papelaria,0,11,0,0.6984,438
-Festa e Papelaria,0,11,1,0.8665,442
-Festa e Papelaria,0,11,2,0.7626,442
-Festa e Papelaria,0,11,3,0.735,401
-Festa e Papelaria,0,11,4,0.8101,401
-Festa e Papelaria,0,11,5,1.2637,424
-Festa e Papelaria,0,11,6,1.2075,461
-Festa e Papelaria,0,12,0,0.7628,431
-Festa e Papelaria,0,12,1,0.869,468
-Festa e Papelaria,0,12,2,0.9256,468
-Festa e Papelaria,0,12,3,0.8618,463
-Festa e Papelaria,0,12,4,0.9166,411
-Festa e Papelaria,0,12,5,1.3183,449
-Festa e Papelaria,0,12,6,1.2222,367
-Festa e Papelaria,1,1,0,0.7464,603
-Festa e Papelaria,1,1,1,0.7612,603
-Festa e Papelaria,1,1,2,0.7259,558
-Festa e Papelaria,1,1,3,0.7855,576
-Festa e Papelaria,1,1,4,0.901,611
-Festa e Papelaria,1,1,5,1.1244,630
-Festa e Papelaria,1,1,6,0.8885,596
-Festa e Papelaria,1,2,0,0.4793,609
-Festa e Papelaria,1,2,1,0.4259,570
-Festa e Papelaria,1,2,2,0.4116,570
-Festa e Papelaria,1,2,3,0.4005,571
-Festa e Papelaria,1,2,4,0.4943,571
-Festa e Papelaria,1,2,5,0.6695,571
-Festa e Papelaria,1,2,6,0.5347,570
-Festa e Papelaria,1,3,0,0.7044,631
-Festa e Papelaria,1,3,1,0.6634,646
-Festa e Papelaria,1,3,2,0.7426,656
-Festa e Papelaria,1,3,3,0.7284,656
-Festa e Papelaria,1,3,4,0.902,617
-Festa e Papelaria,1,3,5,1.3494,596
-Festa e Papelaria,1,3,6,0.9652,631
-Festa e Papelaria,1,4,0,0.6499,497
-Festa e Papelaria,1,4,1,0.6129,521
-Festa e Papelaria,1,4,2,0.6032,556
-Festa e Papelaria,1,4,3,0.5523,532
-Festa e Papelaria,1,4,4,0.771,536
-Festa e Papelaria,1,4,5,1.0307,542
-Festa e Papelaria,1,4,6,0.7869,542
-Festa e Papelaria,1,5,0,0.6199,582
-Festa e Papelaria,1,5,1,0.5432,582
-Festa e Papelaria,1,5,2,0.4918,543
-Festa e Papelaria,1,5,3,0.5104,522
-Festa e Papelaria,1,5,4,0.4944,558
-Festa e Papelaria,1,5,5,0.5573,558
-Festa e Papelaria,1,5,6,0.5488,534
-Festa e Papelaria,1,6,0,0.5586,645
-Festa e Papelaria,1,6,1,0.6093,621
-Festa e Papelaria,1,6,2,0.6831,622
-Festa e Papelaria,1,6,3,0.6367,668
-Festa e Papelaria,1,6,4,0.6996,629
-Festa e Papelaria,1,6,5,0.9523,584
-Festa e Papelaria,1,6,6,0.7707,608
-Festa e Papelaria,1,7,0,0.8054,668
-Festa e Papelaria,1,7,1,0.7822,653
-Festa e Papelaria,1,7,2,0.8931,691
-Festa e Papelaria,1,7,3,0.7749,692
-Festa e Papelaria,1,7,4,1.0232,698
-Festa e Papelaria,1,7,5,1.2493,707
-Festa e Papelaria,1,7,6,1.0032,707
-Festa e Papelaria,1,8,0,0.9397,611
-Festa e Papelaria,1,8,1,0.8747,618
-Festa e Papelaria,1,8,2,0.847,573
-Festa e Papelaria,1,8,3,0.714,534
-Festa e Papelaria,1,8,4,0.8921,568
-Festa e Papelaria,1,8,5,1.0164,606
-Festa e Papelaria,1,8,6,1.0203,606
-Festa e Papelaria,1,9,0,1.3595,483
-Festa e Papelaria,1,9,1,1.3241,521
-Festa e Papelaria,1,9,2,1.37,486
-Festa e Papelaria,1,9,3,1.3701,487
-Festa e Papelaria,1,9,4,1.4257,487
-Festa e Papelaria,1,9,5,1.869,448
-Festa e Papelaria,1,9,6,1.635,448
-Festa e Papelaria,1,10,0,1.196,502
-Festa e Papelaria,1,10,1,1.0536,457
-Festa e Papelaria,1,10,2,1.0876,495
-Festa e Papelaria,1,10,3,1.1212,536
-Festa e Papelaria,1,10,4,1.3104,536
-Festa e Papelaria,1,10,5,1.6311,540
-Festa e Papelaria,1,10,6,1.3427,502
-Festa e Papelaria,1,11,0,1.0289,510
-Festa e Papelaria,1,11,1,1.0113,517
-Festa e Papelaria,1,11,2,0.948,517
-Festa e Papelaria,1,11,3,0.9754,472
-Festa e Papelaria,1,11,4,1.1305,472
-Festa e Papelaria,1,11,5,1.4445,507
-Festa e Papelaria,1,11,6,1.34,545
-Festa e Papelaria,1,12,0,1.1411,509
-Festa e Papelaria,1,12,1,1.1733,547
-Festa e Papelaria,1,12,2,1.1041,547
-Festa e Papelaria,1,12,3,0.9966,522
-Festa e Papelaria,1,12,4,1.122,480
-Festa e Papelaria,1,12,5,1.4282,519
-Festa e Papelaria,1,12,6,1.3949,429
-Festa e Papelaria,2,1,0,0.7647,627
-Festa e Papelaria,2,1,1,0.8058,627
-Festa e Papelaria,2,1,2,0.7593,582
-Festa e Papelaria,2,1,3,0.8438,600
-Festa e Papelaria,2,1,4,0.9809,643
-Festa e Papelaria,2,1,5,1.278,656
-Festa e Papelaria,2,1,6,1.1893,620
-Festa e Papelaria,2,2,0,0.4469,639
-Festa e Papelaria,2,2,1,0.3792,600
-Festa e Papelaria,2,2,2,0.4377,600
-Festa e Papelaria,2,2,3,0.3832,600
-Festa e Papelaria,2,2,4,0.4424,600
-Festa e Papelaria,2,2,5,0.693,600
-Festa e Papelaria,2,2,6,0.5491,600
-Festa e Papelaria,2,3,0,0.7279,666
-Festa e Papelaria,2,3,1,0.7304,675
-Festa e Papelaria,2,3,2,0.8244,684
-Festa e Papelaria,2,3,3,0.8415,684
-Festa e Papelaria,2,3,4,0.938,645
-Festa e Papelaria,2,3,5,1.2565,630
-Festa e Papelaria,2,3,6,1.0422,666
-Festa e Papelaria,2,4,0,0.7298,526
-Festa e Papelaria,2,4,1,0.7244,556
-Festa e Papelaria,2,4,2,0.6022,592
-Festa e Papelaria,2,4,3,0.6219,562
-Festa e Papelaria,2,4,4,0.7195,564
-Festa e Papelaria,2,4,5,1.0193,571
-Festa e Papelaria,2,4,6,0.9379,571
-Festa e Papelaria,2,5,0,0.5695,610
-Festa e Papelaria,2,5,1,0.5443,610
-Festa e Papelaria,2,5,2,0.4909,571
-Festa e Papelaria,2,5,3,0.4578,556
-Festa e Papelaria,2,5,4,0.5525,593
-Festa e Papelaria,2,5,5,0.6309,593
-Festa e Papelaria,2,5,6,0.62,563
-Festa e Papelaria,2,6,0,0.6034,675
-Festa e Papelaria,2,6,1,0.59,645
-Festa e Papelaria,2,6,2,0.6221,646
-Festa e Papelaria,2,6,3,0.5755,691
-Festa e Papelaria,2,6,4,0.7421,652
-Festa e Papelaria,2,6,5,0.9447,608
-Festa e Papelaria,2,6,6,0.835,638
-Festa e Papelaria,2,7,0,0.8481,678
-Festa e Papelaria,2,7,1,0.9088,665
-Festa e Papelaria,2,7,2,0.941,704
-Festa e Papelaria,2,7,3,0.8928,707
-Festa e Papelaria,2,7,4,0.982,709
-Festa e Papelaria,2,7,5,1.2713,717
-Festa e Papelaria,2,7,6,1.037,717
-Festa e Papelaria,2,8,0,0.6338,623
-Festa e Papelaria,2,8,1,0.6719,630
-Festa e Papelaria,2,8,2,0.6343,585
-Festa e Papelaria,2,8,3,0.6364,546
-Festa e Papelaria,2,8,4,0.6793,583
-Festa e Papelaria,2,8,5,0.8883,621
-Festa e Papelaria,2,8,6,0.8008,621
-Festa e Papelaria,2,9,0,1.2986,493
-Festa e Papelaria,2,9,1,1.3039,531
-Festa e Papelaria,2,9,2,1.2745,494
-Festa e Papelaria,2,9,3,1.2023,495
-Festa e Papelaria,2,9,4,1.4796,495
-Festa e Papelaria,2,9,5,2.0009,456
-Festa e Papelaria,2,9,6,1.7521,456
-Festa e Papelaria,2,10,0,1.2018,513
-Festa e Papelaria,2,10,1,1.2135,469
-Festa e Papelaria,2,10,2,1.2061,509
-Festa e Papelaria,2,10,3,1.1758,549
-Festa e Papelaria,2,10,4,1.466,550
-Festa e Papelaria,2,10,5,1.8791,552
-Festa e Papelaria,2,10,6,1.8122,513
+Festa e Papelaria,0,1,0,0.6269,443
+Festa e Papelaria,0,1,1,0.7444,444
+Festa e Papelaria,0,1,2,0.7136,406
+Festa e Papelaria,0,1,3,0.7837,417
+Festa e Papelaria,0,1,4,0.8828,442
+Festa e Papelaria,0,1,5,1.2524,461
+Festa e Papelaria,0,1,6,1.1274,449
+Festa e Papelaria,0,2,0,0.5727,432
+Festa e Papelaria,0,2,1,0.5035,396
+Festa e Papelaria,0,2,2,0.4494,396
+Festa e Papelaria,0,2,3,0.4976,396
+Festa e Papelaria,0,2,4,0.4749,396
+Festa e Papelaria,0,2,5,0.8411,396
+Festa e Papelaria,0,2,6,0.817,396
+Festa e Papelaria,0,3,0,0.827,458
+Festa e Papelaria,0,3,1,0.8229,477
+Festa e Papelaria,0,3,2,0.7992,502
+Festa e Papelaria,0,3,3,0.8273,502
+Festa e Papelaria,0,3,4,0.9236,466
+Festa e Papelaria,0,3,5,1.3643,443
+Festa e Papelaria,0,3,6,1.1287,456
+Festa e Papelaria,0,4,0,1.0929,332
+Festa e Papelaria,0,4,1,1.0285,350
+Festa e Papelaria,0,4,2,0.9119,364
+Festa e Papelaria,0,4,3,1.008,354
+Festa e Papelaria,0,4,4,1.0784,376
+Festa e Papelaria,0,4,5,1.4276,378
+Festa e Papelaria,0,4,6,1.2305,378
+Festa e Papelaria,0,5,0,0.9359,414
+Festa e Papelaria,0,5,1,0.9827,414
+Festa e Papelaria,0,5,2,0.6529,376
+Festa e Papelaria,0,5,3,0.7213,346
+Festa e Papelaria,0,5,4,0.8356,360
+Festa e Papelaria,0,5,5,0.9073,360
+Festa e Papelaria,0,5,6,1.1255,350
+Festa e Papelaria,0,6,0,0.6067,486
+Festa e Papelaria,0,6,1,0.6257,469
+Festa e Papelaria,0,6,2,0.5828,481
+Festa e Papelaria,0,6,3,0.5762,521
+Festa e Papelaria,0,6,4,0.6129,485
+Festa e Papelaria,0,6,5,1.0566,447
+Festa e Papelaria,0,6,6,0.8578,457
+Festa e Papelaria,0,7,0,0.6804,534
+Festa e Papelaria,0,7,1,0.6903,515
+Festa e Papelaria,0,7,2,0.7074,542
+Festa e Papelaria,0,7,3,0.7851,543
+Festa e Papelaria,0,7,4,0.8707,560
+Festa e Papelaria,0,7,5,1.2532,568
+Festa e Papelaria,0,7,6,1.0216,569
+Festa e Papelaria,0,8,0,0.9044,465
+Festa e Papelaria,0,8,1,0.9797,473
+Festa e Papelaria,0,8,2,0.8267,432
+Festa e Papelaria,0,8,3,0.8668,396
+Festa e Papelaria,0,8,4,0.9135,420
+Festa e Papelaria,0,8,5,1.2232,450
+Festa e Papelaria,0,8,6,1.16,450
+Festa e Papelaria,0,9,0,1.2266,378
+Festa e Papelaria,0,9,1,1.1469,409
+Festa e Papelaria,0,9,2,1.1733,387
+Festa e Papelaria,0,9,3,1.2598,392
+Festa e Papelaria,0,9,4,1.1671,392
+Festa e Papelaria,0,9,5,1.9213,356
+Festa e Papelaria,0,9,6,1.5841,356
+Festa e Papelaria,0,10,0,0.9539,406
+Festa e Papelaria,0,10,1,0.961,368
+Festa e Papelaria,0,10,2,1.01,391
+Festa e Papelaria,0,10,3,1.0422,423
+Festa e Papelaria,0,10,4,1.1642,425
+Festa e Papelaria,0,10,5,1.6451,439
+Festa e Papelaria,0,10,6,1.608,406
+Festa e Papelaria,0,11,0,0.7425,412
+Festa e Papelaria,0,11,1,0.9228,415
+Festa e Papelaria,0,11,2,0.8122,415
+Festa e Papelaria,0,11,3,0.7818,377
+Festa e Papelaria,0,11,4,0.8617,377
+Festa e Papelaria,0,11,5,1.3428,399
+Festa e Papelaria,0,11,6,1.2827,434
+Festa e Papelaria,0,12,0,0.8097,406
+Festa e Papelaria,0,12,1,0.9222,441
+Festa e Papelaria,0,12,2,0.9823,441
+Festa e Papelaria,0,12,3,0.9173,435
+Festa e Papelaria,0,12,4,0.976,386
+Festa e Papelaria,0,12,5,1.4027,422
+Festa e Papelaria,0,12,6,1.2964,346
+Festa e Papelaria,1,1,0,0.8557,526
+Festa e Papelaria,1,1,1,0.8726,526
+Festa e Papelaria,1,1,2,0.8403,482
+Festa e Papelaria,1,1,3,0.9049,500
+Festa e Papelaria,1,1,4,1.029,535
+Festa e Papelaria,1,1,5,1.2787,554
+Festa e Papelaria,1,1,6,0.9842,538
+Festa e Papelaria,1,2,0,0.6044,483
+Festa e Papelaria,1,2,1,0.5456,445
+Festa e Papelaria,1,2,2,0.5272,445
+Festa e Papelaria,1,2,3,0.5127,446
+Festa e Papelaria,1,2,4,0.6328,446
+Festa e Papelaria,1,2,5,0.8571,446
+Festa e Papelaria,1,2,6,0.6849,445
+Festa e Papelaria,1,3,0,0.8261,538
+Festa e Papelaria,1,3,1,0.7764,552
+Festa e Papelaria,1,3,2,0.8457,576
+Festa e Papelaria,1,3,3,0.8296,576
+Festa e Papelaria,1,3,4,1.0345,538
+Festa e Papelaria,1,3,5,1.5556,517
+Festa e Papelaria,1,3,6,1.1405,534
+Festa e Papelaria,1,4,0,0.8412,384
+Festa e Papelaria,1,4,1,0.7826,408
+Festa e Papelaria,1,4,2,0.7836,428
+Festa e Papelaria,1,4,3,0.6996,420
+Festa e Papelaria,1,4,4,0.95,435
+Festa e Papelaria,1,4,5,1.2668,441
+Festa e Papelaria,1,4,6,0.9671,441
+Festa e Papelaria,1,5,0,0.7709,468
+Festa e Papelaria,1,5,1,0.6756,468
+Festa e Papelaria,1,5,2,0.6224,429
+Festa e Papelaria,1,5,3,0.6779,393
+Festa e Papelaria,1,5,4,0.6615,417
+Festa e Papelaria,1,5,5,0.7457,417
+Festa e Papelaria,1,5,6,0.7165,409
+Festa e Papelaria,1,6,0,0.6288,573
+Festa e Papelaria,1,6,1,0.6892,549
+Festa e Papelaria,1,6,2,0.7726,550
+Festa e Papelaria,1,6,3,0.7148,595
+Festa e Papelaria,1,6,4,0.79,557
+Festa e Papelaria,1,6,5,1.0841,513
+Festa e Papelaria,1,6,6,0.8995,521
+Festa e Papelaria,1,7,0,0.8164,659
+Festa e Papelaria,1,7,1,0.7919,645
+Festa e Papelaria,1,7,2,0.9036,683
+Festa e Papelaria,1,7,3,0.784,684
+Festa e Papelaria,1,7,4,1.0366,689
+Festa e Papelaria,1,7,5,1.2672,697
+Festa e Papelaria,1,7,6,1.0176,697
+Festa e Papelaria,1,8,0,1.0916,526
+Festa e Papelaria,1,8,1,1.0161,532
+Festa e Papelaria,1,8,2,0.9966,487
+Festa e Papelaria,1,8,3,0.8435,452
+Festa e Papelaria,1,8,4,1.0426,486
+Festa e Papelaria,1,8,5,1.1754,524
+Festa e Papelaria,1,8,6,1.1799,524
+Festa e Papelaria,1,9,0,1.4091,466
+Festa e Papelaria,1,9,1,1.3688,504
+Festa e Papelaria,1,9,2,1.4197,469
+Festa e Papelaria,1,9,3,1.4319,466
+Festa e Papelaria,1,9,4,1.49,466
+Festa e Papelaria,1,9,5,1.9427,431
+Festa e Papelaria,1,9,6,1.6995,431
+Festa e Papelaria,1,10,0,1.2353,486
+Festa e Papelaria,1,10,1,1.0869,443
+Festa e Papelaria,1,10,2,1.1192,481
+Festa e Papelaria,1,10,3,1.1513,522
+Festa e Papelaria,1,10,4,1.3456,522
+Festa e Papelaria,1,10,5,1.6873,522
+Festa e Papelaria,1,10,6,1.3926,484
+Festa e Papelaria,1,11,0,1.0432,503
+Festa e Papelaria,1,11,1,1.0292,508
+Festa e Papelaria,1,11,2,0.9648,508
+Festa e Papelaria,1,11,3,0.9922,464
+Festa e Papelaria,1,11,4,1.15,464
+Festa e Papelaria,1,11,5,1.4677,499
+Festa e Papelaria,1,11,6,1.36,537
+Festa e Papelaria,1,12,0,1.1502,505
+Festa e Papelaria,1,12,1,1.182,543
+Festa e Papelaria,1,12,2,1.1123,543
+Festa e Papelaria,1,12,3,1.0062,517
+Festa e Papelaria,1,12,4,1.1338,475
+Festa e Papelaria,1,12,5,1.4421,514
+Festa e Papelaria,1,12,6,1.4047,426
+Festa e Papelaria,2,1,0,0.8846,542
+Festa e Papelaria,2,1,1,0.9322,542
+Festa e Papelaria,2,1,2,0.8891,497
+Festa e Papelaria,2,1,3,0.9831,515
+Festa e Papelaria,2,1,4,1.1303,558
+Festa e Papelaria,2,1,5,1.4682,571
+Festa e Papelaria,2,1,6,1.3262,556
+Festa e Papelaria,2,2,0,0.5876,486
+Festa e Papelaria,2,2,1,0.5078,448
+Festa e Papelaria,2,2,2,0.5861,448
+Festa e Papelaria,2,2,3,0.5133,448
+Festa e Papelaria,2,2,4,0.5925,448
+Festa e Papelaria,2,2,5,0.9261,449
+Festa e Papelaria,2,2,6,0.7337,449
+Festa e Papelaria,2,3,0,0.8672,559
+Festa e Papelaria,2,3,1,0.8634,571
+Festa e Papelaria,2,3,2,0.9477,595
+Festa e Papelaria,2,3,3,0.9673,595
+Festa e Papelaria,2,3,4,1.0862,557
+Festa e Papelaria,2,3,5,1.4632,541
+Festa e Papelaria,2,3,6,1.2484,556
+Festa e Papelaria,2,4,0,0.9971,385
+Festa e Papelaria,2,4,1,0.9799,411
+Festa e Papelaria,2,4,2,0.8252,432
+Festa e Papelaria,2,4,3,0.8262,423
+Festa e Papelaria,2,4,4,0.9265,438
+Festa e Papelaria,2,4,5,1.3078,445
+Festa e Papelaria,2,4,6,1.2035,445
+Festa e Papelaria,2,5,0,0.7391,470
+Festa e Papelaria,2,5,1,0.7065,470
+Festa e Papelaria,2,5,2,0.6504,431
+Festa e Papelaria,2,5,3,0.6444,395
+Festa e Papelaria,2,5,4,0.7839,418
+Festa e Papelaria,2,5,5,0.895,418
+Festa e Papelaria,2,5,6,0.8535,409
+Festa e Papelaria,2,6,0,0.6974,584
+Festa e Papelaria,2,6,1,0.6832,557
+Festa e Papelaria,2,6,2,0.7202,558
+Festa e Papelaria,2,6,3,0.6594,603
+Festa e Papelaria,2,6,4,0.8563,565
+Festa e Papelaria,2,6,5,1.1024,521
+Festa e Papelaria,2,6,6,1.0052,530
+Festa e Papelaria,2,7,0,0.8595,669
+Festa e Papelaria,2,7,1,0.9255,653
+Festa e Papelaria,2,7,2,0.9573,692
+Festa e Papelaria,2,7,3,0.9082,695
+Festa e Papelaria,2,7,4,0.9989,697
+Festa e Papelaria,2,7,5,1.293,705
+Festa e Papelaria,2,7,6,1.0547,705
+Festa e Papelaria,2,8,0,0.7394,534
+Festa e Papelaria,2,8,1,0.7824,541
+Festa e Papelaria,2,8,2,0.7481,496
+Festa e Papelaria,2,8,3,0.7586,458
+Festa e Papelaria,2,8,4,0.8017,494
+Festa e Papelaria,2,8,5,1.0368,532
+Festa e Papelaria,2,8,6,0.9348,532
+Festa e Papelaria,2,9,0,1.3092,489
+Festa e Papelaria,2,9,1,1.3138,527
+Festa e Papelaria,2,9,2,1.2849,490
+Festa e Papelaria,2,9,3,1.2146,490
+Festa e Papelaria,2,9,4,1.4947,490
+Festa e Papelaria,2,9,5,2.0186,452
+Festa e Papelaria,2,9,6,1.7676,452
+Festa e Papelaria,2,10,0,1.2041,512
+Festa e Papelaria,2,10,1,1.2161,468
+Festa e Papelaria,2,10,2,1.2084,508
+Festa e Papelaria,2,10,3,1.1779,548
+Festa e Papelaria,2,10,4,1.4687,549
+Festa e Papelaria,2,10,5,1.886,550
+Festa e Papelaria,2,10,6,1.8193,511
 Festa e Papelaria,2,11,0,0.9762,523
 Festa e Papelaria,2,11,1,1.0597,529
 Festa e Papelaria,2,11,2,1.0435,529
@@ -1595,48 +1595,48 @@ Festa e Papelaria,2,12,3,1.1056,531
 Festa e Papelaria,2,12,4,1.22,490
 Festa e Papelaria,2,12,5,1.6543,529
 Festa e Papelaria,2,12,6,1.4056,439
-Festa e Papelaria,3,1,0,0.8373,753
-Festa e Papelaria,3,1,1,0.7102,753
-Festa e Papelaria,3,1,2,0.7875,700
-Festa e Papelaria,3,1,3,0.8706,731
-Festa e Papelaria,3,1,4,0.9654,777
-Festa e Papelaria,3,1,5,1.2492,783
-Festa e Papelaria,3,1,6,1.2435,741
-Festa e Papelaria,3,2,0,0.4267,746
-Festa e Papelaria,3,2,1,0.385,704
-Festa e Papelaria,3,2,2,0.4154,704
-Festa e Papelaria,3,2,3,0.3879,704
-Festa e Papelaria,3,2,4,0.4806,704
-Festa e Papelaria,3,2,5,0.6594,704
-Festa e Papelaria,3,2,6,0.5988,704
-Festa e Papelaria,3,3,0,0.7418,784
-Festa e Papelaria,3,3,1,0.7257,788
-Festa e Papelaria,3,3,2,0.7524,800
-Festa e Papelaria,3,3,3,0.7332,800
-Festa e Papelaria,3,3,4,0.8557,758
-Festa e Papelaria,3,3,5,1.3344,742
-Festa e Papelaria,3,3,6,1.0984,784
-Festa e Papelaria,3,4,0,0.4575,620
-Festa e Papelaria,3,4,1,0.396,658
-Festa e Papelaria,3,4,2,0.3897,700
-Festa e Papelaria,3,4,3,0.4164,662
-Festa e Papelaria,3,4,4,0.5154,662
-Festa e Papelaria,3,4,5,0.7115,674
-Festa e Papelaria,3,4,6,0.6376,674
-Festa e Papelaria,3,5,0,0.4536,716
-Festa e Papelaria,3,5,1,0.377,716
-Festa e Papelaria,3,5,2,0.3479,674
-Festa e Papelaria,3,5,3,0.3589,658
-Festa e Papelaria,3,5,4,0.451,700
-Festa e Papelaria,3,5,5,0.525,700
-Festa e Papelaria,3,5,6,0.4963,662
-Festa e Papelaria,3,6,0,0.5558,784
-Festa e Papelaria,3,6,1,0.4862,746
-Festa e Papelaria,3,6,2,0.5717,746
-Festa e Papelaria,3,6,3,0.5773,800
-Festa e Papelaria,3,6,4,0.6389,758
-Festa e Papelaria,3,6,5,0.9414,704
-Festa e Papelaria,3,6,6,0.7503,742
+Festa e Papelaria,3,1,0,1.0353,609
+Festa e Papelaria,3,1,1,0.8781,609
+Festa e Papelaria,3,1,2,0.9914,556
+Festa e Papelaria,3,1,3,1.0842,587
+Festa e Papelaria,3,1,4,1.185,633
+Festa e Papelaria,3,1,5,1.5308,639
+Festa e Papelaria,3,1,6,1.4556,633
+Festa e Papelaria,3,2,0,0.6444,494
+Festa e Papelaria,3,2,1,0.5997,452
+Festa e Papelaria,3,2,2,0.6469,452
+Festa e Papelaria,3,2,3,0.6042,452
+Festa e Papelaria,3,2,4,0.7485,452
+Festa e Papelaria,3,2,5,1.027,452
+Festa e Papelaria,3,2,6,0.9326,452
+Festa e Papelaria,3,3,0,0.9534,610
+Festa e Papelaria,3,3,1,0.9268,617
+Festa e Papelaria,3,3,2,0.9176,656
+Festa e Papelaria,3,3,3,0.8942,656
+Festa e Papelaria,3,3,4,1.0563,614
+Festa e Papelaria,3,3,5,1.6557,598
+Festa e Papelaria,3,3,6,1.4258,604
+Festa e Papelaria,3,4,0,0.7465,380
+Festa e Papelaria,3,4,1,0.6279,415
+Festa e Papelaria,3,4,2,0.6343,430
+Festa e Papelaria,3,4,3,0.644,428
+Festa e Papelaria,3,4,4,0.7549,452
+Festa e Papelaria,3,4,5,1.0336,464
+Festa e Papelaria,3,4,6,0.9261,464
+Festa e Papelaria,3,5,0,0.6823,476
+Festa e Papelaria,3,5,1,0.567,476
+Festa e Papelaria,3,5,2,0.5403,434
+Festa e Papelaria,3,5,3,0.6182,382
+Festa e Papelaria,3,5,4,0.7893,400
+Festa e Papelaria,3,5,5,0.9187,400
+Festa e Papelaria,3,5,6,0.8255,398
+Festa e Papelaria,3,6,0,0.6808,640
+Festa e Papelaria,3,6,1,0.6025,602
+Festa e Papelaria,3,6,2,0.7084,602
+Festa e Papelaria,3,6,3,0.704,656
+Festa e Papelaria,3,6,4,0.7887,614
+Festa e Papelaria,3,6,5,1.1834,560
+Festa e Papelaria,3,6,6,0.9907,562
 Festa e Papelaria,3,7,0,0.7964,766
 Festa e Papelaria,3,7,1,0.7797,753
 Festa e Papelaria,3,7,2,0.8817,795
@@ -1644,13 +1644,13 @@ Festa e Papelaria,3,7,3,0.8316,796
 Festa e Papelaria,3,7,4,0.9784,796
 Festa e Papelaria,3,7,5,1.1118,808
 Festa e Papelaria,3,7,6,0.9768,808
-Festa e Papelaria,3,8,0,1.1211,690
-Festa e Papelaria,3,8,1,1.1107,701
-Festa e Papelaria,3,8,2,1.0935,648
-Festa e Papelaria,3,8,3,1.0205,606
-Festa e Papelaria,3,8,4,1.1448,647
-Festa e Papelaria,3,8,5,1.3487,689
-Festa e Papelaria,3,8,6,1.3565,689
+Festa e Papelaria,3,8,0,1.4168,546
+Festa e Papelaria,3,8,1,1.3979,557
+Festa e Papelaria,3,8,2,1.4059,504
+Festa e Papelaria,3,8,3,1.3386,462
+Festa e Papelaria,3,8,4,1.4726,503
+Festa e Papelaria,3,8,5,1.705,545
+Festa e Papelaria,3,8,6,1.7149,545
 Festa e Papelaria,3,9,0,1.7798,541
 Festa e Papelaria,3,9,1,1.6687,583
 Festa e Papelaria,3,9,2,1.6552,542
@@ -1693,27 +1693,27 @@ Higiene e Beleza,0,2,3,0.7337,424
 Higiene e Beleza,0,2,4,0.7332,424
 Higiene e Beleza,0,2,5,1.2596,424
 Higiene e Beleza,0,2,6,1.0717,424
-Higiene e Beleza,0,3,0,0.9226,464
-Higiene e Beleza,0,3,1,0.9335,472
+Higiene e Beleza,0,3,0,0.9245,463
+Higiene e Beleza,0,3,1,0.9355,471
 Higiene e Beleza,0,3,2,0.8973,478
 Higiene e Beleza,0,3,3,0.7882,478
 Higiene e Beleza,0,3,4,0.8247,472
 Higiene e Beleza,0,3,5,1.2488,464
 Higiene e Beleza,0,3,6,1.3188,482
-Higiene e Beleza,0,4,0,0.9147,398
-Higiene e Beleza,0,4,1,0.908,416
-Higiene e Beleza,0,4,2,0.7479,418
-Higiene e Beleza,0,4,3,0.8001,400
-Higiene e Beleza,0,4,4,0.8621,406
-Higiene e Beleza,0,4,5,1.2181,406
-Higiene e Beleza,0,4,6,1.3046,406
-Higiene e Beleza,0,5,0,0.9205,432
-Higiene e Beleza,0,5,1,0.9229,432
-Higiene e Beleza,0,5,2,0.7936,424
-Higiene e Beleza,0,5,3,0.6999,416
-Higiene e Beleza,0,5,4,0.8384,436
-Higiene e Beleza,0,5,5,1.3329,418
-Higiene e Beleza,0,5,6,1.318,400
+Higiene e Beleza,0,4,0,0.924,394
+Higiene e Beleza,0,4,1,0.9168,412
+Higiene e Beleza,0,4,2,0.757,413
+Higiene e Beleza,0,4,3,0.8102,395
+Higiene e Beleza,0,4,4,0.8707,402
+Higiene e Beleza,0,4,5,1.2302,402
+Higiene e Beleza,0,4,6,1.3175,402
+Higiene e Beleza,0,5,0,0.9269,429
+Higiene e Beleza,0,5,1,0.9294,429
+Higiene e Beleza,0,5,2,0.7993,421
+Higiene e Beleza,0,5,3,0.705,413
+Higiene e Beleza,0,5,4,0.8462,432
+Higiene e Beleza,0,5,5,1.3457,414
+Higiene e Beleza,0,5,6,1.3313,396
 Higiene e Beleza,0,6,0,0.9175,470
 Higiene e Beleza,0,6,1,0.8558,452
 Higiene e Beleza,0,6,2,0.8593,458
@@ -1721,13 +1721,13 @@ Higiene e Beleza,0,6,3,0.7405,484
 Higiene e Beleza,0,6,4,0.7697,458
 Higiene e Beleza,0,6,5,1.2438,450
 Higiene e Beleza,0,6,6,1.4537,468
-Higiene e Beleza,0,7,0,1.0843,478
-Higiene e Beleza,0,7,1,1.0369,470
-Higiene e Beleza,0,7,2,0.8806,490
-Higiene e Beleza,0,7,3,0.8548,472
-Higiene e Beleza,0,7,4,0.7831,482
-Higiene e Beleza,0,7,5,1.1784,486
-Higiene e Beleza,0,7,6,1.4373,486
+Higiene e Beleza,0,7,0,1.0911,475
+Higiene e Beleza,0,7,1,1.0435,467
+Higiene e Beleza,0,7,2,0.886,487
+Higiene e Beleza,0,7,3,0.8603,469
+Higiene e Beleza,0,7,4,0.788,479
+Higiene e Beleza,0,7,5,1.1857,483
+Higiene e Beleza,0,7,6,1.4463,483
 Higiene e Beleza,0,8,0,1.0429,440
 Higiene e Beleza,0,8,1,0.937,442
 Higiene e Beleza,0,8,2,0.7875,416
@@ -1812,34 +1812,34 @@ Higiene e Beleza,1,7,3,0.8361,546
 Higiene e Beleza,1,7,4,0.7968,548
 Higiene e Beleza,1,7,5,1.2734,548
 Higiene e Beleza,1,7,6,1.241,548
-Higiene e Beleza,1,8,0,0.9433,496
-Higiene e Beleza,1,8,1,0.9074,496
-Higiene e Beleza,1,8,2,0.8902,470
-Higiene e Beleza,1,8,3,0.8206,466
-Higiene e Beleza,1,8,4,0.8735,490
-Higiene e Beleza,1,8,5,1.2397,516
-Higiene e Beleza,1,8,6,1.1372,494
-Higiene e Beleza,1,9,0,0.9759,438
-Higiene e Beleza,1,9,1,0.9015,442
-Higiene e Beleza,1,9,2,0.8647,418
-Higiene e Beleza,1,9,3,0.7509,418
-Higiene e Beleza,1,9,4,0.7196,418
-Higiene e Beleza,1,9,5,1.2182,392
-Higiene e Beleza,1,9,6,1.1918,414
-Higiene e Beleza,1,10,0,0.8624,418
-Higiene e Beleza,1,10,1,0.8354,414
-Higiene e Beleza,1,10,2,0.8192,438
-Higiene e Beleza,1,10,3,0.7769,464
-Higiene e Beleza,1,10,4,0.8719,442
-Higiene e Beleza,1,10,5,1.2618,444
-Higiene e Beleza,1,10,6,1.2076,418
-Higiene e Beleza,1,11,0,0.9823,418
-Higiene e Beleza,1,11,1,0.8828,418
-Higiene e Beleza,1,11,2,0.9063,418
-Higiene e Beleza,1,11,3,0.7724,392
-Higiene e Beleza,1,11,4,0.8085,414
-Higiene e Beleza,1,11,5,1.2519,438
-Higiene e Beleza,1,11,6,1.2085,442
+Higiene e Beleza,1,8,0,0.9607,487
+Higiene e Beleza,1,8,1,0.9242,487
+Higiene e Beleza,1,8,2,0.9076,461
+Higiene e Beleza,1,8,3,0.8331,459
+Higiene e Beleza,1,8,4,0.8862,483
+Higiene e Beleza,1,8,5,1.2568,509
+Higiene e Beleza,1,8,6,1.1535,487
+Higiene e Beleza,1,9,0,0.9964,429
+Higiene e Beleza,1,9,1,0.9202,433
+Higiene e Beleza,1,9,2,0.8837,409
+Higiene e Beleza,1,9,3,0.7712,407
+Higiene e Beleza,1,9,4,0.7391,407
+Higiene e Beleza,1,9,5,1.2469,383
+Higiene e Beleza,1,9,6,1.2183,405
+Higiene e Beleza,1,10,0,0.8793,410
+Higiene e Beleza,1,10,1,0.8498,407
+Higiene e Beleza,1,10,2,0.8326,431
+Higiene e Beleza,1,10,3,0.7888,457
+Higiene e Beleza,1,10,4,0.8859,435
+Higiene e Beleza,1,10,5,1.2879,435
+Higiene e Beleza,1,10,6,1.2342,409
+Higiene e Beleza,1,11,0,0.9894,415
+Higiene e Beleza,1,11,1,0.8913,414
+Higiene e Beleza,1,11,2,0.915,414
+Higiene e Beleza,1,11,3,0.7804,388
+Higiene e Beleza,1,11,4,0.8164,410
+Higiene e Beleza,1,11,5,1.2634,434
+Higiene e Beleza,1,11,6,1.2195,438
 Higiene e Beleza,1,12,0,1.1536,438
 Higiene e Beleza,1,12,1,1.1033,464
 Higiene e Beleza,1,12,2,1.0666,420
@@ -1868,34 +1868,34 @@ Higiene e Beleza,2,3,3,0.7986,572
 Higiene e Beleza,2,3,4,0.8136,572
 Higiene e Beleza,2,3,5,1.2991,572
 Higiene e Beleza,2,3,6,1.387,598
-Higiene e Beleza,2,4,0,0.9284,494
-Higiene e Beleza,2,4,1,0.9063,520
-Higiene e Beleza,2,4,2,0.8202,520
-Higiene e Beleza,2,4,3,0.7583,494
-Higiene e Beleza,2,4,4,0.7902,494
-Higiene e Beleza,2,4,5,1.2639,494
-Higiene e Beleza,2,4,6,1.3758,494
-Higiene e Beleza,2,5,0,0.8836,520
-Higiene e Beleza,2,5,1,0.8388,520
-Higiene e Beleza,2,5,2,0.8132,520
-Higiene e Beleza,2,5,3,0.7394,520
-Higiene e Beleza,2,5,4,0.7893,546
-Higiene e Beleza,2,5,5,1.1793,520
-Higiene e Beleza,2,5,6,1.3231,494
-Higiene e Beleza,2,6,0,0.9553,572
-Higiene e Beleza,2,6,1,0.8298,546
-Higiene e Beleza,2,6,2,0.7904,546
-Higiene e Beleza,2,6,3,0.7102,572
-Higiene e Beleza,2,6,4,0.7169,546
-Higiene e Beleza,2,6,5,1.202,546
-Higiene e Beleza,2,6,6,1.3576,572
-Higiene e Beleza,2,7,0,0.9604,572
-Higiene e Beleza,2,7,1,0.8643,572
-Higiene e Beleza,2,7,2,0.8317,598
-Higiene e Beleza,2,7,3,0.7714,572
-Higiene e Beleza,2,7,4,0.8006,572
-Higiene e Beleza,2,7,5,1.2431,572
-Higiene e Beleza,2,7,6,1.3482,572
+Higiene e Beleza,2,4,0,0.9398,488
+Higiene e Beleza,2,4,1,0.9169,514
+Higiene e Beleza,2,4,2,0.8298,514
+Higiene e Beleza,2,4,3,0.7645,490
+Higiene e Beleza,2,4,4,0.7967,490
+Higiene e Beleza,2,4,5,1.2742,490
+Higiene e Beleza,2,4,6,1.3871,490
+Higiene e Beleza,2,5,0,0.8974,512
+Higiene e Beleza,2,5,1,0.8519,512
+Higiene e Beleza,2,5,2,0.8259,512
+Higiene e Beleza,2,5,3,0.7539,510
+Higiene e Beleza,2,5,4,0.804,536
+Higiene e Beleza,2,5,5,1.2024,510
+Higiene e Beleza,2,5,6,1.3448,486
+Higiene e Beleza,2,6,0,0.9723,562
+Higiene e Beleza,2,6,1,0.8422,538
+Higiene e Beleza,2,6,2,0.8022,538
+Higiene e Beleza,2,6,3,0.7203,564
+Higiene e Beleza,2,6,4,0.7276,538
+Higiene e Beleza,2,6,5,1.2199,538
+Higiene e Beleza,2,6,6,1.3818,562
+Higiene e Beleza,2,7,0,0.9672,568
+Higiene e Beleza,2,7,1,0.8735,566
+Higiene e Beleza,2,7,2,0.8402,592
+Higiene e Beleza,2,7,3,0.7796,566
+Higiene e Beleza,2,7,4,0.809,566
+Higiene e Beleza,2,7,5,1.2562,566
+Higiene e Beleza,2,7,6,1.3625,566
 Higiene e Beleza,2,8,0,0.9875,520
 Higiene e Beleza,2,8,1,0.9164,520
 Higiene e Beleza,2,8,2,0.8507,494
@@ -2015,48 +2015,48 @@ Higiene e Beleza,3,12,3,0.8923,476
 Higiene e Beleza,3,12,4,0.9776,448
 Higiene e Beleza,3,12,5,1.3869,476
 Higiene e Beleza,3,12,6,1.767,448
-Hortifrúti,0,1,0,1.0542,189
-Hortifrúti,0,1,1,1.5141,189
-Hortifrúti,0,1,2,1.0437,176
-Hortifrúti,0,1,3,1.0193,185
-Hortifrúti,0,1,4,0.9325,194
-Hortifrúti,0,1,5,1.2331,198
-Hortifrúti,0,1,6,1.4564,189
-Hortifrúti,0,2,0,0.5654,189
-Hortifrúti,0,2,1,0.8138,176
-Hortifrúti,0,2,2,0.563,176
-Hortifrúti,0,2,3,0.4854,176
-Hortifrúti,0,2,4,0.4895,176
-Hortifrúti,0,2,5,0.6413,176
-Hortifrúti,0,2,6,0.6402,176
-Hortifrúti,0,3,0,1.0068,196
-Hortifrúti,0,3,1,1.3756,200
-Hortifrúti,0,3,2,1.028,204
-Hortifrúti,0,3,3,0.9152,204
-Hortifrúti,0,3,4,0.9302,191
-Hortifrúti,0,3,5,1.2979,188
-Hortifrúti,0,3,6,1.3234,197
-Hortifrúti,0,4,0,0.4311,155
-Hortifrúti,0,4,1,0.6517,164
-Hortifrúti,0,4,2,0.405,172
-Hortifrúti,0,4,3,0.3855,163
-Hortifrúti,0,4,4,0.4693,167
-Hortifrúti,0,4,5,0.6379,167
-Hortifrúti,0,4,6,0.6172,167
-Hortifrúti,0,5,0,0.5325,180
-Hortifrúti,0,5,1,0.8333,180
-Hortifrúti,0,5,2,0.4639,168
-Hortifrúti,0,5,3,0.3665,164
-Hortifrúti,0,5,4,0.3922,173
-Hortifrúti,0,5,5,0.5366,172
-Hortifrúti,0,5,6,0.6144,163
-Hortifrúti,0,6,0,0.8379,203
-Hortifrúti,0,6,1,1.391,194
-Hortifrúti,0,6,2,0.8179,197
-Hortifrúti,0,6,3,0.7646,210
-Hortifrúti,0,6,4,0.7314,197
-Hortifrúti,0,6,5,1.0495,185
-Hortifrúti,0,6,6,1.1323,194
+Hortifrúti,0,1,0,1.269,157
+Hortifrúti,0,1,1,1.8228,157
+Hortifrúti,0,1,2,1.2757,144
+Hortifrúti,0,1,3,1.2325,153
+Hortifrúti,0,1,4,1.1167,162
+Hortifrúti,0,1,5,1.4708,166
+Hortifrúti,0,1,6,1.6682,165
+Hortifrúti,0,2,0,0.8034,133
+Hortifrúti,0,2,1,1.1935,120
+Hortifrúti,0,2,2,0.8257,120
+Hortifrúti,0,2,3,0.7119,120
+Hortifrúti,0,2,4,0.7179,120
+Hortifrúti,0,2,5,0.9405,120
+Hortifrúti,0,2,6,0.939,120
+Hortifrúti,0,3,0,1.265,156
+Hortifrúti,0,3,1,1.7196,160
+Hortifrúti,0,3,2,1.2192,172
+Hortifrúti,0,3,3,1.0854,172
+Hortifrúti,0,3,4,1.1174,159
+Hortifrúti,0,3,5,1.5641,156
+Hortifrúti,0,3,6,1.6606,157
+Hortifrúti,0,4,0,0.7342,91
+Hortifrúti,0,4,1,1.0687,100
+Hortifrúti,0,4,2,0.6966,100
+Hortifrúti,0,4,3,0.6347,99
+Hortifrúti,0,4,4,0.706,111
+Hortifrúti,0,4,5,0.9597,111
+Hortifrúti,0,4,6,0.9285,111
+Hortifrúti,0,5,0,0.8263,116
+Hortifrúti,0,5,1,1.293,116
+Hortifrúti,0,5,2,0.7494,104
+Hortifrúti,0,5,3,0.6534,92
+Hortifrúti,0,5,4,0.7295,93
+Hortifrúti,0,5,5,1.0032,92
+Hortifrúti,0,5,6,1.1004,91
+Hortifrúti,0,6,0,0.9947,171
+Hortifrúti,0,6,1,1.6657,162
+Hortifrúti,0,6,2,0.9765,165
+Hortifrúti,0,6,3,0.902,178
+Hortifrúti,0,6,4,0.8732,165
+Hortifrúti,0,6,5,1.269,153
+Hortifrúti,0,6,6,1.4264,154
 Hortifrúti,0,7,0,1.1695,199
 Hortifrúti,0,7,1,1.7468,195
 Hortifrúti,0,7,2,1.1508,205
@@ -2064,13 +2064,13 @@ Hortifrúti,0,7,3,1.0598,204
 Hortifrúti,0,7,4,1.0262,209
 Hortifrúti,0,7,5,1.3009,211
 Hortifrúti,0,7,6,1.4538,211
-Hortifrúti,0,8,0,0.7992,188
-Hortifrúti,0,8,1,1.1959,189
-Hortifrúti,0,8,2,0.7293,176
-Hortifrúti,0,8,3,0.6293,164
-Hortifrúti,0,8,4,0.6343,174
-Hortifrúti,0,8,5,0.8244,185
-Hortifrúti,0,8,6,0.9115,184
+Hortifrúti,0,8,0,0.9631,156
+Hortifrúti,0,8,1,1.4396,157
+Hortifrúti,0,8,2,0.8913,144
+Hortifrúti,0,8,3,0.7819,132
+Hortifrúti,0,8,4,0.7772,142
+Hortifrúti,0,8,5,0.9968,153
+Hortifrúti,0,8,6,1.1033,152
 Hortifrúti,0,9,0,1.1961,150
 Hortifrúti,0,9,1,1.8524,161
 Hortifrúti,0,9,2,1.108,152
@@ -2099,48 +2099,48 @@ Hortifrúti,0,12,3,1.2369,161
 Hortifrúti,0,12,4,1.1371,144
 Hortifrúti,0,12,5,1.4638,157
 Hortifrúti,0,12,6,1.4824,132
-Hortifrúti,1,1,0,1.2248,209
-Hortifrúti,1,1,1,1.4761,209
-Hortifrúti,1,1,2,1.4346,196
-Hortifrúti,1,1,3,1.2379,207
-Hortifrúti,1,1,4,1.2,219
-Hortifrúti,1,1,5,1.4003,221
-Hortifrúti,1,1,6,1.4299,209
-Hortifrúti,1,2,0,0.533,209
-Hortifrúti,1,2,1,0.6459,196
-Hortifrúti,1,2,2,0.6158,196
-Hortifrúti,1,2,3,0.4532,196
-Hortifrúti,1,2,4,0.5202,196
-Hortifrúti,1,2,5,0.6444,196
-Hortifrúti,1,2,6,0.5755,196
-Hortifrúti,1,3,0,1.0916,229
-Hortifrúti,1,3,1,1.2548,231
-Hortifrúti,1,3,2,1.3309,232
-Hortifrúti,1,3,3,1.0245,232
-Hortifrúti,1,3,4,1.0777,219
-Hortifrúti,1,3,5,1.5569,222
-Hortifrúti,1,3,6,1.3083,234
-Hortifrúti,1,4,0,0.4021,195
-Hortifrúti,1,4,1,0.5179,206
-Hortifrúti,1,4,2,0.4487,213
-Hortifrúti,1,4,3,0.3617,202
-Hortifrúti,1,4,4,0.4968,203
-Hortifrúti,1,4,5,0.7128,203
-Hortifrúti,1,4,6,0.6413,203
-Hortifrúti,1,5,0,0.4859,216
-Hortifrúti,1,5,1,0.6446,216
-Hortifrúti,1,5,2,0.5164,208
-Hortifrúti,1,5,3,0.3742,207
-Hortifrúti,1,5,4,0.4789,219
-Hortifrúti,1,5,5,0.6198,214
-Hortifrúti,1,5,6,0.6433,202
-Hortifrúti,1,6,0,0.809,249
-Hortifrúti,1,6,1,1.0795,237
-Hortifrúti,1,6,2,0.9395,237
-Hortifrúti,1,6,3,0.7231,250
-Hortifrúti,1,6,4,0.792,237
-Hortifrúti,1,6,5,1.125,229
-Hortifrúti,1,6,6,1.0918,241
+Hortifrúti,1,1,0,1.3837,185
+Hortifrúti,1,1,1,1.6676,185
+Hortifrúti,1,1,2,1.6348,172
+Hortifrúti,1,1,3,1.4003,183
+Hortifrúti,1,1,4,1.3477,195
+Hortifrúti,1,1,5,1.5709,197
+Hortifrúti,1,1,6,1.5647,191
+Hortifrúti,1,2,0,0.667,167
+Hortifrúti,1,2,1,0.822,154
+Hortifrúti,1,2,2,0.7838,154
+Hortifrúti,1,2,3,0.5768,154
+Hortifrúti,1,2,4,0.6621,154
+Hortifrúti,1,2,5,0.8201,154
+Hortifrúti,1,2,6,0.7324,154
+Hortifrúti,1,3,0,1.2562,199
+Hortifrúti,1,3,1,1.4421,201
+Hortifrúti,1,3,2,1.4844,208
+Hortifrúti,1,3,3,1.1427,208
+Hortifrúti,1,3,4,1.2103,195
+Hortifrúti,1,3,5,1.7456,198
+Hortifrúti,1,3,6,1.5007,204
+Hortifrúti,1,4,0,0.5335,147
+Hortifrúti,1,4,1,0.6753,158
+Hortifrúti,1,4,2,0.601,159
+Hortifrúti,1,4,3,0.4744,154
+Hortifrúti,1,4,4,0.6264,161
+Hortifrúti,1,4,5,0.8988,161
+Hortifrúti,1,4,6,0.8086,161
+Hortifrúti,1,5,0,0.6248,168
+Hortifrúti,1,5,1,0.8287,168
+Hortifrúti,1,5,2,0.6713,160
+Hortifrúti,1,5,3,0.5063,153
+Hortifrúti,1,5,4,0.6596,159
+Hortifrúti,1,5,5,0.8613,154
+Hortifrúti,1,5,6,0.878,148
+Hortifrúti,1,6,0,0.8953,225
+Hortifrúti,1,6,1,1.2012,213
+Hortifrúti,1,6,2,1.0454,213
+Hortifrúti,1,6,3,0.7999,226
+Hortifrúti,1,6,4,0.8812,213
+Hortifrúti,1,6,5,1.2567,205
+Hortifrúti,1,6,6,1.247,211
 Hortifrúti,1,7,0,1.1083,242
 Hortifrúti,1,7,1,1.3664,241
 Hortifrúti,1,7,2,1.3295,254
@@ -2148,34 +2148,34 @@ Hortifrúti,1,7,3,1.0104,249
 Hortifrúti,1,7,4,1.0356,250
 Hortifrúti,1,7,5,1.2747,250
 Hortifrúti,1,7,6,1.2771,250
-Hortifrúti,1,8,0,0.7333,224
-Hortifrúti,1,8,1,0.8742,224
-Hortifrúti,1,8,2,0.7908,211
-Hortifrúti,1,8,3,0.5654,203
-Hortifrúti,1,8,4,0.5838,215
-Hortifrúti,1,8,5,0.7451,228
-Hortifrúti,1,8,6,0.7229,223
-Hortifrúti,1,9,0,1.1305,189
-Hortifrúti,1,9,1,1.4591,197
-Hortifrúti,1,9,2,1.2788,185
-Hortifrúti,1,9,3,0.9376,185
-Hortifrúti,1,9,4,0.9583,185
-Hortifrúti,1,9,5,1.2754,172
-Hortifrúti,1,9,6,1.2758,177
-Hortifrúti,1,10,0,1.1195,185
-Hortifrúti,1,10,1,1.3331,177
-Hortifrúti,1,10,2,1.344,189
-Hortifrúti,1,10,3,1.0351,202
-Hortifrúti,1,10,4,1.1193,197
-Hortifrúti,1,10,5,1.2701,198
-Hortifrúti,1,10,6,1.3214,185
-Hortifrúti,1,11,0,1.124,185
-Hortifrúti,1,11,1,1.3751,185
-Hortifrúti,1,11,2,1.3111,185
-Hortifrúti,1,11,3,0.969,172
-Hortifrúti,1,11,4,0.9617,177
-Hortifrúti,1,11,5,1.3283,189
-Hortifrúti,1,11,6,1.3891,197
+Hortifrúti,1,8,0,0.8423,195
+Hortifrúti,1,8,1,1.0042,195
+Hortifrúti,1,8,2,0.9168,182
+Hortifrúti,1,8,3,0.6521,176
+Hortifrúti,1,8,4,0.6676,188
+Hortifrúti,1,8,5,0.8452,201
+Hortifrúti,1,8,6,0.8225,196
+Hortifrúti,1,9,0,1.1871,180
+Hortifrúti,1,9,1,1.529,188
+Hortifrúti,1,9,2,1.3442,176
+Hortifrúti,1,9,3,0.9968,174
+Hortifrúti,1,9,4,1.0189,174
+Hortifrúti,1,9,5,1.3458,163
+Hortifrúti,1,9,6,1.3442,168
+Hortifrúti,1,10,0,1.1701,177
+Hortifrúti,1,10,1,1.388,170
+Hortifrúti,1,10,2,1.3957,182
+Hortifrúti,1,10,3,1.0722,195
+Hortifrúti,1,10,4,1.1605,190
+Hortifrúti,1,10,5,1.3306,189
+Hortifrúti,1,10,6,1.3889,176
+Hortifrúti,1,11,0,1.1426,182
+Hortifrúti,1,11,1,1.4055,181
+Hortifrúti,1,11,2,1.34,181
+Hortifrúti,1,11,3,0.9921,168
+Hortifrúti,1,11,4,0.9839,173
+Hortifrúti,1,11,5,1.357,185
+Hortifrúti,1,11,6,1.4179,193
 Hortifrúti,1,12,0,1.2845,189
 Hortifrúti,1,12,1,1.6287,202
 Hortifrúti,1,12,2,1.7262,192
@@ -2183,62 +2183,62 @@ Hortifrúti,1,12,3,1.1387,186
 Hortifrúti,1,12,4,1.2061,172
 Hortifrúti,1,12,5,1.4191,185
 Hortifrúti,1,12,6,1.3091,164
-Hortifrúti,2,1,0,1.2434,221
-Hortifrúti,2,1,1,1.5538,221
-Hortifrúti,2,1,2,1.597,208
-Hortifrúti,2,1,3,1.2823,221
-Hortifrúti,2,1,4,1.2241,234
-Hortifrúti,2,1,5,1.4628,234
-Hortifrúti,2,1,6,1.6807,221
-Hortifrúti,2,2,0,0.479,221
-Hortifrúti,2,2,1,0.6224,208
-Hortifrúti,2,2,2,0.5706,208
-Hortifrúti,2,2,3,0.4047,208
-Hortifrúti,2,2,4,0.4287,208
-Hortifrúti,2,2,5,0.542,208
-Hortifrúti,2,2,6,0.5248,208
-Hortifrúti,2,3,0,1.1093,246
-Hortifrúti,2,3,1,1.3226,246
-Hortifrúti,2,3,2,1.3617,246
-Hortifrúti,2,3,3,0.9775,246
-Hortifrúti,2,3,4,1.0014,233
-Hortifrúti,2,3,5,1.4665,239
-Hortifrúti,2,3,6,1.4244,252
-Hortifrúti,2,4,0,0.4017,212
-Hortifrúti,2,4,1,0.4882,225
-Hortifrúti,2,4,2,0.4004,232
-Hortifrúti,2,4,3,0.3316,219
-Hortifrúti,2,4,4,0.452,219
-Hortifrúti,2,4,5,0.6632,219
-Hortifrúti,2,4,6,0.5896,219
-Hortifrúti,2,5,0,0.4702,232
-Hortifrúti,2,5,1,0.629,232
-Hortifrúti,2,5,2,0.5208,225
-Hortifrúti,2,5,3,0.3325,225
-Hortifrúti,2,5,4,0.4691,238
-Hortifrúti,2,5,5,0.5812,232
-Hortifrúti,2,5,6,0.6034,219
-Hortifrúti,2,6,0,0.8036,258
-Hortifrúti,2,6,1,1.1455,245
-Hortifrúti,2,6,2,0.9397,245
-Hortifrúti,2,6,3,0.7155,258
-Hortifrúti,2,6,4,0.8011,245
-Hortifrúti,2,6,5,1.1822,238
-Hortifrúti,2,6,6,1.1007,251
-Hortifrúti,2,7,0,1.0601,251
-Hortifrúti,2,7,1,1.4353,251
-Hortifrúti,2,7,2,1.2878,264
-Hortifrúti,2,7,3,0.9485,258
-Hortifrúti,2,7,4,0.9793,258
-Hortifrúti,2,7,5,1.2331,258
-Hortifrúti,2,7,6,1.3536,258
-Hortifrúti,2,8,0,0.723,232
-Hortifrúti,2,8,1,0.9397,232
-Hortifrúti,2,8,2,0.7724,219
-Hortifrúti,2,8,3,0.5189,212
-Hortifrúti,2,8,4,0.5388,225
-Hortifrúti,2,8,5,0.7023,238
-Hortifrúti,2,8,6,0.7551,232
+Hortifrúti,2,1,0,1.4238,193
+Hortifrúti,2,1,1,1.7792,193
+Hortifrúti,2,1,2,1.8454,180
+Hortifrúti,2,1,3,1.4684,193
+Hortifrúti,2,1,4,1.3905,206
+Hortifrúti,2,1,5,1.6616,206
+Hortifrúti,2,1,6,1.8572,200
+Hortifrúti,2,2,0,0.6154,172
+Hortifrúti,2,2,1,0.8142,159
+Hortifrúti,2,2,2,0.7464,159
+Hortifrúti,2,2,3,0.5294,159
+Hortifrúti,2,2,4,0.5608,159
+Hortifrúti,2,2,5,0.7091,159
+Hortifrúti,2,2,6,0.6865,159
+Hortifrúti,2,3,0,1.2933,211
+Hortifrúti,2,3,1,1.542,211
+Hortifrúti,2,3,2,1.5366,218
+Hortifrúti,2,3,3,1.103,218
+Hortifrúti,2,3,4,1.1382,205
+Hortifrúti,2,3,5,1.6611,211
+Hortifrúti,2,3,6,1.6541,217
+Hortifrúti,2,4,0,0.5566,153
+Hortifrúti,2,4,1,0.6617,166
+Hortifrúti,2,4,2,0.5596,166
+Hortifrúti,2,4,3,0.451,161
+Hortifrúti,2,4,4,0.5891,168
+Hortifrúti,2,4,5,0.8645,168
+Hortifrúti,2,4,6,0.7686,168
+Hortifrúti,2,5,0,0.6342,172
+Hortifrúti,2,5,1,0.8484,172
+Hortifrúti,2,5,2,0.7101,165
+Hortifrúti,2,5,3,0.4765,157
+Hortifrúti,2,5,4,0.6849,163
+Hortifrúti,2,5,5,0.8588,157
+Hortifrúti,2,5,6,0.8693,152
+Hortifrúti,2,6,0,0.9215,225
+Hortifrúti,2,6,1,1.3176,213
+Hortifrúti,2,6,2,1.0809,213
+Hortifrúti,2,6,3,0.8168,226
+Hortifrúti,2,6,4,0.9214,213
+Hortifrúti,2,6,5,1.3659,206
+Hortifrúti,2,6,6,1.3094,211
+Hortifrúti,2,7,0,1.0686,249
+Hortifrúti,2,7,1,1.4526,248
+Hortifrúti,2,7,2,1.3026,261
+Hortifrúti,2,7,3,0.9597,255
+Hortifrúti,2,7,4,0.9908,255
+Hortifrúti,2,7,5,1.2476,255
+Hortifrúti,2,7,6,1.3695,255
+Hortifrúti,2,8,0,0.8223,204
+Hortifrúti,2,8,1,1.0686,204
+Hortifrúti,2,8,2,0.8856,191
+Hortifrúti,2,8,3,0.5979,184
+Hortifrúti,2,8,4,0.6154,197
+Hortifrúti,2,8,5,0.7959,210
+Hortifrúti,2,8,6,0.8587,204
 Hortifrúti,2,9,0,1.1619,199
 Hortifrúti,2,9,1,1.6144,206
 Hortifrúti,2,9,2,1.373,193
@@ -2267,48 +2267,48 @@ Hortifrúti,2,12,3,1.0402,193
 Hortifrúti,2,12,4,1.0913,180
 Hortifrúti,2,12,5,1.2819,193
 Hortifrúti,2,12,6,1.3551,173
-Hortifrúti,3,1,0,1.4463,238
-Hortifrúti,3,1,1,1.3247,238
-Hortifrúti,3,1,2,1.8938,224
-Hortifrúti,3,1,3,1.4622,238
-Hortifrúti,3,1,4,1.4311,252
-Hortifrúti,3,1,5,1.8362,252
-Hortifrúti,3,1,6,2.2346,238
-Hortifrúti,3,2,0,0.5055,238
-Hortifrúti,3,2,1,0.4877,224
-Hortifrúti,3,2,2,0.6209,224
-Hortifrúti,3,2,3,0.3753,224
-Hortifrúti,3,2,4,0.4392,224
-Hortifrúti,3,2,5,0.582,224
-Hortifrúti,3,2,6,0.6087,224
-Hortifrúti,3,3,0,1.1294,276
-Hortifrúti,3,3,1,1.0463,276
-Hortifrúti,3,3,2,1.4515,276
-Hortifrúti,3,3,3,0.9062,276
-Hortifrúti,3,3,4,1.0908,262
-Hortifrúti,3,3,5,1.6399,274
-Hortifrúti,3,3,6,1.709,288
-Hortifrúti,3,4,0,0.3271,256
-Hortifrúti,3,4,1,0.3623,270
-Hortifrúti,3,4,2,0.4198,272
-Hortifrúti,3,4,3,0.3186,258
-Hortifrúti,3,4,4,0.5468,258
-Hortifrúti,3,4,5,0.8495,258
-Hortifrúti,3,4,6,0.7212,258
-Hortifrúti,3,5,0,0.4289,272
-Hortifrúti,3,5,1,0.407,272
-Hortifrúti,3,5,2,0.5965,270
-Hortifrúti,3,5,3,0.3563,270
-Hortifrúti,3,5,4,0.6362,284
-Hortifrúti,3,5,5,0.9184,272
-Hortifrúti,3,5,6,0.7601,258
-Hortifrúti,3,6,0,0.7378,300
-Hortifrúti,3,6,1,0.7379,286
-Hortifrúti,3,6,2,0.9671,286
-Hortifrúti,3,6,3,0.6464,300
-Hortifrúti,3,6,4,0.9797,286
-Hortifrúti,3,6,5,1.4491,284
-Hortifrúti,3,6,6,1.254,298
+Hortifrúti,3,1,0,1.4966,230
+Hortifrúti,3,1,1,1.3707,230
+Hortifrúti,3,1,2,1.9639,216
+Hortifrúti,3,1,3,1.5131,230
+Hortifrúti,3,1,4,1.478,244
+Hortifrúti,3,1,5,1.8964,244
+Hortifrúti,3,1,6,2.2924,232
+Hortifrúti,3,2,0,0.537,224
+Hortifrúti,3,2,1,0.5202,210
+Hortifrúti,3,2,2,0.6623,210
+Hortifrúti,3,2,3,0.4004,210
+Hortifrúti,3,2,4,0.4685,210
+Hortifrúti,3,2,5,0.6208,210
+Hortifrúti,3,2,6,0.6492,210
+Hortifrúti,3,3,0,1.1718,266
+Hortifrúti,3,3,1,1.0857,266
+Hortifrúti,3,3,2,1.4948,268
+Hortifrúti,3,3,3,0.9332,268
+Hortifrúti,3,3,4,1.1252,254
+Hortifrúti,3,3,5,1.6892,266
+Hortifrúti,3,3,6,1.7705,278
+Hortifrúti,3,4,0,0.3489,240
+Hortifrúti,3,4,1,0.3852,254
+Hortifrúti,3,4,2,0.4496,254
+Hortifrúti,3,4,3,0.3396,242
+Hortifrúti,3,4,4,0.5781,244
+Hortifrúti,3,4,5,0.8982,244
+Hortifrúti,3,4,6,0.7626,244
+Hortifrúti,3,5,0,0.4557,256
+Hortifrúti,3,5,1,0.4325,256
+Hortifrúti,3,5,2,0.6341,254
+Hortifrúti,3,5,3,0.3817,252
+Hortifrúti,3,5,4,0.6844,264
+Hortifrúti,3,5,5,0.9913,252
+Hortifrúti,3,5,6,0.8171,240
+Hortifrúti,3,6,0,0.758,292
+Hortifrúti,3,6,1,0.7591,278
+Hortifrúti,3,6,2,0.9949,278
+Hortifrúti,3,6,3,0.6641,292
+Hortifrúti,3,6,4,1.0079,278
+Hortifrúti,3,6,5,1.4911,276
+Hortifrúti,3,6,6,1.2976,288
 Hortifrúti,3,7,0,0.9787,298
 Hortifrúti,3,7,1,0.9439,298
 Hortifrúti,3,7,2,1.3198,312
@@ -2316,13 +2316,13 @@ Hortifrúti,3,7,3,0.8618,300
 Hortifrúti,3,7,4,0.9546,300
 Hortifrúti,3,7,5,1.2078,300
 Hortifrúti,3,7,6,1.3564,300
-Hortifrúti,3,8,0,0.6662,272
-Hortifrúti,3,8,1,0.6123,272
-Hortifrúti,3,8,2,0.7678,258
-Hortifrúti,3,8,3,0.4458,256
-Hortifrúti,3,8,4,0.505,270
-Hortifrúti,3,8,5,0.6587,284
-Hortifrúti,3,8,6,0.7503,272
+Hortifrúti,3,8,0,0.6864,264
+Hortifrúti,3,8,1,0.6309,264
+Hortifrúti,3,8,2,0.7923,250
+Hortifrúti,3,8,3,0.4602,248
+Hortifrúti,3,8,4,0.5204,262
+Hortifrúti,3,8,5,0.6778,276
+Hortifrúti,3,8,6,0.7731,264
 Hortifrúti,3,9,0,1.063,242
 Hortifrúti,3,9,1,1.0815,244
 Hortifrúti,3,9,2,1.3823,230
@@ -2358,41 +2358,41 @@ Lar e Cozinha,0,1,3,0.9707,804
 Lar e Cozinha,0,1,4,1.1411,826
 Lar e Cozinha,0,1,5,1.5518,843
 Lar e Cozinha,0,1,6,1.4049,810
-Lar e Cozinha,0,2,0,0.8358,812
-Lar e Cozinha,0,2,1,0.8236,760
-Lar e Cozinha,0,2,2,0.8432,760
-Lar e Cozinha,0,2,3,0.7666,761
-Lar e Cozinha,0,2,4,0.8275,760
-Lar e Cozinha,0,2,5,1.1196,760
-Lar e Cozinha,0,2,6,1.1346,760
-Lar e Cozinha,0,3,0,1.0967,848
-Lar e Cozinha,0,3,1,1.0951,864
+Lar e Cozinha,0,2,0,0.8954,758
+Lar e Cozinha,0,2,1,0.8866,706
+Lar e Cozinha,0,2,2,0.9077,706
+Lar e Cozinha,0,2,3,0.8251,707
+Lar e Cozinha,0,2,4,0.8908,706
+Lar e Cozinha,0,2,5,1.2052,706
+Lar e Cozinha,0,2,6,1.2214,706
+Lar e Cozinha,0,3,0,1.0993,846
+Lar e Cozinha,0,3,1,1.0976,862
 Lar e Cozinha,0,3,2,1.0663,876
 Lar e Cozinha,0,3,3,1.0099,876
 Lar e Cozinha,0,3,4,1.1201,843
 Lar e Cozinha,0,3,5,1.5332,827
 Lar e Cozinha,0,3,6,1.5146,864
-Lar e Cozinha,0,4,0,0.8707,700
-Lar e Cozinha,0,4,1,0.7919,736
-Lar e Cozinha,0,4,2,0.8136,759
-Lar e Cozinha,0,4,3,0.797,723
-Lar e Cozinha,0,4,4,0.8629,735
-Lar e Cozinha,0,4,5,1.0288,735
-Lar e Cozinha,0,4,6,1.0862,735
-Lar e Cozinha,0,5,0,0.9052,790
-Lar e Cozinha,0,5,1,0.8545,790
-Lar e Cozinha,0,5,2,0.7573,755
-Lar e Cozinha,0,5,3,0.7702,739
-Lar e Cozinha,0,5,4,0.8502,780
-Lar e Cozinha,0,5,5,1.0992,762
-Lar e Cozinha,0,5,6,1.2627,726
-Lar e Cozinha,0,6,0,0.6649,868
-Lar e Cozinha,0,6,1,0.7326,832
-Lar e Cozinha,0,6,2,0.7973,844
-Lar e Cozinha,0,6,3,0.6855,896
-Lar e Cozinha,0,6,4,0.6799,844
-Lar e Cozinha,0,6,5,0.9951,810
-Lar e Cozinha,0,6,6,1.0266,846
+Lar e Cozinha,0,4,0,0.983,620
+Lar e Cozinha,0,4,1,0.8885,656
+Lar e Cozinha,0,4,2,0.9122,677
+Lar e Cozinha,0,4,3,0.8744,659
+Lar e Cozinha,0,4,4,0.9424,673
+Lar e Cozinha,0,4,5,1.1235,673
+Lar e Cozinha,0,4,6,1.1863,673
+Lar e Cozinha,0,5,0,1.0044,712
+Lar e Cozinha,0,5,1,0.9482,712
+Lar e Cozinha,0,5,2,0.8446,677
+Lar e Cozinha,0,5,3,0.8852,643
+Lar e Cozinha,0,5,4,0.9724,682
+Lar e Cozinha,0,5,5,1.2615,664
+Lar e Cozinha,0,5,6,1.419,646
+Lar e Cozinha,0,6,0,0.7251,796
+Lar e Cozinha,0,6,1,0.802,760
+Lar e Cozinha,0,6,2,0.8717,772
+Lar e Cozinha,0,6,3,0.7454,824
+Lar e Cozinha,0,6,4,0.7433,772
+Lar e Cozinha,0,6,5,1.0921,738
+Lar e Cozinha,0,6,6,1.1488,756
 Lar e Cozinha,0,7,0,0.8587,865
 Lar e Cozinha,0,7,1,0.8148,849
 Lar e Cozinha,0,7,2,0.8204,889
@@ -2400,13 +2400,13 @@ Lar e Cozinha,0,7,3,0.7987,871
 Lar e Cozinha,0,7,4,0.8003,890
 Lar e Cozinha,0,7,5,1.1266,899
 Lar e Cozinha,0,7,6,1.1175,899
-Lar e Cozinha,0,8,0,0.8492,803
-Lar e Cozinha,0,8,1,0.7718,808
-Lar e Cozinha,0,8,2,0.7811,756
-Lar e Cozinha,0,8,3,0.7223,722
-Lar e Cozinha,0,8,4,0.7184,761
-Lar e Cozinha,0,8,5,1.0188,804
-Lar e Cozinha,0,8,6,0.9274,787
+Lar e Cozinha,0,8,0,0.9329,731
+Lar e Cozinha,0,8,1,0.8473,736
+Lar e Cozinha,0,8,2,0.8634,684
+Lar e Cozinha,0,8,3,0.8023,650
+Lar e Cozinha,0,8,4,0.7935,689
+Lar e Cozinha,0,8,5,1.119,732
+Lar e Cozinha,0,8,6,1.0208,715
 Lar e Cozinha,0,9,0,0.8663,670
 Lar e Cozinha,0,9,1,0.9496,699
 Lar e Cozinha,0,9,2,0.8451,663
@@ -2442,13 +2442,13 @@ Lar e Cozinha,1,1,3,1.0179,874
 Lar e Cozinha,1,1,4,1.1209,910
 Lar e Cozinha,1,1,5,1.4093,920
 Lar e Cozinha,1,1,6,1.31,874
-Lar e Cozinha,1,2,0,0.9043,884
-Lar e Cozinha,1,2,1,0.8904,833
-Lar e Cozinha,1,2,2,0.7829,833
-Lar e Cozinha,1,2,3,0.9337,833
-Lar e Cozinha,1,2,4,0.9053,836
-Lar e Cozinha,1,2,5,1.3026,836
-Lar e Cozinha,1,2,6,1.1803,833
+Lar e Cozinha,1,2,0,0.9773,818
+Lar e Cozinha,1,2,1,0.967,767
+Lar e Cozinha,1,2,2,0.8503,767
+Lar e Cozinha,1,2,3,1.014,767
+Lar e Cozinha,1,2,4,0.9829,770
+Lar e Cozinha,1,2,5,1.4143,770
+Lar e Cozinha,1,2,6,1.2819,767
 Lar e Cozinha,1,3,0,1.153,944
 Lar e Cozinha,1,3,1,0.9849,953
 Lar e Cozinha,1,3,2,1.0332,954
@@ -2456,27 +2456,27 @@ Lar e Cozinha,1,3,3,1.0307,954
 Lar e Cozinha,1,3,4,1.0413,918
 Lar e Cozinha,1,3,5,1.5238,909
 Lar e Cozinha,1,3,6,1.3845,960
-Lar e Cozinha,1,4,0,0.7797,767
-Lar e Cozinha,1,4,1,0.8145,809
-Lar e Cozinha,1,4,2,0.725,843
-Lar e Cozinha,1,4,3,0.8049,801
-Lar e Cozinha,1,4,4,0.8367,801
-Lar e Cozinha,1,4,5,1.0217,802
-Lar e Cozinha,1,4,6,1.0356,802
-Lar e Cozinha,1,5,0,0.8956,865
-Lar e Cozinha,1,5,1,0.8175,865
-Lar e Cozinha,1,5,2,0.7912,830
-Lar e Cozinha,1,5,3,0.7768,823
-Lar e Cozinha,1,5,4,0.8365,874
-Lar e Cozinha,1,5,5,1.1725,856
-Lar e Cozinha,1,5,6,0.9824,811
-Lar e Cozinha,1,6,0,0.7817,973
-Lar e Cozinha,1,6,1,0.7319,928
-Lar e Cozinha,1,6,2,0.7745,929
-Lar e Cozinha,1,6,3,0.7773,981
-Lar e Cozinha,1,6,4,0.7229,929
-Lar e Cozinha,1,6,5,1.0491,897
-Lar e Cozinha,1,6,6,0.9569,942
+Lar e Cozinha,1,4,0,0.8807,679
+Lar e Cozinha,1,4,1,0.9139,721
+Lar e Cozinha,1,4,2,0.8095,755
+Lar e Cozinha,1,4,3,0.8771,735
+Lar e Cozinha,1,4,4,0.9119,735
+Lar e Cozinha,1,4,5,1.1133,736
+Lar e Cozinha,1,4,6,1.1285,736
+Lar e Cozinha,1,5,0,0.997,777
+Lar e Cozinha,1,5,1,0.9101,777
+Lar e Cozinha,1,5,2,0.885,742
+Lar e Cozinha,1,5,3,0.8967,713
+Lar e Cozinha,1,5,4,0.9569,764
+Lar e Cozinha,1,5,5,1.3453,746
+Lar e Cozinha,1,5,6,1.1019,723
+Lar e Cozinha,1,6,0,0.8594,885
+Lar e Cozinha,1,6,1,0.8086,840
+Lar e Cozinha,1,6,2,0.8555,841
+Lar e Cozinha,1,6,3,0.8539,893
+Lar e Cozinha,1,6,4,0.7985,841
+Lar e Cozinha,1,6,5,1.1632,809
+Lar e Cozinha,1,6,6,1.0834,832
 Lar e Cozinha,1,7,0,0.9155,960
 Lar e Cozinha,1,7,1,0.8834,955
 Lar e Cozinha,1,7,2,0.8615,1006
@@ -2484,34 +2484,34 @@ Lar e Cozinha,1,7,3,0.8829,986
 Lar e Cozinha,1,7,4,0.8452,991
 Lar e Cozinha,1,7,5,1.0753,992
 Lar e Cozinha,1,7,6,1.0884,992
-Lar e Cozinha,1,8,0,0.7306,887
-Lar e Cozinha,1,8,1,0.7513,888
-Lar e Cozinha,1,8,2,0.6705,836
-Lar e Cozinha,1,8,3,0.5979,804
-Lar e Cozinha,1,8,4,0.7136,851
-Lar e Cozinha,1,8,5,0.901,902
-Lar e Cozinha,1,8,6,0.8165,882
-Lar e Cozinha,1,9,0,0.7821,747
-Lar e Cozinha,1,9,1,0.75,778
-Lar e Cozinha,1,9,2,0.9129,731
-Lar e Cozinha,1,9,3,0.6817,732
-Lar e Cozinha,1,9,4,0.8349,732
-Lar e Cozinha,1,9,5,1.1038,680
-Lar e Cozinha,1,9,6,1.0048,700
-Lar e Cozinha,1,10,0,0.8726,732
-Lar e Cozinha,1,10,1,0.8386,700
-Lar e Cozinha,1,10,2,0.8597,747
-Lar e Cozinha,1,10,3,0.909,798
-Lar e Cozinha,1,10,4,0.9449,778
-Lar e Cozinha,1,10,5,1.1958,783
-Lar e Cozinha,1,10,6,1.0735,732
-Lar e Cozinha,1,11,0,0.9024,731
-Lar e Cozinha,1,11,1,0.7664,732
-Lar e Cozinha,1,11,2,0.7064,732
-Lar e Cozinha,1,11,3,0.7919,680
-Lar e Cozinha,1,11,4,0.7733,700
-Lar e Cozinha,1,11,5,1.1218,747
-Lar e Cozinha,1,11,6,0.9695,778
+Lar e Cozinha,1,8,0,0.8298,781
+Lar e Cozinha,1,8,1,0.8532,782
+Lar e Cozinha,1,8,2,0.7679,730
+Lar e Cozinha,1,8,3,0.6847,702
+Lar e Cozinha,1,8,4,0.8108,749
+Lar e Cozinha,1,8,5,1.0158,800
+Lar e Cozinha,1,8,6,0.9232,780
+Lar e Cozinha,1,9,0,0.8014,729
+Lar e Cozinha,1,9,1,0.7677,760
+Lar e Cozinha,1,9,2,0.936,713
+Lar e Cozinha,1,9,3,0.7028,710
+Lar e Cozinha,1,9,4,0.8608,710
+Lar e Cozinha,1,9,5,1.1338,662
+Lar e Cozinha,1,9,6,1.0313,682
+Lar e Cozinha,1,10,0,0.8921,716
+Lar e Cozinha,1,10,1,0.8557,686
+Lar e Cozinha,1,10,2,0.8761,733
+Lar e Cozinha,1,10,3,0.9252,784
+Lar e Cozinha,1,10,4,0.9622,764
+Lar e Cozinha,1,10,5,1.224,765
+Lar e Cozinha,1,10,6,1.1005,714
+Lar e Cozinha,1,11,0,0.9099,725
+Lar e Cozinha,1,11,1,0.7748,724
+Lar e Cozinha,1,11,2,0.7142,724
+Lar e Cozinha,1,11,3,0.8013,672
+Lar e Cozinha,1,11,4,0.7822,692
+Lar e Cozinha,1,11,5,1.134,739
+Lar e Cozinha,1,11,6,0.9796,770
 Lar e Cozinha,1,12,0,1.1349,747
 Lar e Cozinha,1,12,1,1.1157,798
 Lar e Cozinha,1,12,2,1.3283,758
@@ -2526,13 +2526,13 @@ Lar e Cozinha,2,1,3,1.0871,967
 Lar e Cozinha,2,1,4,1.0886,1003
 Lar e Cozinha,2,1,5,1.5903,1005
 Lar e Cozinha,2,1,6,1.4867,954
-Lar e Cozinha,2,2,0,0.8033,964
-Lar e Cozinha,2,2,1,0.9724,913
-Lar e Cozinha,2,2,2,0.8954,913
-Lar e Cozinha,2,2,3,0.8271,913
-Lar e Cozinha,2,2,4,0.8506,912
-Lar e Cozinha,2,2,5,1.1141,912
-Lar e Cozinha,2,2,6,1.1118,912
+Lar e Cozinha,2,2,0,0.874,886
+Lar e Cozinha,2,2,1,1.0633,835
+Lar e Cozinha,2,2,2,0.9791,835
+Lar e Cozinha,2,2,3,0.9044,835
+Lar e Cozinha,2,2,4,0.9301,834
+Lar e Cozinha,2,2,5,1.2183,834
+Lar e Cozinha,2,2,6,1.2157,834
 Lar e Cozinha,2,3,0,1.1338,1030
 Lar e Cozinha,2,3,1,1.0736,1031
 Lar e Cozinha,2,3,2,1.0815,1032
@@ -2540,41 +2540,41 @@ Lar e Cozinha,2,3,3,1.0505,1032
 Lar e Cozinha,2,3,4,1.0669,1001
 Lar e Cozinha,2,3,5,1.4672,1001
 Lar e Cozinha,2,3,6,1.491,1053
-Lar e Cozinha,2,4,0,0.864,848
-Lar e Cozinha,2,4,1,0.8816,900
-Lar e Cozinha,2,4,2,0.7411,928
-Lar e Cozinha,2,4,3,0.7297,876
-Lar e Cozinha,2,4,4,0.8252,876
-Lar e Cozinha,2,4,5,1.0634,876
-Lar e Cozinha,2,4,6,1.0464,876
-Lar e Cozinha,2,5,0,0.7782,932
-Lar e Cozinha,2,5,1,0.8998,932
-Lar e Cozinha,2,5,2,0.8284,904
-Lar e Cozinha,2,5,3,0.7282,904
-Lar e Cozinha,2,5,4,0.7802,957
-Lar e Cozinha,2,5,5,1.0304,932
-Lar e Cozinha,2,5,6,1.0708,880
-Lar e Cozinha,2,6,0,0.7027,1036
-Lar e Cozinha,2,6,1,0.705,984
-Lar e Cozinha,2,6,2,0.7728,984
-Lar e Cozinha,2,6,3,0.7427,1036
-Lar e Cozinha,2,6,4,0.7475,984
-Lar e Cozinha,2,6,5,0.9915,957
-Lar e Cozinha,2,6,6,0.9869,1009
-Lar e Cozinha,2,7,0,0.8173,1009
-Lar e Cozinha,2,7,1,0.7801,1009
-Lar e Cozinha,2,7,2,0.8502,1061
-Lar e Cozinha,2,7,3,0.8533,1036
-Lar e Cozinha,2,7,4,0.8827,1036
-Lar e Cozinha,2,7,5,1.1176,1036
-Lar e Cozinha,2,7,6,1.198,1036
-Lar e Cozinha,2,8,0,0.7089,932
-Lar e Cozinha,2,8,1,0.819,932
-Lar e Cozinha,2,8,2,0.7364,880
-Lar e Cozinha,2,8,3,0.6217,853
-Lar e Cozinha,2,8,4,0.7118,905
-Lar e Cozinha,2,8,5,0.8784,957
-Lar e Cozinha,2,8,6,0.9465,932
+Lar e Cozinha,2,4,0,0.9848,744
+Lar e Cozinha,2,4,1,0.9968,796
+Lar e Cozinha,2,4,2,0.8347,824
+Lar e Cozinha,2,4,3,0.801,798
+Lar e Cozinha,2,4,4,0.9058,798
+Lar e Cozinha,2,4,5,1.1674,798
+Lar e Cozinha,2,4,6,1.1486,798
+Lar e Cozinha,2,5,0,0.876,828
+Lar e Cozinha,2,5,1,1.0128,828
+Lar e Cozinha,2,5,2,0.9361,800
+Lar e Cozinha,2,5,3,0.8505,774
+Lar e Cozinha,2,5,4,0.9029,827
+Lar e Cozinha,2,5,5,1.1974,802
+Lar e Cozinha,2,5,6,1.2143,776
+Lar e Cozinha,2,6,0,0.7828,930
+Lar e Cozinha,2,6,1,0.7883,880
+Lar e Cozinha,2,6,2,0.8641,880
+Lar e Cozinha,2,6,3,0.8255,932
+Lar e Cozinha,2,6,4,0.8358,880
+Lar e Cozinha,2,6,5,1.1124,853
+Lar e Cozinha,2,6,6,1.1328,879
+Lar e Cozinha,2,7,0,0.8206,1005
+Lar e Cozinha,2,7,1,0.7848,1003
+Lar e Cozinha,2,7,2,0.855,1055
+Lar e Cozinha,2,7,3,0.8583,1030
+Lar e Cozinha,2,7,4,0.8879,1030
+Lar e Cozinha,2,7,5,1.1241,1030
+Lar e Cozinha,2,7,6,1.205,1030
+Lar e Cozinha,2,8,0,0.7979,828
+Lar e Cozinha,2,8,1,0.9219,828
+Lar e Cozinha,2,8,2,0.8351,776
+Lar e Cozinha,2,8,3,0.708,749
+Lar e Cozinha,2,8,4,0.8042,801
+Lar e Cozinha,2,8,5,0.9855,853
+Lar e Cozinha,2,8,6,1.0653,828
 Lar e Cozinha,2,9,0,1.0016,801
 Lar e Cozinha,2,9,1,0.9347,828
 Lar e Cozinha,2,9,2,0.9601,776
@@ -2610,13 +2610,13 @@ Lar e Cozinha,3,1,3,1.0373,1038
 Lar e Cozinha,3,1,4,1.1925,1077
 Lar e Cozinha,3,1,5,1.6026,1079
 Lar e Cozinha,3,1,6,1.6998,1023
-Lar e Cozinha,3,2,0,0.8927,1028
-Lar e Cozinha,3,2,1,0.8248,973
-Lar e Cozinha,3,2,2,0.8872,977
-Lar e Cozinha,3,2,3,0.7503,977
-Lar e Cozinha,3,2,4,0.7675,968
-Lar e Cozinha,3,2,5,1.1911,968
-Lar e Cozinha,3,2,6,1.172,970
+Lar e Cozinha,3,2,0,0.9722,944
+Lar e Cozinha,3,2,1,0.9028,889
+Lar e Cozinha,3,2,2,0.9706,893
+Lar e Cozinha,3,2,3,0.8209,893
+Lar e Cozinha,3,2,4,0.8405,884
+Lar e Cozinha,3,2,5,1.3042,884
+Lar e Cozinha,3,2,6,1.2831,886
 Lar e Cozinha,3,3,0,1.0725,1120
 Lar e Cozinha,3,3,1,1.0381,1120
 Lar e Cozinha,3,3,2,1.067,1120
@@ -2624,27 +2624,27 @@ Lar e Cozinha,3,3,3,0.9741,1120
 Lar e Cozinha,3,3,4,1.0251,1091
 Lar e Cozinha,3,3,5,1.4901,1091
 Lar e Cozinha,3,3,6,1.7116,1147
-Lar e Cozinha,3,4,0,0.8069,924
-Lar e Cozinha,3,4,1,0.7241,980
-Lar e Cozinha,3,4,2,0.7792,1008
-Lar e Cozinha,3,4,3,0.7292,952
-Lar e Cozinha,3,4,4,0.8022,952
-Lar e Cozinha,3,4,5,1.1689,952
-Lar e Cozinha,3,4,6,1.3016,952
-Lar e Cozinha,3,5,0,0.8425,1008
-Lar e Cozinha,3,5,1,0.7043,1008
-Lar e Cozinha,3,5,2,0.8038,980
-Lar e Cozinha,3,5,3,0.6548,980
-Lar e Cozinha,3,5,4,0.8075,1036
-Lar e Cozinha,3,5,5,1.0387,1008
-Lar e Cozinha,3,5,6,1.1428,952
-Lar e Cozinha,3,6,0,0.703,1120
-Lar e Cozinha,3,6,1,0.6777,1064
-Lar e Cozinha,3,6,2,0.7656,1064
-Lar e Cozinha,3,6,3,0.6705,1120
-Lar e Cozinha,3,6,4,0.7057,1064
-Lar e Cozinha,3,6,5,1.0248,1036
-Lar e Cozinha,3,6,6,1.0796,1092
+Lar e Cozinha,3,4,0,0.9182,812
+Lar e Cozinha,3,4,1,0.8175,868
+Lar e Cozinha,3,4,2,0.8766,896
+Lar e Cozinha,3,4,3,0.7998,868
+Lar e Cozinha,3,4,4,0.8799,868
+Lar e Cozinha,3,4,5,1.2821,868
+Lar e Cozinha,3,4,6,1.4275,868
+Lar e Cozinha,3,5,0,0.9478,896
+Lar e Cozinha,3,5,1,0.7924,896
+Lar e Cozinha,3,5,2,0.9075,868
+Lar e Cozinha,3,5,3,0.7639,840
+Lar e Cozinha,3,5,4,0.9337,896
+Lar e Cozinha,3,5,5,1.2062,868
+Lar e Cozinha,3,5,6,1.2952,840
+Lar e Cozinha,3,6,0,0.7811,1008
+Lar e Cozinha,3,6,1,0.7574,952
+Lar e Cozinha,3,6,2,0.8557,952
+Lar e Cozinha,3,6,3,0.745,1008
+Lar e Cozinha,3,6,4,0.7887,952
+Lar e Cozinha,3,6,5,1.149,924
+Lar e Cozinha,3,6,6,1.2383,952
 Lar e Cozinha,3,7,0,0.8498,1092
 Lar e Cozinha,3,7,1,0.864,1092
 Lar e Cozinha,3,7,2,0.8758,1148
@@ -2652,13 +2652,13 @@ Lar e Cozinha,3,7,3,0.7737,1120
 Lar e Cozinha,3,7,4,0.8364,1120
 Lar e Cozinha,3,7,5,1.1753,1120
 Lar e Cozinha,3,7,6,1.2264,1120
-Lar e Cozinha,3,8,0,0.7721,1008
-Lar e Cozinha,3,8,1,0.6815,1007
-Lar e Cozinha,3,8,2,0.7007,951
-Lar e Cozinha,3,8,3,0.6844,924
-Lar e Cozinha,3,8,4,0.7012,980
-Lar e Cozinha,3,8,5,0.9524,1036
-Lar e Cozinha,3,8,6,0.9443,1008
+Lar e Cozinha,3,8,0,0.8686,896
+Lar e Cozinha,3,8,1,0.7668,895
+Lar e Cozinha,3,8,2,0.7943,839
+Lar e Cozinha,3,8,3,0.7788,812
+Lar e Cozinha,3,8,4,0.7916,868
+Lar e Cozinha,3,8,5,1.0679,924
+Lar e Cozinha,3,8,6,1.0623,896
 Lar e Cozinha,3,9,0,0.9015,864
 Lar e Cozinha,3,9,1,0.8903,892
 Lar e Cozinha,3,9,2,0.8776,836
@@ -2701,27 +2701,27 @@ Laticínios e Ovos,0,2,3,0.8344,424
 Laticínios e Ovos,0,2,4,0.7989,424
 Laticínios e Ovos,0,2,5,1.1509,424
 Laticínios e Ovos,0,2,6,1.2529,424
-Laticínios e Ovos,0,3,0,1.0789,464
-Laticínios e Ovos,0,3,1,0.9114,472
+Laticínios e Ovos,0,3,0,1.0836,462
+Laticínios e Ovos,0,3,1,0.9153,470
 Laticínios e Ovos,0,3,2,0.9284,478
 Laticínios e Ovos,0,3,3,0.8711,478
 Laticínios e Ovos,0,3,4,0.8582,472
 Laticínios e Ovos,0,3,5,1.1309,464
 Laticínios e Ovos,0,3,6,1.302,482
-Laticínios e Ovos,0,4,0,1.0349,398
-Laticínios e Ovos,0,4,1,0.8936,416
-Laticínios e Ovos,0,4,2,0.8324,418
-Laticínios e Ovos,0,4,3,0.8753,400
-Laticínios e Ovos,0,4,4,0.8102,406
-Laticínios e Ovos,0,4,5,1.0815,406
-Laticínios e Ovos,0,4,6,1.2365,406
-Laticínios e Ovos,0,5,0,1.1792,432
-Laticínios e Ovos,0,5,1,0.9115,432
-Laticínios e Ovos,0,5,2,0.827,424
-Laticínios e Ovos,0,5,3,0.8335,416
-Laticínios e Ovos,0,5,4,0.7949,436
-Laticínios e Ovos,0,5,5,1.1794,418
-Laticínios e Ovos,0,5,6,1.4111,400
+Laticínios e Ovos,0,4,0,1.0561,390
+Laticínios e Ovos,0,4,1,0.9111,408
+Laticínios e Ovos,0,4,2,0.8528,408
+Laticínios e Ovos,0,4,3,0.8978,390
+Laticínios e Ovos,0,4,4,0.8265,398
+Laticínios e Ovos,0,4,5,1.1032,398
+Laticínios e Ovos,0,4,6,1.2613,398
+Laticínios e Ovos,0,5,0,1.1958,426
+Laticínios e Ovos,0,5,1,0.9243,426
+Laticínios e Ovos,0,5,2,0.8389,418
+Laticínios e Ovos,0,5,3,0.8457,410
+Laticínios e Ovos,0,5,4,0.8098,428
+Laticínios e Ovos,0,5,5,1.2024,410
+Laticínios e Ovos,0,5,6,1.4399,392
 Laticínios e Ovos,0,6,0,1.1441,470
 Laticínios e Ovos,0,6,1,0.8972,452
 Laticínios e Ovos,0,6,2,0.8265,458
@@ -2729,13 +2729,13 @@ Laticínios e Ovos,0,6,3,0.7912,484
 Laticínios e Ovos,0,6,4,0.7191,458
 Laticínios e Ovos,0,6,5,1.1044,450
 Laticínios e Ovos,0,6,6,1.3472,468
-Laticínios e Ovos,0,7,0,1.1112,478
-Laticínios e Ovos,0,7,1,0.8626,470
-Laticínios e Ovos,0,7,2,0.7995,490
-Laticínios e Ovos,0,7,3,0.7459,472
-Laticínios e Ovos,0,7,4,0.7252,482
-Laticínios e Ovos,0,7,5,1.0332,486
-Laticínios e Ovos,0,7,6,1.2481,486
+Laticínios e Ovos,0,7,0,1.1253,472
+Laticínios e Ovos,0,7,1,0.8738,464
+Laticínios e Ovos,0,7,2,0.8094,484
+Laticínios e Ovos,0,7,3,0.7555,466
+Laticínios e Ovos,0,7,4,0.7343,476
+Laticínios e Ovos,0,7,5,1.0461,480
+Laticínios e Ovos,0,7,6,1.2637,480
 Laticínios e Ovos,0,8,0,1.1197,440
 Laticínios e Ovos,0,8,1,0.8895,442
 Laticínios e Ovos,0,8,2,0.7986,416
@@ -2820,34 +2820,34 @@ Laticínios e Ovos,1,7,3,0.7988,546
 Laticínios e Ovos,1,7,4,0.855,548
 Laticínios e Ovos,1,7,5,1.0964,548
 Laticínios e Ovos,1,7,6,1.182,548
-Laticínios e Ovos,1,8,0,0.9981,496
-Laticínios e Ovos,1,8,1,0.8582,496
-Laticínios e Ovos,1,8,2,0.8494,470
-Laticínios e Ovos,1,8,3,0.7576,466
-Laticínios e Ovos,1,8,4,0.8192,490
-Laticínios e Ovos,1,8,5,1.0226,516
-Laticínios e Ovos,1,8,6,1.0443,494
-Laticínios e Ovos,1,9,0,0.9573,438
-Laticínios e Ovos,1,9,1,0.8773,442
-Laticínios e Ovos,1,9,2,0.8314,418
-Laticínios e Ovos,1,9,3,0.7307,418
-Laticínios e Ovos,1,9,4,0.7361,418
-Laticínios e Ovos,1,9,5,1.0262,392
-Laticínios e Ovos,1,9,6,1.1268,414
-Laticínios e Ovos,1,10,0,1.0059,418
-Laticínios e Ovos,1,10,1,0.831,414
-Laticínios e Ovos,1,10,2,0.8274,438
-Laticínios e Ovos,1,10,3,0.7772,464
-Laticínios e Ovos,1,10,4,0.8334,442
-Laticínios e Ovos,1,10,5,1.0592,444
-Laticínios e Ovos,1,10,6,1.131,418
-Laticínios e Ovos,1,11,0,1.089,418
-Laticínios e Ovos,1,11,1,0.9273,418
-Laticínios e Ovos,1,11,2,0.9029,418
-Laticínios e Ovos,1,11,3,0.7791,392
-Laticínios e Ovos,1,11,4,0.7887,414
-Laticínios e Ovos,1,11,5,1.0827,438
-Laticínios e Ovos,1,11,6,1.1987,442
+Laticínios e Ovos,1,8,0,1.0357,478
+Laticínios e Ovos,1,8,1,0.8905,478
+Laticínios e Ovos,1,8,2,0.8832,452
+Laticínios e Ovos,1,8,3,0.7811,452
+Laticínios e Ovos,1,8,4,0.8433,476
+Laticínios e Ovos,1,8,5,1.0511,502
+Laticínios e Ovos,1,8,6,1.0747,480
+Laticínios e Ovos,1,9,0,0.9983,420
+Laticínios e Ovos,1,9,1,0.9146,424
+Laticínios e Ovos,1,9,2,0.8688,400
+Laticínios e Ovos,1,9,3,0.7713,396
+Laticínios e Ovos,1,9,4,0.7769,396
+Laticínios e Ovos,1,9,5,1.0756,374
+Laticínios e Ovos,1,9,6,1.1781,396
+Laticínios e Ovos,1,10,0,1.0459,402
+Laticínios e Ovos,1,10,1,0.8601,400
+Laticínios e Ovos,1,10,2,0.8548,424
+Laticínios e Ovos,1,10,3,0.8014,450
+Laticínios e Ovos,1,10,4,0.8606,428
+Laticínios e Ovos,1,10,5,1.104,426
+Laticínios e Ovos,1,10,6,1.1819,400
+Laticínios e Ovos,1,11,0,1.1048,412
+Laticínios e Ovos,1,11,1,0.9454,410
+Laticínios e Ovos,1,11,2,0.9205,410
+Laticínios e Ovos,1,11,3,0.7953,384
+Laticínios e Ovos,1,11,4,0.8042,406
+Laticínios e Ovos,1,11,5,1.1029,430
+Laticínios e Ovos,1,11,6,1.2208,434
 Laticínios e Ovos,1,12,0,1.1996,438
 Laticínios e Ovos,1,12,1,1.0845,464
 Laticínios e Ovos,1,12,2,1.0247,420
@@ -2876,34 +2876,34 @@ Laticínios e Ovos,2,3,3,0.8631,572
 Laticínios e Ovos,2,3,4,0.9006,572
 Laticínios e Ovos,2,3,5,1.1742,572
 Laticínios e Ovos,2,3,6,1.3075,598
-Laticínios e Ovos,2,4,0,1.0118,494
-Laticínios e Ovos,2,4,1,0.9173,520
-Laticínios e Ovos,2,4,2,0.9041,520
-Laticínios e Ovos,2,4,3,0.8406,494
-Laticínios e Ovos,2,4,4,0.858,494
-Laticínios e Ovos,2,4,5,1.1295,494
-Laticínios e Ovos,2,4,6,1.2515,494
-Laticínios e Ovos,2,5,0,1.0723,520
-Laticínios e Ovos,2,5,1,0.924,520
-Laticínios e Ovos,2,5,2,0.8994,520
-Laticínios e Ovos,2,5,3,0.7868,520
-Laticínios e Ovos,2,5,4,0.8597,546
-Laticínios e Ovos,2,5,5,1.169,520
-Laticínios e Ovos,2,5,6,1.358,494
-Laticínios e Ovos,2,6,0,1.0405,572
-Laticínios e Ovos,2,6,1,0.8804,546
-Laticínios e Ovos,2,6,2,0.8825,546
-Laticínios e Ovos,2,6,3,0.7486,572
-Laticínios e Ovos,2,6,4,0.8151,546
-Laticínios e Ovos,2,6,5,1.1632,546
-Laticínios e Ovos,2,6,6,1.3581,572
-Laticínios e Ovos,2,7,0,1.0503,572
-Laticínios e Ovos,2,7,1,0.8646,572
-Laticínios e Ovos,2,7,2,0.8616,598
-Laticínios e Ovos,2,7,3,0.7498,572
-Laticínios e Ovos,2,7,4,0.8204,572
-Laticínios e Ovos,2,7,5,1.0648,572
-Laticínios e Ovos,2,7,6,1.2511,572
+Laticínios e Ovos,2,4,0,1.0243,488
+Laticínios e Ovos,2,4,1,0.928,514
+Laticínios e Ovos,2,4,2,0.9147,514
+Laticínios e Ovos,2,4,3,0.8474,490
+Laticínios e Ovos,2,4,4,0.8651,490
+Laticínios e Ovos,2,4,5,1.1387,490
+Laticínios e Ovos,2,4,6,1.2617,490
+Laticínios e Ovos,2,5,0,1.0891,512
+Laticínios e Ovos,2,5,1,0.9384,512
+Laticínios e Ovos,2,5,2,0.9135,512
+Laticínios e Ovos,2,5,3,0.8022,510
+Laticínios e Ovos,2,5,4,0.8758,536
+Laticínios e Ovos,2,5,5,1.1919,510
+Laticínios e Ovos,2,5,6,1.3803,486
+Laticínios e Ovos,2,6,0,1.059,562
+Laticínios e Ovos,2,6,1,0.8935,538
+Laticínios e Ovos,2,6,2,0.8956,538
+Laticínios e Ovos,2,6,3,0.7592,564
+Laticínios e Ovos,2,6,4,0.8273,538
+Laticínios e Ovos,2,6,5,1.1805,538
+Laticínios e Ovos,2,6,6,1.3823,562
+Laticínios e Ovos,2,7,0,1.0577,568
+Laticínios e Ovos,2,7,1,0.8738,566
+Laticínios e Ovos,2,7,2,0.8703,592
+Laticínios e Ovos,2,7,3,0.7578,566
+Laticínios e Ovos,2,7,4,0.8291,566
+Laticínios e Ovos,2,7,5,1.0761,566
+Laticínios e Ovos,2,7,6,1.2644,566
 Laticínios e Ovos,2,8,0,1.0673,520
 Laticínios e Ovos,2,8,1,0.8691,520
 Laticínios e Ovos,2,8,2,0.8585,494
@@ -3023,62 +3023,62 @@ Laticínios e Ovos,3,12,3,0.8529,476
 Laticínios e Ovos,3,12,4,0.9594,448
 Laticínios e Ovos,3,12,5,1.1579,476
 Laticínios e Ovos,3,12,6,1.4592,448
-Limpeza,0,1,0,1.0627,414
-Limpeza,0,1,1,0.9915,414
-Limpeza,0,1,2,0.875,397
-Limpeza,0,1,3,0.9158,415
-Limpeza,0,1,4,0.8854,424
-Limpeza,0,1,5,1.2902,432
-Limpeza,0,1,6,1.4129,414
-Limpeza,0,2,0,0.8025,414
-Limpeza,0,2,1,0.7476,388
-Limpeza,0,2,2,0.7326,388
-Limpeza,0,2,3,0.6784,388
-Limpeza,0,2,4,0.6889,388
-Limpeza,0,2,5,1.0148,388
-Limpeza,0,2,6,0.9728,388
-Limpeza,0,3,0,1.0101,426
-Limpeza,0,3,1,0.9343,434
-Limpeza,0,3,2,0.9449,441
-Limpeza,0,3,3,0.8578,441
-Limpeza,0,3,4,0.8762,425
-Limpeza,0,3,5,1.3053,417
-Limpeza,0,3,6,1.3077,435
-Limpeza,0,4,0,0.7796,349
-Limpeza,0,4,1,0.6965,367
-Limpeza,0,4,2,0.6599,377
-Limpeza,0,4,3,0.6261,359
-Limpeza,0,4,4,0.702,366
-Limpeza,0,4,5,1.0072,366
-Limpeza,0,4,6,0.9838,366
-Limpeza,0,5,0,0.9641,396
-Limpeza,0,5,1,0.9034,396
-Limpeza,0,5,2,0.7879,379
-Limpeza,0,5,3,0.7458,371
-Limpeza,0,5,4,0.8031,390
-Limpeza,0,5,5,1.1096,381
-Limpeza,0,5,6,1.2348,363
-Limpeza,0,6,0,0.9397,434
-Limpeza,0,6,1,0.8924,416
-Limpeza,0,6,2,0.7639,422
-Limpeza,0,6,3,0.7463,448
-Limpeza,0,6,4,0.7619,422
-Limpeza,0,6,5,1.1288,405
-Limpeza,0,6,6,1.1815,423
-Limpeza,0,7,0,1.1681,433
-Limpeza,0,7,1,1.0751,425
-Limpeza,0,7,2,0.971,445
-Limpeza,0,7,3,0.9815,436
-Limpeza,0,7,4,0.9617,446
-Limpeza,0,7,5,1.3719,450
-Limpeza,0,7,6,1.4828,450
-Limpeza,0,8,0,0.9865,404
-Limpeza,0,8,1,0.909,406
-Limpeza,0,8,2,0.7954,380
-Limpeza,0,8,3,0.7404,363
-Limpeza,0,8,4,0.7534,383
-Limpeza,0,8,5,1.0907,405
-Limpeza,0,8,6,1.15,396
+Limpeza,0,1,0,1.1639,378
+Limpeza,0,1,1,1.0859,378
+Limpeza,0,1,2,0.9623,361
+Limpeza,0,1,3,1.0028,379
+Limpeza,0,1,4,0.9676,388
+Limpeza,0,1,5,1.4075,396
+Limpeza,0,1,6,1.5115,387
+Limpeza,0,2,0,0.9465,351
+Limpeza,0,2,1,0.8925,325
+Limpeza,0,2,2,0.8746,325
+Limpeza,0,2,3,0.8099,325
+Limpeza,0,2,4,0.8224,325
+Limpeza,0,2,5,1.2116,325
+Limpeza,0,2,6,1.1614,325
+Limpeza,0,3,0,1.1324,380
+Limpeza,0,3,1,1.0451,388
+Limpeza,0,3,2,1.0289,405
+Limpeza,0,3,3,0.934,405
+Limpeza,0,3,4,0.9573,389
+Limpeza,0,3,5,1.4286,381
+Limpeza,0,3,6,1.4586,390
+Limpeza,0,4,0,0.9966,273
+Limpeza,0,4,1,0.8784,291
+Limpeza,0,4,2,0.8549,291
+Limpeza,0,4,3,0.7971,282
+Limpeza,0,4,4,0.8593,299
+Limpeza,0,4,5,1.2329,299
+Limpeza,0,4,6,1.2042,299
+Limpeza,0,5,0,1.0785,354
+Limpeza,0,5,1,1.0106,354
+Limpeza,0,5,2,0.8861,337
+Limpeza,0,5,3,0.8647,320
+Limpeza,0,5,4,0.9521,329
+Limpeza,0,5,5,1.3211,320
+Limpeza,0,5,6,1.4413,311
+Limpeza,0,6,0,1.0247,398
+Limpeza,0,6,1,0.9769,380
+Limpeza,0,6,2,0.8352,386
+Limpeza,0,6,3,0.8115,412
+Limpeza,0,6,4,0.8329,386
+Limpeza,0,6,5,1.239,369
+Limpeza,0,6,6,1.3222,378
+Limpeza,0,7,0,1.1762,430
+Limpeza,0,7,1,1.0827,422
+Limpeza,0,7,2,0.9776,442
+Limpeza,0,7,3,0.9883,433
+Limpeza,0,7,4,0.9682,443
+Limpeza,0,7,5,1.3811,447
+Limpeza,0,7,6,1.4927,447
+Limpeza,0,8,0,1.083,368
+Limpeza,0,8,1,0.9975,370
+Limpeza,0,8,2,0.8786,344
+Limpeza,0,8,3,0.8219,327
+Limpeza,0,8,4,0.8316,347
+Limpeza,0,8,5,1.1971,369
+Limpeza,0,8,6,1.265,360
 Limpeza,0,9,0,1.2075,335
 Limpeza,0,9,1,1.148,350
 Limpeza,0,9,2,0.9832,332
@@ -3107,48 +3107,48 @@ Limpeza,0,12,3,1.0237,350
 Limpeza,0,12,4,1.0331,316
 Limpeza,0,12,5,1.3758,342
 Limpeza,0,12,6,1.5197,299
-Limpeza,1,1,0,1.0878,458
-Limpeza,1,1,1,0.9981,458
-Limpeza,1,1,2,0.9675,442
-Limpeza,1,1,3,0.9541,464
-Limpeza,1,1,4,0.9567,478
-Limpeza,1,1,5,1.3384,482
-Limpeza,1,1,6,1.2611,458
-Limpeza,1,2,0,0.7885,460
-Limpeza,1,2,1,0.7316,434
-Limpeza,1,2,2,0.7821,434
-Limpeza,1,2,3,0.7,434
-Limpeza,1,2,4,0.7765,435
-Limpeza,1,2,5,1.0594,435
-Limpeza,1,2,6,0.8613,434
-Limpeza,1,3,0,1.0336,483
-Limpeza,1,3,1,0.9286,487
-Limpeza,1,3,2,1.0089,488
-Limpeza,1,3,3,0.9111,488
-Limpeza,1,3,4,0.9488,472
-Limpeza,1,3,5,1.3938,468
-Limpeza,1,3,6,1.1642,493
-Limpeza,1,4,0,0.7839,394
-Limpeza,1,4,1,0.7162,416
-Limpeza,1,4,2,0.6917,431
-Limpeza,1,4,3,0.6453,409
-Limpeza,1,4,4,0.7144,410
-Limpeza,1,4,5,1.0059,410
-Limpeza,1,4,6,0.8823,410
-Limpeza,1,5,0,0.9425,443
-Limpeza,1,5,1,0.886,443
-Limpeza,1,5,2,0.8536,427
-Limpeza,1,5,3,0.7511,425
-Limpeza,1,5,4,0.8501,450
-Limpeza,1,5,5,1.1315,439
-Limpeza,1,5,6,1.0636,416
-Limpeza,1,6,0,0.919,497
-Limpeza,1,6,1,0.8798,474
-Limpeza,1,6,2,0.8539,474
-Limpeza,1,6,3,0.7721,500
-Limpeza,1,6,4,0.8173,474
-Limpeza,1,6,5,1.1458,459
-Limpeza,1,6,6,1.0652,482
+Limpeza,1,1,0,1.2152,410
+Limpeza,1,1,1,1.115,410
+Limpeza,1,1,2,1.0854,394
+Limpeza,1,1,3,1.0642,416
+Limpeza,1,1,4,1.0635,430
+Limpeza,1,1,5,1.4864,434
+Limpeza,1,1,6,1.3686,422
+Limpeza,1,2,0,0.957,379
+Limpeza,1,2,1,0.8994,353
+Limpeza,1,2,2,0.9616,353
+Limpeza,1,2,3,0.8606,353
+Limpeza,1,2,4,0.9541,354
+Limpeza,1,2,5,1.3018,354
+Limpeza,1,2,6,1.0589,353
+Limpeza,1,3,0,1.1802,423
+Limpeza,1,3,1,1.0591,427
+Limpeza,1,3,2,1.1189,440
+Limpeza,1,3,3,1.0105,440
+Limpeza,1,3,4,1.0562,424
+Limpeza,1,3,5,1.5531,420
+Limpeza,1,3,6,1.3255,433
+Limpeza,1,4,0,1.0227,302
+Limpeza,1,4,1,0.9196,324
+Limpeza,1,4,2,0.9117,327
+Limpeza,1,4,3,0.8352,316
+Limpeza,1,4,4,0.8903,329
+Limpeza,1,4,5,1.2536,329
+Limpeza,1,4,6,1.0995,329
+Limpeza,1,5,0,1.0464,399
+Limpeza,1,5,1,0.9837,399
+Limpeza,1,5,2,0.9517,383
+Limpeza,1,5,3,0.8627,370
+Limpeza,1,5,4,0.9988,383
+Limpeza,1,5,5,1.3353,372
+Limpeza,1,5,6,1.229,360
+Limpeza,1,6,0,1.0083,453
+Limpeza,1,6,1,0.9699,430
+Limpeza,1,6,2,0.9413,430
+Limpeza,1,6,3,0.8466,456
+Limpeza,1,6,4,0.9009,430
+Limpeza,1,6,5,1.2673,415
+Limpeza,1,6,6,1.2024,427
 Limpeza,1,7,0,1.1378,489
 Limpeza,1,7,1,1.0462,487
 Limpeza,1,7,2,1.0589,513
@@ -3156,34 +3156,34 @@ Limpeza,1,7,3,0.969,502
 Limpeza,1,7,4,1.0184,504
 Limpeza,1,7,5,1.397,504
 Limpeza,1,7,6,1.3293,504
-Limpeza,1,8,0,0.9282,452
-Limpeza,1,8,1,0.8634,452
-Limpeza,1,8,2,0.8178,426
-Limpeza,1,8,3,0.7223,411
-Limpeza,1,8,4,0.7558,435
-Limpeza,1,8,5,1.0315,461
-Limpeza,1,8,6,0.9397,450
-Limpeza,1,9,0,1.1623,383
-Limpeza,1,9,1,1.1072,398
-Limpeza,1,9,2,1.0371,374
-Limpeza,1,9,3,0.9098,374
-Limpeza,1,9,4,0.922,374
-Limpeza,1,9,5,1.3952,348
-Limpeza,1,9,6,1.3128,359
-Limpeza,1,10,0,1.1092,374
-Limpeza,1,10,1,1.0064,359
-Limpeza,1,10,2,1.0478,383
-Limpeza,1,10,3,0.9779,409
-Limpeza,1,10,4,1.0459,398
-Limpeza,1,10,5,1.3884,400
-Limpeza,1,10,6,1.3281,374
-Limpeza,1,11,0,1.0948,374
-Limpeza,1,11,1,1.01,374
-Limpeza,1,11,2,0.9992,374
-Limpeza,1,11,3,0.8925,348
-Limpeza,1,11,4,0.9225,359
-Limpeza,1,11,5,1.3729,383
-Limpeza,1,11,6,1.31,398
+Limpeza,1,8,0,1.0758,390
+Limpeza,1,8,1,1.0007,390
+Limpeza,1,8,2,0.9571,364
+Limpeza,1,8,3,0.8409,353
+Limpeza,1,8,4,0.872,377
+Limpeza,1,8,5,1.18,403
+Limpeza,1,8,6,1.0787,392
+Limpeza,1,9,0,1.2196,365
+Limpeza,1,9,1,1.1596,380
+Limpeza,1,9,2,1.0895,356
+Limpeza,1,9,3,0.9666,352
+Limpeza,1,9,4,0.9797,352
+Limpeza,1,9,5,1.4713,330
+Limpeza,1,9,6,1.3821,341
+Limpeza,1,10,0,1.1588,358
+Limpeza,1,10,1,1.0472,345
+Limpeza,1,10,2,1.0875,369
+Limpeza,1,10,3,1.0126,395
+Limpeza,1,10,4,1.084,384
+Limpeza,1,10,5,1.4539,382
+Limpeza,1,10,6,1.3952,356
+Limpeza,1,11,0,1.1127,368
+Limpeza,1,11,1,1.0321,366
+Limpeza,1,11,2,1.0211,366
+Limpeza,1,11,3,0.9135,340
+Limpeza,1,11,4,0.9435,351
+Limpeza,1,11,5,1.4022,375
+Limpeza,1,11,6,1.3369,390
 Limpeza,1,12,0,1.3096,383
 Limpeza,1,12,1,1.2281,409
 Limpeza,1,12,2,1.2348,387
@@ -3191,62 +3191,62 @@ Limpeza,1,12,3,1.0406,376
 Limpeza,1,12,4,1.1271,348
 Limpeza,1,12,5,1.466,374
 Limpeza,1,12,6,1.4203,333
-Limpeza,2,1,0,1.0782,494
-Limpeza,2,1,1,0.9942,494
-Limpeza,2,1,2,0.9633,481
-Limpeza,2,1,3,0.9431,507
-Limpeza,2,1,4,0.985,520
-Limpeza,2,1,5,1.3439,520
-Limpeza,2,1,6,1.451,494
-Limpeza,2,2,0,0.7607,494
-Limpeza,2,2,1,0.7177,468
-Limpeza,2,2,2,0.738,468
-Limpeza,2,2,3,0.6611,468
-Limpeza,2,2,4,0.7171,468
-Limpeza,2,2,5,0.9634,468
-Limpeza,2,2,6,0.9047,468
-Limpeza,2,3,0,1.0113,520
-Limpeza,2,3,1,0.9325,520
-Limpeza,2,3,2,0.9854,520
-Limpeza,2,3,3,0.8838,520
-Limpeza,2,3,4,0.9152,507
-Limpeza,2,3,5,1.3447,507
-Limpeza,2,3,6,1.3337,533
-Limpeza,2,4,0,0.7383,429
-Limpeza,2,4,1,0.6803,455
-Limpeza,2,4,2,0.6403,468
-Limpeza,2,4,3,0.5968,442
-Limpeza,2,4,4,0.665,442
-Limpeza,2,4,5,0.9488,442
-Limpeza,2,4,6,0.9353,442
-Limpeza,2,5,0,0.9216,468
-Limpeza,2,5,1,0.8441,468
-Limpeza,2,5,2,0.8216,455
-Limpeza,2,5,3,0.6992,455
-Limpeza,2,5,4,0.7802,481
-Limpeza,2,5,5,1.0684,468
-Limpeza,2,5,6,1.1388,442
-Limpeza,2,6,0,0.8972,520
-Limpeza,2,6,1,0.8581,494
-Limpeza,2,6,2,0.7972,494
-Limpeza,2,6,3,0.7265,520
-Limpeza,2,6,4,0.7804,494
-Limpeza,2,6,5,1.1176,481
-Limpeza,2,6,6,1.1559,507
-Limpeza,2,7,0,1.1255,507
-Limpeza,2,7,1,1.0604,507
-Limpeza,2,7,2,1.0277,533
-Limpeza,2,7,3,0.9519,520
-Limpeza,2,7,4,0.9916,520
-Limpeza,2,7,5,1.3677,520
-Limpeza,2,7,6,1.4615,520
-Limpeza,2,8,0,0.9312,468
-Limpeza,2,8,1,0.867,468
-Limpeza,2,8,2,0.8273,442
-Limpeza,2,8,3,0.7165,429
-Limpeza,2,8,4,0.75,455
-Limpeza,2,8,5,1.0375,481
-Limpeza,2,8,6,1.0696,468
+Limpeza,2,1,0,1.205,442
+Limpeza,2,1,1,1.1112,442
+Limpeza,2,1,2,1.0801,429
+Limpeza,2,1,3,1.0509,455
+Limpeza,2,1,4,1.0944,468
+Limpeza,2,1,5,1.4933,468
+Limpeza,2,1,6,1.5754,455
+Limpeza,2,2,0,0.9325,403
+Limpeza,2,2,1,0.891,377
+Limpeza,2,2,2,0.9161,377
+Limpeza,2,2,3,0.8207,377
+Limpeza,2,2,4,0.8902,377
+Limpeza,2,2,5,1.1959,377
+Limpeza,2,2,6,1.1231,377
+Limpeza,2,3,0,1.1558,455
+Limpeza,2,3,1,1.0657,455
+Limpeza,2,3,2,1.0949,468
+Limpeza,2,3,3,0.982,468
+Limpeza,2,3,4,1.0198,455
+Limpeza,2,3,5,1.4984,455
+Limpeza,2,3,6,1.519,468
+Limpeza,2,4,0,0.9836,322
+Limpeza,2,4,1,0.8895,348
+Limpeza,2,4,2,0.8611,348
+Limpeza,2,4,3,0.785,336
+Limpeza,2,4,4,0.8421,349
+Limpeza,2,4,5,1.2016,349
+Limpeza,2,4,6,1.1845,349
+Limpeza,2,5,0,1.0469,412
+Limpeza,2,5,1,0.9588,412
+Limpeza,2,5,2,0.9369,399
+Limpeza,2,5,3,0.8263,385
+Limpeza,2,5,4,0.9429,398
+Limpeza,2,5,5,1.2987,385
+Limpeza,2,5,6,1.3494,373
+Limpeza,2,6,0,1.0099,462
+Limpeza,2,6,1,0.9678,438
+Limpeza,2,6,2,0.8992,438
+Limpeza,2,6,3,0.8141,464
+Limpeza,2,6,4,0.8802,438
+Limpeza,2,6,5,1.2649,425
+Limpeza,2,6,6,1.3411,437
+Limpeza,2,7,0,1.1345,503
+Limpeza,2,7,1,1.0731,501
+Limpeza,2,7,2,1.0394,527
+Limpeza,2,7,3,0.963,514
+Limpeza,2,7,4,1.0032,514
+Limpeza,2,7,5,1.3837,514
+Limpeza,2,7,6,1.4786,514
+Limpeza,2,8,0,1.0476,416
+Limpeza,2,8,1,0.9754,416
+Limpeza,2,8,2,0.9377,390
+Limpeza,2,8,3,0.8153,377
+Limpeza,2,8,4,0.8468,403
+Limpeza,2,8,5,1.1633,429
+Limpeza,2,8,6,1.2033,416
 Limpeza,2,9,0,1.2108,403
 Limpeza,2,9,1,1.1483,416
 Limpeza,2,9,2,1.0664,390
@@ -3275,48 +3275,48 @@ Limpeza,2,12,3,1.0215,390
 Limpeza,2,12,4,1.0899,364
 Limpeza,2,12,5,1.3662,390
 Limpeza,2,12,6,1.5083,351
-Limpeza,3,1,0,1.0813,532
-Limpeza,3,1,1,0.9189,532
-Limpeza,3,1,2,0.9776,518
-Limpeza,3,1,3,0.9126,546
-Limpeza,3,1,4,0.9627,560
-Limpeza,3,1,5,1.3997,560
-Limpeza,3,1,6,1.6261,532
-Limpeza,3,2,0,0.7687,532
-Limpeza,3,2,1,0.7159,504
-Limpeza,3,2,2,0.7255,504
-Limpeza,3,2,3,0.6151,504
-Limpeza,3,2,4,0.6813,504
-Limpeza,3,2,5,0.9522,504
-Limpeza,3,2,6,0.9822,504
-Limpeza,3,3,0,0.9797,560
-Limpeza,3,3,1,0.8881,560
-Limpeza,3,3,2,0.9376,560
-Limpeza,3,3,3,0.7903,560
-Limpeza,3,3,4,0.8633,546
-Limpeza,3,3,5,1.3492,546
-Limpeza,3,3,6,1.4985,574
-Limpeza,3,4,0,0.7003,462
-Limpeza,3,4,1,0.6241,490
-Limpeza,3,4,2,0.6471,504
-Limpeza,3,4,3,0.5579,476
-Limpeza,3,4,4,0.649,476
-Limpeza,3,4,5,0.9766,476
-Limpeza,3,4,6,1.066,476
-Limpeza,3,5,0,0.916,504
-Limpeza,3,5,1,0.8025,504
-Limpeza,3,5,2,0.8291,490
-Limpeza,3,5,3,0.6772,490
-Limpeza,3,5,4,0.7849,518
-Limpeza,3,5,5,1.0743,504
-Limpeza,3,5,6,1.1992,476
-Limpeza,3,6,0,0.8752,560
-Limpeza,3,6,1,0.7984,532
-Limpeza,3,6,2,0.8183,532
-Limpeza,3,6,3,0.6922,560
-Limpeza,3,6,4,0.7915,532
-Limpeza,3,6,5,1.1235,518
-Limpeza,3,6,6,1.2146,546
+Limpeza,3,1,0,1.2085,476
+Limpeza,3,1,1,1.027,476
+Limpeza,3,1,2,1.0961,462
+Limpeza,3,1,3,1.0169,490
+Limpeza,3,1,4,1.0697,504
+Limpeza,3,1,5,1.5552,504
+Limpeza,3,1,6,1.7655,490
+Limpeza,3,2,0,0.9422,434
+Limpeza,3,2,1,0.8887,406
+Limpeza,3,2,2,0.9006,406
+Limpeza,3,2,3,0.7636,406
+Limpeza,3,2,4,0.8458,406
+Limpeza,3,2,5,1.182,406
+Limpeza,3,2,6,1.2193,406
+Limpeza,3,3,0,1.1197,490
+Limpeza,3,3,1,1.0149,490
+Limpeza,3,3,2,1.0418,504
+Limpeza,3,3,3,0.8781,504
+Limpeza,3,3,4,0.9619,490
+Limpeza,3,3,5,1.5034,490
+Limpeza,3,3,6,1.7066,504
+Limpeza,3,4,0,0.9244,350
+Limpeza,3,4,1,0.809,378
+Limpeza,3,4,2,0.8628,378
+Limpeza,3,4,3,0.7296,364
+Limpeza,3,4,4,0.8173,378
+Limpeza,3,4,5,1.2298,378
+Limpeza,3,4,6,1.3424,378
+Limpeza,3,5,0,1.0305,448
+Limpeza,3,5,1,0.9028,448
+Limpeza,3,5,2,0.936,434
+Limpeza,3,5,3,0.7901,420
+Limpeza,3,5,4,0.9368,434
+Limpeza,3,5,5,1.2892,420
+Limpeza,3,5,6,1.406,406
+Limpeza,3,6,0,0.9725,504
+Limpeza,3,6,1,0.8924,476
+Limpeza,3,6,2,0.9146,476
+Limpeza,3,6,3,0.7691,504
+Limpeza,3,6,4,0.8846,476
+Limpeza,3,6,5,1.2597,462
+Limpeza,3,6,6,1.3933,476
 Limpeza,3,7,0,1.1027,546
 Limpeza,3,7,1,0.9799,546
 Limpeza,3,7,2,1.063,574
@@ -3324,13 +3324,13 @@ Limpeza,3,7,3,0.9005,560
 Limpeza,3,7,4,0.9919,560
 Limpeza,3,7,5,1.3384,560
 Limpeza,3,7,6,1.4969,560
-Limpeza,3,8,0,0.9052,504
-Limpeza,3,8,1,0.803,504
-Limpeza,3,8,2,0.816,476
-Limpeza,3,8,3,0.6832,462
-Limpeza,3,8,4,0.75,490
-Limpeza,3,8,5,1.0035,518
-Limpeza,3,8,6,1.0831,504
+Limpeza,3,8,0,1.0183,448
+Limpeza,3,8,1,0.9034,448
+Limpeza,3,8,2,0.9248,420
+Limpeza,3,8,3,0.7774,406
+Limpeza,3,8,4,0.8468,434
+Limpeza,3,8,5,1.1251,462
+Limpeza,3,8,6,1.2185,448
 Limpeza,3,9,0,1.1712,434
 Limpeza,3,9,1,1.0615,448
 Limpeza,3,9,2,1.0758,420
@@ -3373,27 +3373,27 @@ Mercearia,0,2,3,0.8376,424
 Mercearia,0,2,4,0.8961,424
 Mercearia,0,2,5,1.217,424
 Mercearia,0,2,6,1.1248,424
-Mercearia,0,3,0,0.8225,464
-Mercearia,0,3,1,0.8429,472
+Mercearia,0,3,0,0.826,462
+Mercearia,0,3,1,0.8464,470
 Mercearia,0,3,2,0.8486,478
 Mercearia,0,3,3,0.7782,478
 Mercearia,0,3,4,0.8717,472
 Mercearia,0,3,5,1.2086,464
 Mercearia,0,3,6,1.112,482
-Mercearia,0,4,0,0.8093,398
-Mercearia,0,4,1,0.8598,416
-Mercearia,0,4,2,0.7984,418
-Mercearia,0,4,3,0.803,400
-Mercearia,0,4,4,0.8123,406
-Mercearia,0,4,5,1.1278,406
-Mercearia,0,4,6,1.0722,406
-Mercearia,0,5,0,0.8868,432
-Mercearia,0,5,1,0.8584,432
-Mercearia,0,5,2,0.8649,424
-Mercearia,0,5,3,0.8198,416
-Mercearia,0,5,4,0.9657,436
-Mercearia,0,5,5,1.4427,418
-Mercearia,0,5,6,1.3305,400
+Mercearia,0,4,0,0.8259,390
+Mercearia,0,4,1,0.8767,408
+Mercearia,0,4,2,0.818,408
+Mercearia,0,4,3,0.8236,390
+Mercearia,0,4,4,0.8287,398
+Mercearia,0,4,5,1.1505,398
+Mercearia,0,4,6,1.0938,398
+Mercearia,0,5,0,0.8993,426
+Mercearia,0,5,1,0.8705,426
+Mercearia,0,5,2,0.8773,418
+Mercearia,0,5,3,0.8318,410
+Mercearia,0,5,4,0.9837,428
+Mercearia,0,5,5,1.4709,410
+Mercearia,0,5,6,1.3576,392
 Mercearia,0,6,0,0.9115,470
 Mercearia,0,6,1,0.8469,452
 Mercearia,0,6,2,0.8107,458
@@ -3401,20 +3401,20 @@ Mercearia,0,6,3,0.8291,484
 Mercearia,0,6,4,0.9875,458
 Mercearia,0,6,5,1.415,450
 Mercearia,0,6,6,1.3533,468
-Mercearia,0,7,0,0.9594,478
-Mercearia,0,7,1,0.8752,470
-Mercearia,0,7,2,0.8326,490
-Mercearia,0,7,3,0.8133,472
-Mercearia,0,7,4,0.9449,482
-Mercearia,0,7,5,1.2642,486
-Mercearia,0,7,6,1.2047,486
-Mercearia,0,8,0,0.9677,440
-Mercearia,0,8,1,0.914,442
-Mercearia,0,8,2,0.8704,416
-Mercearia,0,8,3,0.9015,408
-Mercearia,0,8,4,0.9518,428
-Mercearia,0,8,5,1.383,450
-Mercearia,0,8,6,1.2764,432
+Mercearia,0,7,0,0.9757,470
+Mercearia,0,7,1,0.8903,462
+Mercearia,0,7,2,0.8464,482
+Mercearia,0,7,3,0.8273,464
+Mercearia,0,7,4,0.9609,474
+Mercearia,0,7,5,1.2854,478
+Mercearia,0,7,6,1.2248,478
+Mercearia,0,8,0,0.9699,439
+Mercearia,0,8,1,0.916,441
+Mercearia,0,8,2,0.8725,415
+Mercearia,0,8,3,0.9037,407
+Mercearia,0,8,4,0.9541,427
+Mercearia,0,8,5,1.3861,449
+Mercearia,0,8,6,1.2793,431
 Mercearia,0,9,0,0.8587,380
 Mercearia,0,9,1,0.8403,386
 Mercearia,0,9,2,0.7644,368
@@ -3485,41 +3485,41 @@ Mercearia,1,6,3,0.864,548
 Mercearia,1,6,4,1.0134,522
 Mercearia,1,6,5,1.305,518
 Mercearia,1,6,6,1.137,542
-Mercearia,1,7,0,0.9886,544
-Mercearia,1,7,1,0.9403,542
-Mercearia,1,7,2,0.9552,568
-Mercearia,1,7,3,0.9396,546
-Mercearia,1,7,4,1.0133,548
-Mercearia,1,7,5,1.2607,548
-Mercearia,1,7,6,1.0912,548
-Mercearia,1,8,0,0.8932,496
-Mercearia,1,8,1,0.8665,496
-Mercearia,1,8,2,0.8391,470
-Mercearia,1,8,3,0.8721,466
-Mercearia,1,8,4,0.9957,490
-Mercearia,1,8,5,1.1991,516
-Mercearia,1,8,6,0.9911,494
-Mercearia,1,9,0,0.8455,438
-Mercearia,1,9,1,0.8295,442
-Mercearia,1,9,2,0.8018,418
-Mercearia,1,9,3,0.7602,418
-Mercearia,1,9,4,0.8536,418
-Mercearia,1,9,5,1.0533,392
-Mercearia,1,9,6,0.9891,414
-Mercearia,1,10,0,0.8227,418
-Mercearia,1,10,1,0.7669,414
-Mercearia,1,10,2,0.7811,438
-Mercearia,1,10,3,0.7942,464
-Mercearia,1,10,4,0.8485,442
-Mercearia,1,10,5,1.0782,444
-Mercearia,1,10,6,1.0107,418
-Mercearia,1,11,0,0.8594,418
-Mercearia,1,11,1,0.8293,418
-Mercearia,1,11,2,0.8744,418
-Mercearia,1,11,3,0.7878,392
-Mercearia,1,11,4,0.8236,414
-Mercearia,1,11,5,1.0557,438
-Mercearia,1,11,6,1.0128,442
+Mercearia,1,7,0,0.9904,543
+Mercearia,1,7,1,0.9421,541
+Mercearia,1,7,2,0.9569,567
+Mercearia,1,7,3,0.9413,545
+Mercearia,1,7,4,1.0152,547
+Mercearia,1,7,5,1.263,547
+Mercearia,1,7,6,1.0932,547
+Mercearia,1,8,0,0.9327,475
+Mercearia,1,8,1,0.9048,475
+Mercearia,1,8,2,0.8783,449
+Mercearia,1,8,3,0.9051,449
+Mercearia,1,8,4,1.0314,473
+Mercearia,1,8,5,1.2399,499
+Mercearia,1,8,6,1.0265,477
+Mercearia,1,9,0,0.8818,420
+Mercearia,1,9,1,0.8647,424
+Mercearia,1,9,2,0.8379,400
+Mercearia,1,9,3,0.8024,396
+Mercearia,1,9,4,0.901,396
+Mercearia,1,9,5,1.104,374
+Mercearia,1,9,6,1.034,396
+Mercearia,1,10,0,0.8555,402
+Mercearia,1,10,1,0.7938,400
+Mercearia,1,10,2,0.8069,424
+Mercearia,1,10,3,0.8189,450
+Mercearia,1,10,4,0.8763,428
+Mercearia,1,10,5,1.1238,426
+Mercearia,1,10,6,1.0562,400
+Mercearia,1,11,0,0.872,412
+Mercearia,1,11,1,0.8455,410
+Mercearia,1,11,2,0.8915,410
+Mercearia,1,11,3,0.8042,384
+Mercearia,1,11,4,0.8399,406
+Mercearia,1,11,5,1.0753,430
+Mercearia,1,11,6,1.0315,434
 Mercearia,1,12,0,1.4318,438
 Mercearia,1,12,1,1.6231,464
 Mercearia,1,12,2,1.6936,420
@@ -3541,41 +3541,41 @@ Mercearia,2,2,3,0.8093,520
 Mercearia,2,2,4,0.8989,520
 Mercearia,2,2,5,1.1545,520
 Mercearia,2,2,6,1.1438,520
-Mercearia,2,3,0,0.8653,572
-Mercearia,2,3,1,0.8528,572
-Mercearia,2,3,2,0.8807,572
-Mercearia,2,3,3,0.8307,572
-Mercearia,2,3,4,0.8856,572
+Mercearia,2,3,0,0.8669,571
+Mercearia,2,3,1,0.8543,571
+Mercearia,2,3,2,0.8823,571
+Mercearia,2,3,3,0.8321,571
+Mercearia,2,3,4,0.8872,571
 Mercearia,2,3,5,1.1548,572
 Mercearia,2,3,6,1.1876,598
-Mercearia,2,4,0,0.8751,494
-Mercearia,2,4,1,0.8528,520
-Mercearia,2,4,2,0.8867,520
-Mercearia,2,4,3,0.7814,494
-Mercearia,2,4,4,0.8836,494
-Mercearia,2,4,5,1.1293,494
-Mercearia,2,4,6,1.1671,494
-Mercearia,2,5,0,0.9189,520
-Mercearia,2,5,1,0.8637,520
-Mercearia,2,5,2,0.8541,520
-Mercearia,2,5,3,0.7857,520
-Mercearia,2,5,4,0.9232,546
-Mercearia,2,5,5,1.216,520
-Mercearia,2,5,6,1.292,494
-Mercearia,2,6,0,0.8956,572
-Mercearia,2,6,1,0.8523,546
-Mercearia,2,6,2,0.831,546
-Mercearia,2,6,3,0.7718,572
-Mercearia,2,6,4,0.8774,546
-Mercearia,2,6,5,1.2847,546
-Mercearia,2,6,6,1.2981,572
-Mercearia,2,7,0,0.9406,572
-Mercearia,2,7,1,0.8753,572
-Mercearia,2,7,2,0.8699,598
-Mercearia,2,7,3,0.8216,572
-Mercearia,2,7,4,0.8641,572
-Mercearia,2,7,5,1.1196,572
-Mercearia,2,7,6,1.2309,572
+Mercearia,2,4,0,0.8913,485
+Mercearia,2,4,1,0.8679,511
+Mercearia,2,4,2,0.9024,511
+Mercearia,2,4,3,0.7926,487
+Mercearia,2,4,4,0.8963,487
+Mercearia,2,4,5,1.1479,486
+Mercearia,2,4,6,1.1863,486
+Mercearia,2,5,0,0.9333,512
+Mercearia,2,5,1,0.8772,512
+Mercearia,2,5,2,0.8675,512
+Mercearia,2,5,3,0.8011,510
+Mercearia,2,5,4,0.9404,536
+Mercearia,2,5,5,1.2399,510
+Mercearia,2,5,6,1.3133,486
+Mercearia,2,6,0,0.9116,562
+Mercearia,2,6,1,0.865,538
+Mercearia,2,6,2,0.8434,538
+Mercearia,2,6,3,0.7828,564
+Mercearia,2,6,4,0.8904,538
+Mercearia,2,6,5,1.3038,538
+Mercearia,2,6,6,1.3212,562
+Mercearia,2,7,0,0.9472,568
+Mercearia,2,7,1,0.8845,566
+Mercearia,2,7,2,0.8788,592
+Mercearia,2,7,3,0.8303,566
+Mercearia,2,7,4,0.8732,566
+Mercearia,2,7,5,1.1315,566
+Mercearia,2,7,6,1.244,566
 Mercearia,2,8,0,0.9372,520
 Mercearia,2,8,1,0.8974,520
 Mercearia,2,8,2,0.875,494
@@ -3709,27 +3709,27 @@ Padaria,0,2,3,0.8249,212
 Padaria,0,2,4,0.8051,212
 Padaria,0,2,5,1.1397,212
 Padaria,0,2,6,1.2452,212
-Padaria,0,3,0,0.9676,232
-Padaria,0,3,1,0.9006,236
+Padaria,0,3,0,0.9718,231
+Padaria,0,3,1,0.9045,235
 Padaria,0,3,2,0.9373,239
 Padaria,0,3,3,0.8252,239
 Padaria,0,3,4,0.8575,236
 Padaria,0,3,5,1.1241,232
 Padaria,0,3,6,1.2821,241
-Padaria,0,4,0,0.9361,199
-Padaria,0,4,1,0.8795,208
-Padaria,0,4,2,0.7922,209
-Padaria,0,4,3,0.7816,200
-Padaria,0,4,4,0.7952,203
-Padaria,0,4,5,1.0589,203
-Padaria,0,4,6,1.2058,203
-Padaria,0,5,0,1.0516,216
-Padaria,0,5,1,1.0085,216
-Padaria,0,5,2,0.851,212
-Padaria,0,5,3,0.8328,208
-Padaria,0,5,4,0.8267,218
-Padaria,0,5,5,1.1076,209
-Padaria,0,5,6,1.4752,200
+Padaria,0,4,0,0.9553,195
+Padaria,0,4,1,0.8968,204
+Padaria,0,4,2,0.8116,204
+Padaria,0,4,3,0.8016,195
+Padaria,0,4,4,0.8112,199
+Padaria,0,4,5,1.0801,199
+Padaria,0,4,6,1.23,199
+Padaria,0,5,0,1.0664,213
+Padaria,0,5,1,1.0227,213
+Padaria,0,5,2,0.8632,209
+Padaria,0,5,3,0.845,205
+Padaria,0,5,4,0.8421,214
+Padaria,0,5,5,1.1292,205
+Padaria,0,5,6,1.5053,196
 Padaria,0,6,0,1.1047,235
 Padaria,0,6,1,1.0149,226
 Padaria,0,6,2,0.8925,229
@@ -3737,13 +3737,13 @@ Padaria,0,6,3,0.8534,242
 Padaria,0,6,4,0.7871,229
 Padaria,0,6,5,1.1108,225
 Padaria,0,6,6,1.5349,234
-Padaria,0,7,0,1.095,239
-Padaria,0,7,1,0.9833,235
-Padaria,0,7,2,0.8833,245
-Padaria,0,7,3,0.8289,236
-Padaria,0,7,4,0.834,241
-Padaria,0,7,5,1.0715,243
-Padaria,0,7,6,1.423,243
+Padaria,0,7,0,1.1089,236
+Padaria,0,7,1,0.996,232
+Padaria,0,7,2,0.8943,242
+Padaria,0,7,3,0.8396,233
+Padaria,0,7,4,0.8445,238
+Padaria,0,7,5,1.0849,240
+Padaria,0,7,6,1.4408,240
 Padaria,0,8,0,1.0825,220
 Padaria,0,8,1,1.0198,221
 Padaria,0,8,2,0.8745,208
@@ -3828,34 +3828,34 @@ Padaria,1,7,3,0.8847,273
 Padaria,1,7,4,0.9142,274
 Padaria,1,7,5,1.1211,274
 Padaria,1,7,6,1.2184,274
-Padaria,1,8,0,1.0134,248
-Padaria,1,8,1,0.959,248
-Padaria,1,8,2,0.9186,235
-Padaria,1,8,3,0.8517,233
-Padaria,1,8,4,0.9114,245
-Padaria,1,8,5,1.0765,258
-Padaria,1,8,6,1.1137,247
-Padaria,1,9,0,1.0484,219
-Padaria,1,9,1,0.9804,221
-Padaria,1,9,2,0.928,209
-Padaria,1,9,3,0.845,209
-Padaria,1,9,4,0.8309,209
-Padaria,1,9,5,1.1,196
-Padaria,1,9,6,1.2242,207
-Padaria,1,10,0,0.9767,209
-Padaria,1,10,1,0.9014,207
-Padaria,1,10,2,0.8784,219
-Padaria,1,10,3,0.8413,232
-Padaria,1,10,4,0.8537,221
-Padaria,1,10,5,1.062,222
-Padaria,1,10,6,1.185,209
-Padaria,1,11,0,0.9784,209
-Padaria,1,11,1,0.8868,209
-Padaria,1,11,2,0.8978,209
-Padaria,1,11,3,0.8044,196
-Padaria,1,11,4,0.8068,207
-Padaria,1,11,5,1.0055,219
-Padaria,1,11,6,1.1314,221
+Padaria,1,8,0,1.0515,239
+Padaria,1,8,1,0.9951,239
+Padaria,1,8,2,0.9552,226
+Padaria,1,8,3,0.8781,226
+Padaria,1,8,4,0.9382,238
+Padaria,1,8,5,1.1065,251
+Padaria,1,8,6,1.1462,240
+Padaria,1,9,0,1.0934,210
+Padaria,1,9,1,1.022,212
+Padaria,1,9,2,0.9697,200
+Padaria,1,9,3,0.8919,198
+Padaria,1,9,4,0.877,198
+Padaria,1,9,5,1.1529,187
+Padaria,1,9,6,1.2799,198
+Padaria,1,10,0,1.0156,201
+Padaria,1,10,1,0.9329,200
+Padaria,1,10,2,0.9074,212
+Padaria,1,10,3,0.8675,225
+Padaria,1,10,4,0.8816,214
+Padaria,1,10,5,1.1069,213
+Padaria,1,10,6,1.2383,200
+Padaria,1,11,0,0.9926,206
+Padaria,1,11,1,0.9041,205
+Padaria,1,11,2,0.9153,205
+Padaria,1,11,3,0.8211,192
+Padaria,1,11,4,0.8227,203
+Padaria,1,11,5,1.0243,215
+Padaria,1,11,6,1.1523,217
 Padaria,1,12,0,1.0884,219
 Padaria,1,12,1,0.9934,232
 Padaria,1,12,2,0.985,210
@@ -3884,34 +3884,34 @@ Padaria,2,3,3,0.8423,286
 Padaria,2,3,4,0.868,286
 Padaria,2,3,5,1.0936,286
 Padaria,2,3,6,1.2598,299
-Padaria,2,4,0,0.9414,247
-Padaria,2,4,1,0.8847,260
-Padaria,2,4,2,0.8586,260
-Padaria,2,4,3,0.8092,247
-Padaria,2,4,4,0.8172,247
-Padaria,2,4,5,1.0733,247
-Padaria,2,4,6,1.2042,247
-Padaria,2,5,0,1.0222,260
-Padaria,2,5,1,0.9364,260
-Padaria,2,5,2,0.8938,260
-Padaria,2,5,3,0.8136,260
-Padaria,2,5,4,0.8514,273
-Padaria,2,5,5,1.1164,260
-Padaria,2,5,6,1.3649,247
-Padaria,2,6,0,1.0185,286
-Padaria,2,6,1,0.9379,273
-Padaria,2,6,2,0.8974,273
-Padaria,2,6,3,0.8168,286
-Padaria,2,6,4,0.8382,273
-Padaria,2,6,5,1.142,273
-Padaria,2,6,6,1.4177,286
-Padaria,2,7,0,1.054,286
-Padaria,2,7,1,0.9475,286
-Padaria,2,7,2,0.9137,299
-Padaria,2,7,3,0.8439,286
-Padaria,2,7,4,0.8693,286
-Padaria,2,7,5,1.1195,286
-Padaria,2,7,6,1.3381,286
+Padaria,2,4,0,0.953,244
+Padaria,2,4,1,0.895,257
+Padaria,2,4,2,0.8686,257
+Padaria,2,4,3,0.8158,245
+Padaria,2,4,4,0.8239,245
+Padaria,2,4,5,1.082,245
+Padaria,2,4,6,1.214,245
+Padaria,2,5,0,1.0382,256
+Padaria,2,5,1,0.951,256
+Padaria,2,5,2,0.9078,256
+Padaria,2,5,3,0.8296,255
+Padaria,2,5,4,0.8673,268
+Padaria,2,5,5,1.1382,255
+Padaria,2,5,6,1.3873,243
+Padaria,2,6,0,1.0367,281
+Padaria,2,6,1,0.9518,269
+Padaria,2,6,2,0.9107,269
+Padaria,2,6,3,0.8284,282
+Padaria,2,6,4,0.8507,269
+Padaria,2,6,5,1.159,269
+Padaria,2,6,6,1.4429,281
+Padaria,2,7,0,1.0615,284
+Padaria,2,7,1,0.9576,283
+Padaria,2,7,2,0.923,296
+Padaria,2,7,3,0.8529,283
+Padaria,2,7,4,0.8785,283
+Padaria,2,7,5,1.1313,283
+Padaria,2,7,6,1.3523,283
 Padaria,2,8,0,1.0777,260
 Padaria,2,8,1,0.9765,260
 Padaria,2,8,2,0.926,247
@@ -4045,55 +4045,55 @@ Peixes e Frutos do Mar,0,2,3,1.0032,212
 Peixes e Frutos do Mar,0,2,4,1.2211,212
 Peixes e Frutos do Mar,0,2,5,1.3004,212
 Peixes e Frutos do Mar,0,2,6,1.218,212
-Peixes e Frutos do Mar,0,3,0,0.9665,232
-Peixes e Frutos do Mar,0,3,1,1.1773,236
+Peixes e Frutos do Mar,0,3,0,0.9749,230
+Peixes e Frutos do Mar,0,3,1,1.1823,235
 Peixes e Frutos do Mar,0,3,2,1.074,239
 Peixes e Frutos do Mar,0,3,3,1.3549,239
 Peixes e Frutos do Mar,0,3,4,1.457,236
 Peixes e Frutos do Mar,0,3,5,1.4217,232
 Peixes e Frutos do Mar,0,3,6,1.5948,241
-Peixes e Frutos do Mar,0,4,0,1.051,199
-Peixes e Frutos do Mar,0,4,1,0.9568,208
-Peixes e Frutos do Mar,0,4,2,0.8489,209
-Peixes e Frutos do Mar,0,4,3,1.1769,200
-Peixes e Frutos do Mar,0,4,4,1.0167,203
-Peixes e Frutos do Mar,0,4,5,1.2311,203
-Peixes e Frutos do Mar,0,4,6,1.2166,203
-Peixes e Frutos do Mar,0,5,0,0.9422,216
-Peixes e Frutos do Mar,0,5,1,0.8475,216
-Peixes e Frutos do Mar,0,5,2,0.8176,212
-Peixes e Frutos do Mar,0,5,3,1.0253,208
-Peixes e Frutos do Mar,0,5,4,0.8459,218
-Peixes e Frutos do Mar,0,5,5,1.1609,209
-Peixes e Frutos do Mar,0,5,6,1.337,200
-Peixes e Frutos do Mar,0,6,0,0.7304,235
-Peixes e Frutos do Mar,0,6,1,0.9123,226
-Peixes e Frutos do Mar,0,6,2,0.8269,229
-Peixes e Frutos do Mar,0,6,3,0.8444,242
-Peixes e Frutos do Mar,0,6,4,0.7388,229
-Peixes e Frutos do Mar,0,6,5,1.0083,225
-Peixes e Frutos do Mar,0,6,6,1.201,234
-Peixes e Frutos do Mar,0,7,0,0.7379,239
-Peixes e Frutos do Mar,0,7,1,0.7558,235
-Peixes e Frutos do Mar,0,7,2,0.7419,245
-Peixes e Frutos do Mar,0,7,3,0.7631,236
-Peixes e Frutos do Mar,0,7,4,0.7532,241
-Peixes e Frutos do Mar,0,7,5,0.9671,243
-Peixes e Frutos do Mar,0,7,6,1.1315,243
-Peixes e Frutos do Mar,0,8,0,0.7871,220
-Peixes e Frutos do Mar,0,8,1,0.7395,221
-Peixes e Frutos do Mar,0,8,2,0.6462,208
-Peixes e Frutos do Mar,0,8,3,0.5705,204
-Peixes e Frutos do Mar,0,8,4,0.5868,214
-Peixes e Frutos do Mar,0,8,5,0.7788,225
-Peixes e Frutos do Mar,0,8,6,0.9995,216
-Peixes e Frutos do Mar,0,9,0,0.7908,190
-Peixes e Frutos do Mar,0,9,1,0.8987,193
-Peixes e Frutos do Mar,0,9,2,0.7592,184
-Peixes e Frutos do Mar,0,9,3,0.7946,185
-Peixes e Frutos do Mar,0,9,4,0.8099,185
-Peixes e Frutos do Mar,0,9,5,0.9585,172
-Peixes e Frutos do Mar,0,9,6,1.0809,181
+Peixes e Frutos do Mar,0,4,0,1.1185,187
+Peixes e Frutos do Mar,0,4,1,1.0206,195
+Peixes e Frutos do Mar,0,4,2,0.9099,195
+Peixes e Frutos do Mar,0,4,3,1.2521,188
+Peixes e Frutos do Mar,0,4,4,1.0749,192
+Peixes e Frutos do Mar,0,4,5,1.3017,192
+Peixes e Frutos do Mar,0,4,6,1.2863,192
+Peixes e Frutos do Mar,0,5,0,0.9928,205
+Peixes e Frutos do Mar,0,5,1,0.893,205
+Peixes e Frutos do Mar,0,5,2,0.8623,201
+Peixes e Frutos do Mar,0,5,3,1.0937,195
+Peixes e Frutos do Mar,0,5,4,0.904,204
+Peixes e Frutos do Mar,0,5,5,1.2443,195
+Peixes e Frutos do Mar,0,5,6,1.4224,188
+Peixes e Frutos do Mar,0,6,0,0.7628,225
+Peixes e Frutos do Mar,0,6,1,0.9458,218
+Peixes e Frutos do Mar,0,6,2,0.8568,221
+Peixes e Frutos do Mar,0,6,3,0.8733,234
+Peixes e Frutos do Mar,0,6,4,0.7655,221
+Peixes e Frutos do Mar,0,6,5,1.0454,217
+Peixes e Frutos do Mar,0,6,6,1.2546,224
+Peixes e Frutos do Mar,0,7,0,0.8053,219
+Peixes e Frutos do Mar,0,7,1,0.8338,213
+Peixes e Frutos do Mar,0,7,2,0.8151,223
+Peixes e Frutos do Mar,0,7,3,0.8337,216
+Peixes e Frutos do Mar,0,7,4,0.814,223
+Peixes e Frutos do Mar,0,7,5,1.0445,225
+Peixes e Frutos do Mar,0,7,6,1.2221,225
+Peixes e Frutos do Mar,0,8,0,0.853,203
+Peixes e Frutos do Mar,0,8,1,0.8011,204
+Peixes e Frutos do Mar,0,8,2,0.7037,191
+Peixes e Frutos do Mar,0,8,3,0.6291,185
+Peixes e Frutos do Mar,0,8,4,0.6507,193
+Peixes e Frutos do Mar,0,8,5,0.859,204
+Peixes e Frutos do Mar,0,8,6,1.0903,198
+Peixes e Frutos do Mar,0,9,0,0.8211,183
+Peixes e Frutos do Mar,0,9,1,0.9326,186
+Peixes e Frutos do Mar,0,9,2,0.7892,177
+Peixes e Frutos do Mar,0,9,3,0.8259,178
+Peixes e Frutos do Mar,0,9,4,0.8417,178
+Peixes e Frutos do Mar,0,9,5,0.9991,165
+Peixes e Frutos do Mar,0,9,6,1.1442,171
 Peixes e Frutos do Mar,0,10,0,0.8421,188
 Peixes e Frutos do Mar,0,10,1,0.7368,184
 Peixes e Frutos do Mar,0,10,2,0.7684,193
@@ -4129,69 +4129,69 @@ Peixes e Frutos do Mar,1,2,3,1.1129,238
 Peixes e Frutos do Mar,1,2,4,1.294,239
 Peixes e Frutos do Mar,1,2,5,1.4264,239
 Peixes e Frutos do Mar,1,2,6,1.1303,238
-Peixes e Frutos do Mar,1,3,0,1.0624,264
+Peixes e Frutos do Mar,1,3,0,1.0665,263
 Peixes e Frutos do Mar,1,3,1,1.0673,266
 Peixes e Frutos do Mar,1,3,2,1.1793,266
 Peixes e Frutos do Mar,1,3,3,1.306,266
 Peixes e Frutos do Mar,1,3,4,1.371,263
 Peixes e Frutos do Mar,1,3,5,1.5134,261
 Peixes e Frutos do Mar,1,3,6,1.2051,274
-Peixes e Frutos do Mar,1,4,0,0.9611,224
-Peixes e Frutos do Mar,1,4,1,0.8378,235
-Peixes e Frutos do Mar,1,4,2,0.9142,238
-Peixes e Frutos do Mar,1,4,3,1.1809,227
-Peixes e Frutos do Mar,1,4,4,1.1998,227
-Peixes e Frutos do Mar,1,4,5,1.2752,227
-Peixes e Frutos do Mar,1,4,6,1.138,227
-Peixes e Frutos do Mar,1,5,0,0.9501,243
-Peixes e Frutos do Mar,1,5,1,0.966,243
-Peixes e Frutos do Mar,1,5,2,0.9895,240
-Peixes e Frutos do Mar,1,5,3,1.0469,240
-Peixes e Frutos do Mar,1,5,4,1.1048,253
-Peixes e Frutos do Mar,1,5,5,1.2407,242
-Peixes e Frutos do Mar,1,5,6,1.1011,230
-Peixes e Frutos do Mar,1,6,0,0.8004,273
-Peixes e Frutos do Mar,1,6,1,0.8076,261
-Peixes e Frutos do Mar,1,6,2,0.7742,261
-Peixes e Frutos do Mar,1,6,3,1.0261,274
-Peixes e Frutos do Mar,1,6,4,0.9275,261
-Peixes e Frutos do Mar,1,6,5,1.0535,259
-Peixes e Frutos do Mar,1,6,6,1.0335,271
-Peixes e Frutos do Mar,1,7,0,0.7178,272
-Peixes e Frutos do Mar,1,7,1,0.7696,271
-Peixes e Frutos do Mar,1,7,2,0.7062,284
-Peixes e Frutos do Mar,1,7,3,0.88,273
-Peixes e Frutos do Mar,1,7,4,0.9038,274
-Peixes e Frutos do Mar,1,7,5,1.1078,274
-Peixes e Frutos do Mar,1,7,6,0.9449,274
-Peixes e Frutos do Mar,1,8,0,0.7591,248
-Peixes e Frutos do Mar,1,8,1,0.8055,248
-Peixes e Frutos do Mar,1,8,2,0.7122,235
-Peixes e Frutos do Mar,1,8,3,0.7013,233
-Peixes e Frutos do Mar,1,8,4,0.9153,245
-Peixes e Frutos do Mar,1,8,5,0.9571,258
-Peixes e Frutos do Mar,1,8,6,0.9162,247
-Peixes e Frutos do Mar,1,9,0,0.7744,219
-Peixes e Frutos do Mar,1,9,1,0.8416,221
-Peixes e Frutos do Mar,1,9,2,0.7945,209
-Peixes e Frutos do Mar,1,9,3,0.8154,209
-Peixes e Frutos do Mar,1,9,4,1.0102,209
-Peixes e Frutos do Mar,1,9,5,1.0812,196
-Peixes e Frutos do Mar,1,9,6,1.0659,207
-Peixes e Frutos do Mar,1,10,0,0.8942,209
-Peixes e Frutos do Mar,1,10,1,0.83,207
-Peixes e Frutos do Mar,1,10,2,0.8292,219
-Peixes e Frutos do Mar,1,10,3,0.9697,232
-Peixes e Frutos do Mar,1,10,4,1.038,221
-Peixes e Frutos do Mar,1,10,5,1.1069,222
-Peixes e Frutos do Mar,1,10,6,0.9961,209
-Peixes e Frutos do Mar,1,11,0,0.8234,209
-Peixes e Frutos do Mar,1,11,1,0.9594,209
-Peixes e Frutos do Mar,1,11,2,0.8682,209
-Peixes e Frutos do Mar,1,11,3,0.9747,196
-Peixes e Frutos do Mar,1,11,4,0.9191,207
-Peixes e Frutos do Mar,1,11,5,1.093,219
-Peixes e Frutos do Mar,1,11,6,1.0846,221
+Peixes e Frutos do Mar,1,4,0,0.9967,216
+Peixes e Frutos do Mar,1,4,1,0.8712,226
+Peixes e Frutos do Mar,1,4,2,0.9501,229
+Peixes e Frutos do Mar,1,4,3,1.2185,220
+Peixes e Frutos do Mar,1,4,4,1.2379,220
+Peixes e Frutos do Mar,1,4,5,1.3158,220
+Peixes e Frutos do Mar,1,4,6,1.1742,220
+Peixes e Frutos do Mar,1,5,0,0.9824,235
+Peixes e Frutos do Mar,1,5,1,0.9989,235
+Peixes e Frutos do Mar,1,5,2,1.0236,232
+Peixes e Frutos do Mar,1,5,3,1.0924,230
+Peixes e Frutos do Mar,1,5,4,1.1503,243
+Peixes e Frutos do Mar,1,5,5,1.2942,232
+Peixes e Frutos do Mar,1,5,6,1.1408,222
+Peixes e Frutos do Mar,1,6,0,0.8309,263
+Peixes e Frutos do Mar,1,6,1,0.8331,253
+Peixes e Frutos do Mar,1,6,2,0.7987,253
+Peixes e Frutos do Mar,1,6,3,1.0569,266
+Peixes e Frutos do Mar,1,6,4,0.9568,253
+Peixes e Frutos do Mar,1,6,5,1.0871,251
+Peixes e Frutos do Mar,1,6,6,1.0731,261
+Peixes e Frutos do Mar,1,7,0,0.7424,263
+Peixes e Frutos do Mar,1,7,1,0.8022,260
+Peixes e Frutos do Mar,1,7,2,0.7347,273
+Peixes e Frutos do Mar,1,7,3,0.9135,263
+Peixes e Frutos do Mar,1,7,4,0.931,266
+Peixes e Frutos do Mar,1,7,5,1.1411,266
+Peixes e Frutos do Mar,1,7,6,0.9733,266
+Peixes e Frutos do Mar,1,8,0,0.8367,225
+Peixes e Frutos do Mar,1,8,1,0.8879,225
+Peixes e Frutos do Mar,1,8,2,0.7895,212
+Peixes e Frutos do Mar,1,8,3,0.7744,211
+Peixes e Frutos do Mar,1,8,4,1.0147,221
+Peixes e Frutos do Mar,1,8,5,1.0553,234
+Peixes e Frutos do Mar,1,8,6,1.0013,226
+Peixes e Frutos do Mar,1,9,0,0.8395,202
+Peixes e Frutos do Mar,1,9,1,0.9117,204
+Peixes e Frutos do Mar,1,9,2,0.8648,192
+Peixes e Frutos do Mar,1,9,3,0.8969,190
+Peixes e Frutos do Mar,1,9,4,1.1112,190
+Peixes e Frutos do Mar,1,9,5,1.1838,179
+Peixes e Frutos do Mar,1,9,6,1.1799,187
+Peixes e Frutos do Mar,1,10,0,0.9298,201
+Peixes e Frutos do Mar,1,10,1,0.8591,200
+Peixes e Frutos do Mar,1,10,2,0.8566,212
+Peixes e Frutos do Mar,1,10,3,0.9999,225
+Peixes e Frutos do Mar,1,10,4,1.0719,214
+Peixes e Frutos do Mar,1,10,5,1.1537,213
+Peixes e Frutos do Mar,1,10,6,1.041,200
+Peixes e Frutos do Mar,1,11,0,0.8354,206
+Peixes e Frutos do Mar,1,11,1,0.9781,205
+Peixes e Frutos do Mar,1,11,2,0.8851,205
+Peixes e Frutos do Mar,1,11,3,0.995,192
+Peixes e Frutos do Mar,1,11,4,0.9372,203
+Peixes e Frutos do Mar,1,11,5,1.1134,215
+Peixes e Frutos do Mar,1,11,6,1.1046,217
 Peixes e Frutos do Mar,1,12,0,0.9661,219
 Peixes e Frutos do Mar,1,12,1,0.9328,232
 Peixes e Frutos do Mar,1,12,2,0.8944,210
@@ -4220,48 +4220,48 @@ Peixes e Frutos do Mar,2,3,3,1.2178,286
 Peixes e Frutos do Mar,2,3,4,1.3027,286
 Peixes e Frutos do Mar,2,3,5,1.2521,286
 Peixes e Frutos do Mar,2,3,6,1.4438,299
-Peixes e Frutos do Mar,2,4,0,0.9515,247
-Peixes e Frutos do Mar,2,4,1,0.9999,260
-Peixes e Frutos do Mar,2,4,2,0.9635,260
-Peixes e Frutos do Mar,2,4,3,1.0592,247
-Peixes e Frutos do Mar,2,4,4,0.9758,247
-Peixes e Frutos do Mar,2,4,5,1.223,247
-Peixes e Frutos do Mar,2,4,6,1.1315,247
-Peixes e Frutos do Mar,2,5,0,0.9037,260
-Peixes e Frutos do Mar,2,5,1,1.0422,260
-Peixes e Frutos do Mar,2,5,2,0.9054,260
-Peixes e Frutos do Mar,2,5,3,0.9321,260
-Peixes e Frutos do Mar,2,5,4,0.9885,273
-Peixes e Frutos do Mar,2,5,5,1.1158,260
-Peixes e Frutos do Mar,2,5,6,1.2877,247
-Peixes e Frutos do Mar,2,6,0,0.9271,286
-Peixes e Frutos do Mar,2,6,1,0.9081,273
-Peixes e Frutos do Mar,2,6,2,0.8564,273
-Peixes e Frutos do Mar,2,6,3,0.8564,286
-Peixes e Frutos do Mar,2,6,4,0.8309,273
-Peixes e Frutos do Mar,2,6,5,1.1197,273
-Peixes e Frutos do Mar,2,6,6,1.2247,286
-Peixes e Frutos do Mar,2,7,0,0.8303,286
-Peixes e Frutos do Mar,2,7,1,0.7878,286
-Peixes e Frutos do Mar,2,7,2,0.8089,299
-Peixes e Frutos do Mar,2,7,3,0.8191,286
-Peixes e Frutos do Mar,2,7,4,0.8854,286
-Peixes e Frutos do Mar,2,7,5,1.077,286
-Peixes e Frutos do Mar,2,7,6,1.1638,286
-Peixes e Frutos do Mar,2,8,0,0.9246,260
-Peixes e Frutos do Mar,2,8,1,0.7507,260
-Peixes e Frutos do Mar,2,8,2,0.7818,247
-Peixes e Frutos do Mar,2,8,3,0.6641,247
-Peixes e Frutos do Mar,2,8,4,0.81,260
-Peixes e Frutos do Mar,2,8,5,0.9574,273
-Peixes e Frutos do Mar,2,8,6,1.022,260
-Peixes e Frutos do Mar,2,9,0,0.8779,234
-Peixes e Frutos do Mar,2,9,1,0.8956,234
-Peixes e Frutos do Mar,2,9,2,0.848,221
-Peixes e Frutos do Mar,2,9,3,0.831,221
-Peixes e Frutos do Mar,2,9,4,0.9288,221
-Peixes e Frutos do Mar,2,9,5,1.299,208
-Peixes e Frutos do Mar,2,9,6,1.1384,221
+Peixes e Frutos do Mar,2,4,0,0.9632,244
+Peixes e Frutos do Mar,2,4,1,1.0116,257
+Peixes e Frutos do Mar,2,4,2,0.9747,257
+Peixes e Frutos do Mar,2,4,3,1.0679,245
+Peixes e Frutos do Mar,2,4,4,0.9838,245
+Peixes e Frutos do Mar,2,4,5,1.233,245
+Peixes e Frutos do Mar,2,4,6,1.1408,245
+Peixes e Frutos do Mar,2,5,0,0.9178,256
+Peixes e Frutos do Mar,2,5,1,1.0585,256
+Peixes e Frutos do Mar,2,5,2,0.9195,256
+Peixes e Frutos do Mar,2,5,3,0.9504,255
+Peixes e Frutos do Mar,2,5,4,1.007,268
+Peixes e Frutos do Mar,2,5,5,1.1377,255
+Peixes e Frutos do Mar,2,5,6,1.3089,243
+Peixes e Frutos do Mar,2,6,0,0.9436,281
+Peixes e Frutos do Mar,2,6,1,0.9216,269
+Peixes e Frutos do Mar,2,6,2,0.8691,269
+Peixes e Frutos do Mar,2,6,3,0.8685,282
+Peixes e Frutos do Mar,2,6,4,0.8433,269
+Peixes e Frutos do Mar,2,6,5,1.1363,269
+Peixes e Frutos do Mar,2,6,6,1.2465,281
+Peixes e Frutos do Mar,2,7,0,0.845,281
+Peixes e Frutos do Mar,2,7,1,0.8047,280
+Peixes e Frutos do Mar,2,7,2,0.8255,293
+Peixes e Frutos do Mar,2,7,3,0.8307,282
+Peixes e Frutos do Mar,2,7,4,0.8979,282
+Peixes e Frutos do Mar,2,7,5,1.0923,282
+Peixes e Frutos do Mar,2,7,6,1.1803,282
+Peixes e Frutos do Mar,2,8,0,0.954,252
+Peixes e Frutos do Mar,2,8,1,0.7746,252
+Peixes e Frutos do Mar,2,8,2,0.8079,239
+Peixes e Frutos do Mar,2,8,3,0.6922,237
+Peixes e Frutos do Mar,2,8,4,0.8424,250
+Peixes e Frutos do Mar,2,8,5,0.9939,263
+Peixes e Frutos do Mar,2,8,6,1.0544,252
+Peixes e Frutos do Mar,2,9,0,0.9213,223
+Peixes e Frutos do Mar,2,9,1,0.9398,223
+Peixes e Frutos do Mar,2,9,2,0.8924,210
+Peixes e Frutos do Mar,2,9,3,0.8745,210
+Peixes e Frutos do Mar,2,9,4,0.9775,210
+Peixes e Frutos do Mar,2,9,5,1.3716,197
+Peixes e Frutos do Mar,2,9,6,1.2096,208
 Peixes e Frutos do Mar,2,10,0,0.8957,221
 Peixes e Frutos do Mar,2,10,1,0.9294,221
 Peixes e Frutos do Mar,2,10,2,0.9025,234
@@ -4451,48 +4451,48 @@ Pet e Bebê,0,12,3,0.8707,274
 Pet e Bebê,0,12,4,0.8018,247
 Pet e Bebê,0,12,5,1.3655,268
 Pet e Bebê,0,12,6,1.6167,219
-Pet e Bebê,1,1,0,1.1115,293
-Pet e Bebê,1,1,1,0.8979,293
-Pet e Bebê,1,1,2,0.8126,269
-Pet e Bebê,1,1,3,0.932,276
-Pet e Bebê,1,1,4,0.9119,292
-Pet e Bebê,1,1,5,1.0313,300
-Pet e Bebê,1,1,6,1.3821,288
-Pet e Bebê,1,2,0,0.6595,287
-Pet e Bebê,1,2,1,0.6044,268
-Pet e Bebê,1,2,2,0.5633,268
-Pet e Bebê,1,2,3,0.6915,268
-Pet e Bebê,1,2,4,0.5701,268
-Pet e Bebê,1,2,5,0.8665,268
-Pet e Bebê,1,2,6,0.6833,268
-Pet e Bebê,1,3,0,0.919,298
-Pet e Bebê,1,3,1,0.8497,305
-Pet e Bebê,1,3,2,0.9294,314
-Pet e Bebê,1,3,3,0.9716,314
-Pet e Bebê,1,3,4,0.8776,295
-Pet e Bebê,1,3,5,1.2772,284
-Pet e Bebê,1,3,6,1.177,298
-Pet e Bebê,1,4,0,0.5371,234
-Pet e Bebê,1,4,1,0.392,246
-Pet e Bebê,1,4,2,0.4688,260
-Pet e Bebê,1,4,3,0.4106,248
-Pet e Bebê,1,4,4,0.504,253
-Pet e Bebê,1,4,5,0.7358,257
-Pet e Bebê,1,4,6,0.6335,257
-Pet e Bebê,1,5,0,0.57,279
-Pet e Bebê,1,5,1,0.458,279
-Pet e Bebê,1,5,2,0.4682,259
-Pet e Bebê,1,5,3,0.3003,248
-Pet e Bebê,1,5,4,0.3884,262
-Pet e Bebê,1,5,5,0.5326,262
-Pet e Bebê,1,5,6,0.554,250
-Pet e Bebê,1,6,0,0.8597,308
-Pet e Bebê,1,6,1,0.9626,297
-Pet e Bebê,1,6,2,0.825,302
-Pet e Bebê,1,6,3,0.8001,325
-Pet e Bebê,1,6,4,0.8235,305
-Pet e Bebê,1,6,5,1.0689,282
-Pet e Bebê,1,6,6,1.1943,294
+Pet e Bebê,1,1,0,1.229,265
+Pet e Bebê,1,1,1,0.9927,265
+Pet e Bebê,1,1,2,0.9071,241
+Pet e Bebê,1,1,3,1.0372,248
+Pet e Bebê,1,1,4,1.0086,264
+Pet e Bebê,1,1,5,1.1374,272
+Pet e Bebê,1,1,6,1.4908,267
+Pet e Bebê,1,2,0,0.7854,241
+Pet e Bebê,1,2,1,0.7296,222
+Pet e Bebê,1,2,2,0.68,222
+Pet e Bebê,1,2,3,0.8348,222
+Pet e Bebê,1,2,4,0.6882,222
+Pet e Bebê,1,2,5,1.046,222
+Pet e Bebê,1,2,6,0.8249,222
+Pet e Bebê,1,3,0,1.0452,262
+Pet e Bebê,1,3,1,0.9599,270
+Pet e Bebê,1,3,2,1.0204,286
+Pet e Bebê,1,3,3,1.0667,286
+Pet e Bebê,1,3,4,0.9696,267
+Pet e Bebê,1,3,5,1.4169,256
+Pet e Bebê,1,3,6,1.3337,263
+Pet e Bebê,1,4,0,0.6905,182
+Pet e Bebê,1,4,1,0.4997,193
+Pet e Bebê,1,4,2,0.6094,200
+Pet e Bebê,1,4,3,0.5249,194
+Pet e Bebê,1,4,4,0.6189,206
+Pet e Bebê,1,4,5,0.9004,210
+Pet e Bebê,1,4,6,0.7753,210
+Pet e Bebê,1,5,0,0.6975,228
+Pet e Bebê,1,5,1,0.5604,228
+Pet e Bebê,1,5,2,0.583,208
+Pet e Bebê,1,5,3,0.3899,191
+Pet e Bebê,1,5,4,0.5139,198
+Pet e Bebê,1,5,5,0.7047,198
+Pet e Bebê,1,5,6,0.7214,192
+Pet e Bebê,1,6,0,0.9324,284
+Pet e Bebê,1,6,1,1.0472,273
+Pet e Bebê,1,6,2,0.8962,278
+Pet e Bebê,1,6,3,0.8639,301
+Pet e Bebê,1,6,4,0.8938,281
+Pet e Bebê,1,6,5,1.1683,258
+Pet e Bebê,1,6,6,1.33,264
 Pet e Bebê,1,7,0,1.1972,316
 Pet e Bebê,1,7,1,0.9804,307
 Pet e Bebê,1,7,2,1.1154,323
@@ -4500,34 +4500,34 @@ Pet e Bebê,1,7,3,1.0698,324
 Pet e Bebê,1,7,4,1.0506,330
 Pet e Bebê,1,7,5,1.3797,336
 Pet e Bebê,1,7,6,1.3372,336
-Pet e Bebê,1,8,0,0.7911,287
-Pet e Bebê,1,8,1,0.5896,293
-Pet e Bebê,1,8,2,0.7193,271
-Pet e Bebê,1,8,3,0.6222,250
-Pet e Bebê,1,8,4,0.598,264
-Pet e Bebê,1,8,5,0.7998,281
-Pet e Bebê,1,8,6,0.7215,281
-Pet e Bebê,1,9,0,1.3069,228
-Pet e Bebê,1,9,1,1.0508,245
-Pet e Bebê,1,9,2,1.0139,231
-Pet e Bebê,1,9,3,1.0305,235
-Pet e Bebê,1,9,4,1.1248,236
-Pet e Bebê,1,9,5,1.4493,214
-Pet e Bebê,1,9,6,1.3428,214
-Pet e Bebê,1,10,0,0.9992,240
-Pet e Bebê,1,10,1,0.9628,216
-Pet e Bebê,1,10,2,0.8259,230
-Pet e Bebê,1,10,3,1.0394,248
-Pet e Bebê,1,10,4,1.0306,248
-Pet e Bebê,1,10,5,1.239,257
-Pet e Bebê,1,10,6,1.1311,240
-Pet e Bebê,1,11,0,1.1892,237
-Pet e Bebê,1,11,1,1.2237,244
-Pet e Bebê,1,11,2,1.1611,244
-Pet e Bebê,1,11,3,0.754,220
-Pet e Bebê,1,11,4,0.9049,220
-Pet e Bebê,1,11,5,1.443,234
-Pet e Bebê,1,11,6,1.2869,251
+Pet e Bebê,1,8,0,0.8939,254
+Pet e Bebê,1,8,1,0.6645,260
+Pet e Bebê,1,8,2,0.8191,238
+Pet e Bebê,1,8,3,0.7103,219
+Pet e Bebê,1,8,4,0.6776,233
+Pet e Bebê,1,8,5,0.899,250
+Pet e Bebê,1,8,6,0.8109,250
+Pet e Bebê,1,9,0,1.3544,220
+Pet e Bebê,1,9,1,1.0863,237
+Pet e Bebê,1,9,2,1.0502,223
+Pet e Bebê,1,9,3,1.0763,225
+Pet e Bebê,1,9,4,1.1746,226
+Pet e Bebê,1,9,5,1.5056,206
+Pet e Bebê,1,9,6,1.395,206
+Pet e Bebê,1,10,0,1.0336,232
+Pet e Bebê,1,10,1,0.995,209
+Pet e Bebê,1,10,2,0.8518,223
+Pet e Bebê,1,10,3,1.0696,241
+Pet e Bebê,1,10,4,1.0605,241
+Pet e Bebê,1,10,5,1.284,248
+Pet e Bebê,1,10,6,1.1752,231
+Pet e Bebê,1,11,0,1.2044,234
+Pet e Bebê,1,11,1,1.2441,240
+Pet e Bebê,1,11,2,1.1804,240
+Pet e Bebê,1,11,3,0.768,216
+Pet e Bebê,1,11,4,0.9217,216
+Pet e Bebê,1,11,5,1.4681,230
+Pet e Bebê,1,11,6,1.3077,247
 Pet e Bebê,1,12,0,1.537,237
 Pet e Bebê,1,12,1,1.3233,255
 Pet e Bebê,1,12,2,1.275,256
@@ -4535,62 +4535,62 @@ Pet e Bebê,1,12,3,0.8062,252
 Pet e Bebê,1,12,4,1.1242,228
 Pet e Bebê,1,12,5,1.5311,247
 Pet e Bebê,1,12,6,1.3397,199
-Pet e Bebê,2,1,0,1.0949,327
-Pet e Bebê,2,1,1,1.0198,327
-Pet e Bebê,2,1,2,0.8892,301
-Pet e Bebê,2,1,3,0.9963,313
-Pet e Bebê,2,1,4,0.98,331
-Pet e Bebê,2,1,5,1.1844,337
-Pet e Bebê,2,1,6,1.2299,319
-Pet e Bebê,2,2,0,0.5641,323
-Pet e Bebê,2,2,1,0.5563,304
-Pet e Bebê,2,2,2,0.6004,304
-Pet e Bebê,2,2,3,0.5942,304
-Pet e Bebê,2,2,4,0.5032,304
-Pet e Bebê,2,2,5,0.7847,304
-Pet e Bebê,2,2,6,0.6409,304
-Pet e Bebê,2,3,0,0.7889,350
-Pet e Bebê,2,3,1,0.9077,353
-Pet e Bebê,2,3,2,0.933,361
-Pet e Bebê,2,3,3,0.9831,361
-Pet e Bebê,2,3,4,0.8004,342
-Pet e Bebê,2,3,5,1.3506,331
-Pet e Bebê,2,3,6,1.1865,349
-Pet e Bebê,2,4,0,0.3908,278
-Pet e Bebê,2,4,1,0.4367,294
-Pet e Bebê,2,4,2,0.3643,312
-Pet e Bebê,2,4,3,0.4098,296
-Pet e Bebê,2,4,4,0.4602,297
-Pet e Bebê,2,4,5,0.6383,304
-Pet e Bebê,2,4,6,0.6337,304
-Pet e Bebê,2,5,0,0.4186,323
-Pet e Bebê,2,5,1,0.4251,323
-Pet e Bebê,2,5,2,0.4193,304
-Pet e Bebê,2,5,3,0.2968,294
-Pet e Bebê,2,5,4,0.3739,312
-Pet e Bebê,2,5,5,0.3765,312
-Pet e Bebê,2,5,6,0.5243,296
-Pet e Bebê,2,6,0,0.8184,350
-Pet e Bebê,2,6,1,0.754,334
-Pet e Bebê,2,6,2,0.7109,335
-Pet e Bebê,2,6,3,0.6602,361
-Pet e Bebê,2,6,4,0.7151,342
-Pet e Bebê,2,6,5,1.0632,316
-Pet e Bebê,2,6,6,0.9523,332
-Pet e Bebê,2,7,0,1.1048,350
-Pet e Bebê,2,7,1,1.077,341
-Pet e Bebê,2,7,2,0.9364,360
-Pet e Bebê,2,7,3,1.0581,360
-Pet e Bebê,2,7,4,0.9709,362
-Pet e Bebê,2,7,5,1.3419,372
-Pet e Bebê,2,7,6,1.2702,372
-Pet e Bebê,2,8,0,0.8081,327
-Pet e Bebê,2,8,1,0.7507,335
-Pet e Bebê,2,8,2,0.7623,309
-Pet e Bebê,2,8,3,0.7109,286
-Pet e Bebê,2,8,4,0.7528,305
-Pet e Bebê,2,8,5,0.744,323
-Pet e Bebê,2,8,6,0.9491,323
+Pet e Bebê,2,1,0,1.2137,295
+Pet e Bebê,2,1,1,1.1304,295
+Pet e Bebê,2,1,2,0.9949,269
+Pet e Bebê,2,1,3,1.1097,281
+Pet e Bebê,2,1,4,1.0849,299
+Pet e Bebê,2,1,5,1.3087,305
+Pet e Bebê,2,1,6,1.33,295
+Pet e Bebê,2,2,0,0.6824,267
+Pet e Bebê,2,2,1,0.682,248
+Pet e Bebê,2,2,2,0.7359,248
+Pet e Bebê,2,2,3,0.7284,248
+Pet e Bebê,2,2,4,0.6169,248
+Pet e Bebê,2,2,5,0.9619,248
+Pet e Bebê,2,2,6,0.7857,248
+Pet e Bebê,2,3,0,0.8936,309
+Pet e Bebê,2,3,1,1.0237,313
+Pet e Bebê,2,3,2,1.0237,329
+Pet e Bebê,2,3,3,1.0787,329
+Pet e Bebê,2,3,4,0.883,310
+Pet e Bebê,2,3,5,1.4951,299
+Pet e Bebê,2,3,6,1.3401,309
+Pet e Bebê,2,4,0,0.5077,214
+Pet e Bebê,2,4,1,0.5606,229
+Pet e Bebê,2,4,2,0.4756,239
+Pet e Bebê,2,4,3,0.5251,231
+Pet e Bebê,2,4,4,0.5694,240
+Pet e Bebê,2,4,5,0.7855,247
+Pet e Bebê,2,4,6,0.78,247
+Pet e Bebê,2,5,0,0.5141,263
+Pet e Bebê,2,5,1,0.5221,263
+Pet e Bebê,2,5,2,0.5224,244
+Pet e Bebê,2,5,3,0.3861,226
+Pet e Bebê,2,5,4,0.4943,236
+Pet e Bebê,2,5,5,0.4978,236
+Pet e Bebê,2,5,6,0.6806,228
+Pet e Bebê,2,6,0,0.9036,317
+Pet e Bebê,2,6,1,0.8338,302
+Pet e Bebê,2,6,2,0.786,303
+Pet e Bebê,2,6,3,0.7245,329
+Pet e Bebê,2,6,4,0.7889,310
+Pet e Bebê,2,6,5,1.183,284
+Pet e Bebê,2,6,6,1.0828,292
+Pet e Bebê,2,7,0,1.1111,348
+Pet e Bebê,2,7,1,1.0865,338
+Pet e Bebê,2,7,2,0.9443,357
+Pet e Bebê,2,7,3,1.067,357
+Pet e Bebê,2,7,4,0.979,359
+Pet e Bebê,2,7,5,1.3528,369
+Pet e Bebê,2,7,6,1.2805,369
+Pet e Bebê,2,8,0,0.8958,295
+Pet e Bebê,2,8,1,0.83,303
+Pet e Bebê,2,8,2,0.8503,277
+Pet e Bebê,2,8,3,0.8005,254
+Pet e Bebê,2,8,4,0.841,273
+Pet e Bebê,2,8,5,0.8258,291
+Pet e Bebê,2,8,6,1.0535,291
 Pet e Bebê,2,9,0,1.2607,257
 Pet e Bebê,2,9,1,1.0698,276
 Pet e Bebê,2,9,2,1.0673,258
@@ -4619,48 +4619,48 @@ Pet e Bebê,2,12,3,1.2352,276
 Pet e Bebê,2,12,4,1.3229,256
 Pet e Bebê,2,12,5,1.5397,276
 Pet e Bebê,2,12,6,1.7221,224
-Pet e Bebê,3,1,0,1.0279,279
-Pet e Bebê,3,1,1,0.8651,279
-Pet e Bebê,3,1,2,0.8256,260
-Pet e Bebê,3,1,3,0.9266,274
-Pet e Bebê,3,1,4,0.8716,290
-Pet e Bebê,3,1,5,1.3701,292
-Pet e Bebê,3,1,6,1.4977,276
-Pet e Bebê,3,2,0,0.5253,276
-Pet e Bebê,3,2,1,0.5097,260
-Pet e Bebê,3,2,2,0.4558,260
-Pet e Bebê,3,2,3,0.4437,260
-Pet e Bebê,3,2,4,0.459,260
-Pet e Bebê,3,2,5,0.7056,260
-Pet e Bebê,3,2,6,0.6873,260
-Pet e Bebê,3,3,0,1.0857,297
-Pet e Bebê,3,3,1,0.8971,297
-Pet e Bebê,3,3,2,0.9298,301
-Pet e Bebê,3,3,3,0.8709,301
-Pet e Bebê,3,3,4,0.9111,285
-Pet e Bebê,3,3,5,1.4946,280
-Pet e Bebê,3,3,6,1.6959,297
-Pet e Bebê,3,4,0,0.4303,236
-Pet e Bebê,3,4,1,0.352,252
-Pet e Bebê,3,4,2,0.3476,268
-Pet e Bebê,3,4,3,0.3837,252
-Pet e Bebê,3,4,4,0.4679,252
-Pet e Bebê,3,4,5,0.7913,255
-Pet e Bebê,3,4,6,0.778,255
-Pet e Bebê,3,5,0,0.5522,271
-Pet e Bebê,3,5,1,0.469,271
-Pet e Bebê,3,5,2,0.3852,255
-Pet e Bebê,3,5,3,0.3046,252
-Pet e Bebê,3,5,4,0.3863,268
-Pet e Bebê,3,5,5,0.5177,268
-Pet e Bebê,3,5,6,0.6032,252
-Pet e Bebê,3,6,0,0.898,300
-Pet e Bebê,3,6,1,0.7998,284
-Pet e Bebê,3,6,2,0.8629,284
-Pet e Bebê,3,6,3,0.7365,303
-Pet e Bebê,3,6,4,0.8178,287
-Pet e Bebê,3,6,5,1.1933,268
-Pet e Bebê,3,6,6,1.1978,284
+Pet e Bebê,3,1,0,1.2634,227
+Pet e Bebê,3,1,1,1.0633,227
+Pet e Bebê,3,1,2,1.032,208
+Pet e Bebê,3,1,3,1.1437,222
+Pet e Bebê,3,1,4,1.0621,238
+Pet e Bebê,3,1,5,1.667,240
+Pet e Bebê,3,1,6,1.7442,237
+Pet e Bebê,3,2,0,0.7837,185
+Pet e Bebê,3,2,1,0.7841,169
+Pet e Bebê,3,2,2,0.7013,169
+Pet e Bebê,3,2,3,0.6826,169
+Pet e Bebê,3,2,4,0.7062,169
+Pet e Bebê,3,2,5,1.0855,169
+Pet e Bebê,3,2,6,1.0574,169
+Pet e Bebê,3,3,0,1.3898,232
+Pet e Bebê,3,3,1,1.1484,232
+Pet e Bebê,3,3,2,1.124,249
+Pet e Bebê,3,3,3,1.0528,249
+Pet e Bebê,3,3,4,1.1144,233
+Pet e Bebê,3,3,5,1.8355,228
+Pet e Bebê,3,3,6,2.1711,232
+Pet e Bebê,3,4,0,0.7693,132
+Pet e Bebê,3,4,1,0.5993,148
+Pet e Bebê,3,4,2,0.6168,151
+Pet e Bebê,3,4,3,0.6533,148
+Pet e Bebê,3,4,4,0.7323,161
+Pet e Bebê,3,4,5,1.2303,164
+Pet e Bebê,3,4,6,1.2098,164
+Pet e Bebê,3,5,0,0.8503,176
+Pet e Bebê,3,5,1,0.7221,176
+Pet e Bebê,3,5,2,0.6139,160
+Pet e Bebê,3,5,3,0.533,144
+Pet e Bebê,3,5,4,0.7042,147
+Pet e Bebê,3,5,5,0.9438,147
+Pet e Bebê,3,5,6,1.0556,144
+Pet e Bebê,3,6,0,1.0863,248
+Pet e Bebê,3,6,1,0.979,232
+Pet e Bebê,3,6,2,1.0563,232
+Pet e Bebê,3,6,3,0.8891,251
+Pet e Bebê,3,6,4,0.9988,235
+Pet e Bebê,3,6,5,1.4805,216
+Pet e Bebê,3,6,6,1.5533,219
 Pet e Bebê,3,7,0,1.0909,291
 Pet e Bebê,3,7,1,1.1933,289
 Pet e Bebê,3,7,2,1.1374,305
@@ -4668,13 +4668,13 @@ Pet e Bebê,3,7,3,0.9928,305
 Pet e Bebê,3,7,4,1.0311,305
 Pet e Bebê,3,7,5,1.4246,309
 Pet e Bebê,3,7,6,1.6047,309
-Pet e Bebê,3,8,0,0.8323,272
-Pet e Bebê,3,8,1,0.7377,275
-Pet e Bebê,3,8,2,0.7475,256
-Pet e Bebê,3,8,3,0.7031,238
-Pet e Bebê,3,8,4,0.6856,254
-Pet e Bebê,3,8,5,0.9705,270
-Pet e Bebê,3,8,6,1.048,270
+Pet e Bebê,3,8,0,1.029,220
+Pet e Bebê,3,8,1,0.9098,223
+Pet e Bebê,3,8,2,0.9381,204
+Pet e Bebê,3,8,3,0.8996,186
+Pet e Bebê,3,8,4,0.8621,202
+Pet e Bebê,3,8,5,1.202,218
+Pet e Bebê,3,8,6,1.2979,218
 Pet e Bebê,3,9,0,1.3822,216
 Pet e Bebê,3,9,1,1.1604,232
 Pet e Bebê,3,9,2,1.1499,216
@@ -4703,300 +4703,300 @@ Pet e Bebê,3,12,3,1.0498,223
 Pet e Bebê,3,12,4,1.2447,207
 Pet e Bebê,3,12,5,1.6948,223
 Pet e Bebê,3,12,6,2.0317,185
-__all__,0,1,0,0.9235,6410
-__all__,0,1,1,0.9024,6414
-__all__,0,1,2,0.8353,6176
-__all__,0,1,3,0.8588,6422
-__all__,0,1,4,0.9071,6528
-__all__,0,1,5,1.2746,6672
-__all__,0,1,6,1.2556,6406
-__all__,0,2,0,0.8283,6439
-__all__,0,2,1,0.8131,6038
-__all__,0,2,2,0.7555,6039
-__all__,0,2,3,0.7492,6040
-__all__,0,2,4,0.8006,6039
-__all__,0,2,5,1.1313,6039
-__all__,0,2,6,1.0201,6039
-__all__,0,3,0,0.9079,6634
-__all__,0,3,1,0.917,6774
-__all__,0,3,2,0.8884,6883
-__all__,0,3,3,0.8936,6882
-__all__,0,3,4,0.9428,6681
-__all__,0,3,5,1.305,6541
-__all__,0,3,6,1.2291,6814
-__all__,0,4,0,0.8146,5532
-__all__,0,4,1,0.7965,5794
-__all__,0,4,2,0.7247,5908
-__all__,0,4,3,0.7715,5647
-__all__,0,4,4,0.8249,5753
-__all__,0,4,5,1.1047,5752
-__all__,0,4,6,1.0339,5752
-__all__,0,5,0,0.8665,6161
-__all__,0,5,1,0.8279,6161
-__all__,0,5,2,0.7279,5943
-__all__,0,5,3,0.7474,5804
-__all__,0,5,4,0.8247,6101
-__all__,0,5,5,1.1289,5920
-__all__,0,5,6,1.1426,5655
-__all__,0,6,0,0.8256,6759
-__all__,0,6,1,0.8237,6495
-__all__,0,6,2,0.761,6592
-__all__,0,6,3,0.7549,6993
-__all__,0,6,4,0.7829,6596
-__all__,0,6,5,1.1428,6377
-__all__,0,6,6,1.1503,6640
-__all__,0,7,0,0.9326,6823
-__all__,0,7,1,0.8886,6689
-__all__,0,7,2,0.8275,6993
-__all__,0,7,3,0.8364,6811
-__all__,0,7,4,0.8712,6970
-__all__,0,7,5,1.2034,7037
-__all__,0,7,6,1.2114,7038
-__all__,0,8,0,0.8857,6331
-__all__,0,8,1,0.8518,6368
-__all__,0,8,2,0.7624,5969
-__all__,0,8,3,0.7795,5752
-__all__,0,8,4,0.8267,6051
-__all__,0,8,5,1.1429,6384
-__all__,0,8,6,1.1044,6204
-__all__,0,9,0,0.9427,5318
-__all__,0,9,1,0.9682,5500
-__all__,0,9,2,0.8556,5231
-__all__,0,9,3,0.874,5265
-__all__,0,9,4,0.8616,5264
-__all__,0,9,5,1.2841,4866
-__all__,0,9,6,1.3071,5048
-__all__,0,10,0,0.9183,5361
-__all__,0,10,1,0.8462,5142
-__all__,0,10,2,0.8228,5417
-__all__,0,10,3,0.8501,5784
-__all__,0,10,4,0.9159,5630
-__all__,0,10,5,1.2679,5756
-__all__,0,10,6,1.3045,5361
-__all__,0,11,0,0.9386,5406
-__all__,0,11,1,0.9136,5412
-__all__,0,11,2,0.8293,5412
-__all__,0,11,3,0.8178,5010
-__all__,0,11,4,0.8379,5192
-__all__,0,11,5,1.1833,5465
-__all__,0,11,6,1.2801,5681
-__all__,0,12,0,1.1911,5482
-__all__,0,12,1,1.2147,5878
-__all__,0,12,2,1.2168,5515
-__all__,0,12,3,1.1368,5551
-__all__,0,12,4,1.1432,5028
-__all__,0,12,5,1.4804,5427
-__all__,0,12,6,1.3738,4806
-__all__,1,1,0,0.9786,7223
-__all__,1,1,1,0.9335,7225
-__all__,1,1,2,0.9282,6995
-__all__,1,1,3,0.9049,7313
-__all__,1,1,4,0.9744,7490
-__all__,1,1,5,1.2942,7574
-__all__,1,1,6,1.1787,7210
-__all__,1,2,0,0.8399,7268
-__all__,1,2,1,0.8025,6866
-__all__,1,2,2,0.7949,6866
-__all__,1,2,3,0.7964,6867
-__all__,1,2,4,0.8929,6889
-__all__,1,2,5,1.1936,6889
-__all__,1,2,6,0.9667,6866
-__all__,1,3,0,0.9583,7657
-__all__,1,3,1,0.9008,7734
-__all__,1,3,2,0.9462,7756
-__all__,1,3,3,0.9253,7756
-__all__,1,3,4,0.9944,7555
-__all__,1,3,5,1.3879,7473
-__all__,1,3,6,1.1388,7864
-__all__,1,4,0,0.8045,6359
-__all__,1,4,1,0.7761,6684
-__all__,1,4,2,0.7699,6867
-__all__,1,4,3,0.7735,6542
-__all__,1,4,4,0.8763,6553
-__all__,1,4,5,1.1291,6563
-__all__,1,4,6,0.961,6563
-__all__,1,5,0,0.8367,7042
-__all__,1,5,1,0.7918,7042
-__all__,1,5,2,0.7746,6847
-__all__,1,5,3,0.7662,6801
-__all__,1,5,4,0.864,7193
-__all__,1,5,5,1.1302,6966
-__all__,1,5,6,0.9883,6617
-__all__,1,6,0,0.8396,7916
-__all__,1,6,1,0.8307,7569
-__all__,1,6,2,0.8329,7573
-__all__,1,6,3,0.7968,7986
-__all__,1,6,4,0.8605,7583
-__all__,1,6,5,1.1887,7401
-__all__,1,6,6,1.0632,7750
-__all__,1,7,0,0.9391,7886
-__all__,1,7,1,0.9079,7836
-__all__,1,7,2,0.9214,8236
-__all__,1,7,3,0.8884,8008
-__all__,1,7,4,0.9639,8046
-__all__,1,7,5,1.2622,8059
-__all__,1,7,6,1.1395,8059
-__all__,1,8,0,0.8502,7226
-__all__,1,8,1,0.816,7238
-__all__,1,8,2,0.7997,6827
-__all__,1,8,3,0.7449,6652
-__all__,1,8,4,0.8503,7018
-__all__,1,8,5,1.0757,7419
-__all__,1,8,6,0.9312,7189
-__all__,1,9,0,0.9561,6207
-__all__,1,9,1,0.9434,6377
-__all__,1,9,2,0.9298,6010
-__all__,1,9,3,0.8588,6014
-__all__,1,9,4,0.9218,6015
-__all__,1,9,5,1.2681,5610
-__all__,1,9,6,1.1494,5840
-__all__,1,10,0,0.9199,6034
-__all__,1,10,1,0.8627,5851
-__all__,1,10,2,0.8778,6222
-__all__,1,10,3,0.9027,6627
-__all__,1,10,4,0.9882,6397
-__all__,1,10,5,1.242,6434
-__all__,1,10,6,1.1268,6034
-__all__,1,11,0,0.9395,6048
-__all__,1,11,1,0.9038,6062
-__all__,1,11,2,0.8862,6063
-__all__,1,11,3,0.8398,5649
-__all__,1,11,4,0.8856,5879
-__all__,1,11,5,1.2176,6248
-__all__,1,11,6,1.136,6418
-__all__,1,12,0,1.2653,6252
-__all__,1,12,1,1.302,6652
-__all__,1,12,2,1.3056,6193
-__all__,1,12,3,1.1674,6099
-__all__,1,12,4,1.2497,5665
-__all__,1,12,5,1.5131,6067
-__all__,1,12,6,1.2915,5469
-__all__,2,1,0,0.9666,7894
-__all__,2,1,1,0.9396,7897
-__all__,2,1,2,0.93,7724
-__all__,2,1,3,0.9054,8100
-__all__,2,1,4,0.9813,8250
-__all__,2,1,5,1.3267,8279
-__all__,2,1,6,1.3205,7878
-__all__,2,2,0,0.7937,7917
-__all__,2,2,1,0.8035,7513
-__all__,2,2,2,0.7867,7513
-__all__,2,2,3,0.7432,7515
-__all__,2,2,4,0.8252,7514
-__all__,2,2,5,1.1004,7512
-__all__,2,2,6,0.9901,7512
-__all__,2,3,0,0.9349,8349
-__all__,2,3,1,0.9065,8362
-__all__,2,3,2,0.9352,8379
-__all__,2,3,3,0.8987,8379
-__all__,2,3,4,0.9543,8239
-__all__,2,3,5,1.3107,8219
-__all__,2,3,6,1.2545,8621
-__all__,2,4,0,0.7885,7036
-__all__,2,4,1,0.789,7429
-__all__,2,4,2,0.745,7557
-__all__,2,4,3,0.7279,7164
-__all__,2,4,4,0.8138,7166
-__all__,2,4,5,1.0956,7180
-__all__,2,4,6,1.0248,7180
-__all__,2,5,0,0.7988,7590
-__all__,2,5,1,0.7872,7590
-__all__,2,5,2,0.7674,7459
-__all__,2,5,3,0.7045,7435
-__all__,2,5,4,0.8205,7839
-__all__,2,5,5,1.0739,7564
-__all__,2,5,6,1.0562,7171
-__all__,2,6,0,0.8298,8381
-__all__,2,6,1,0.7929,7987
-__all__,2,6,2,0.7899,7988
-__all__,2,6,3,0.74,8406
-__all__,2,6,4,0.8346,8001
-__all__,2,6,5,1.1714,7859
-__all__,2,6,6,1.1386,8253
-__all__,2,7,0,0.9243,8310
-__all__,2,7,1,0.8902,8289
-__all__,2,7,2,0.8882,8695
-__all__,2,7,3,0.8566,8423
-__all__,2,7,4,0.9376,8426
-__all__,2,7,5,1.2369,8443
-__all__,2,7,6,1.2161,8443
-__all__,2,8,0,0.8486,7611
-__all__,2,8,1,0.821,7625
-__all__,2,8,2,0.8004,7207
-__all__,2,8,3,0.7393,7073
-__all__,2,8,4,0.8425,7477
-__all__,2,8,5,1.0712,7881
-__all__,2,8,6,1.0452,7606
-__all__,2,9,0,0.9993,6645
-__all__,2,9,1,0.9686,6775
-__all__,2,9,2,0.9432,6372
-__all__,2,9,3,0.8732,6376
-__all__,2,9,4,0.9597,6376
-__all__,2,9,5,1.3397,5967
-__all__,2,9,6,1.3368,6242
-__all__,2,10,0,0.9495,6395
-__all__,2,10,1,0.9083,6256
-__all__,2,10,2,0.9066,6662
-__all__,2,10,3,0.8795,7069
-__all__,2,10,4,1.0099,6795
-__all__,2,10,5,1.2861,6801
-__all__,2,10,6,1.327,6395
-__all__,2,11,0,0.9688,6402
-__all__,2,11,1,0.9345,6412
-__all__,2,11,2,0.9035,6412
-__all__,2,11,3,0.8284,5996
-__all__,2,11,4,0.9276,6271
-__all__,2,11,5,1.265,6674
-__all__,2,11,6,1.3263,6805
-__all__,2,12,0,1.2714,6681
-__all__,2,12,1,1.2717,7086
-__all__,2,12,2,1.2694,6536
-__all__,2,12,3,1.1487,6421
-__all__,2,12,4,1.2294,6014
-__all__,2,12,5,1.4854,6420
-__all__,2,12,6,1.4372,5859
-__all__,3,1,0,0.9486,8593
-__all__,3,1,1,0.8453,8593
-__all__,3,1,2,0.9277,8415
-__all__,3,1,3,0.8583,8844
-__all__,3,1,4,1.0181,9003
-__all__,3,1,5,1.3868,9014
-__all__,3,1,6,1.4897,8578
-__all__,3,2,0,0.7993,8588
-__all__,3,2,1,0.7605,8153
-__all__,3,2,2,0.7632,8157
-__all__,3,2,3,0.6736,8157
-__all__,3,2,4,0.8175,8148
-__all__,3,2,5,1.1082,8148
-__all__,3,2,6,1.0764,8150
-__all__,3,3,0,0.9035,9085
-__all__,3,3,1,0.8437,9089
-__all__,3,3,2,0.9026,9105
-__all__,3,3,3,0.7962,9105
-__all__,3,3,4,0.9528,8962
-__all__,3,3,5,1.3631,8953
-__all__,3,3,6,1.4231,9390
-__all__,3,4,0,0.7376,7678
-__all__,3,4,1,0.6826,8110
-__all__,3,4,2,0.7325,8240
-__all__,3,4,3,0.6653,7808
-__all__,3,4,4,0.8246,7808
-__all__,3,4,5,1.136,7823
-__all__,3,4,6,1.1697,7823
-__all__,3,5,0,0.7847,8259
-__all__,3,5,1,0.6886,8259
-__all__,3,5,2,0.7606,8129
-__all__,3,5,3,0.6699,8110
-__all__,3,5,4,0.8766,8546
-__all__,3,5,5,1.1285,8240
-__all__,3,5,6,1.1098,7808
-__all__,3,6,0,0.8066,9112
-__all__,3,6,1,0.737,8680
-__all__,3,6,2,0.8006,8680
-__all__,3,6,3,0.7102,9131
-__all__,3,6,4,0.8977,8695
-__all__,3,6,5,1.2225,8550
-__all__,3,6,6,1.2037,8982
+__all__,0,1,0,0.9494,6235
+__all__,0,1,1,0.9277,6239
+__all__,0,1,2,0.8591,6005
+__all__,0,1,3,0.8823,6251
+__all__,0,1,4,0.9318,6355
+__all__,0,1,5,1.3091,6496
+__all__,0,1,6,1.2837,6266
+__all__,0,2,0,0.8726,6112
+__all__,0,2,1,0.8592,5714
+__all__,0,2,2,0.7983,5715
+__all__,0,2,3,0.7917,5716
+__all__,0,2,4,0.846,5715
+__all__,0,2,5,1.1954,5715
+__all__,0,2,6,1.0779,5715
+__all__,0,3,0,0.9384,6418
+__all__,0,3,1,0.9474,6557
+__all__,0,3,2,0.9105,6716
+__all__,0,3,3,0.9159,6715
+__all__,0,3,4,0.9666,6517
+__all__,0,3,5,1.3384,6378
+__all__,0,3,6,1.2659,6616
+__all__,0,4,0,0.8849,5093
+__all__,0,4,1,0.8622,5353
+__all__,0,4,2,0.791,5413
+__all__,0,4,3,0.8369,5206
+__all__,0,4,4,0.8849,5363
+__all__,0,4,5,1.185,5362
+__all__,0,4,6,1.1092,5362
+__all__,0,5,0,0.9245,5775
+__all__,0,5,1,0.8833,5775
+__all__,0,5,2,0.7783,5558
+__all__,0,5,3,0.8084,5366
+__all__,0,5,4,0.897,5609
+__all__,0,5,5,1.2313,5428
+__all__,0,5,6,1.2382,5218
+__all__,0,6,0,0.8579,6505
+__all__,0,6,1,0.8568,6244
+__all__,0,6,2,0.791,6342
+__all__,0,6,3,0.783,6742
+__all__,0,6,4,0.8134,6348
+__all__,0,6,5,1.1885,6132
+__all__,0,6,6,1.2047,6340
+__all__,0,7,0,0.9471,6719
+__all__,0,7,1,0.9028,6584
+__all__,0,7,2,0.8403,6886
+__all__,0,7,3,0.8493,6707
+__all__,0,7,4,0.8843,6867
+__all__,0,7,5,1.2216,6932
+__all__,0,7,6,1.2297,6933
+__all__,0,8,0,0.9238,6070
+__all__,0,8,1,0.8882,6107
+__all__,0,8,2,0.7972,5708
+__all__,0,8,3,0.8164,5492
+__all__,0,8,4,0.8645,5787
+__all__,0,8,5,1.1924,6119
+__all__,0,8,6,1.1531,5942
+__all__,0,9,0,0.9493,5281
+__all__,0,9,1,0.9751,5461
+__all__,0,9,2,0.8617,5194
+__all__,0,9,3,0.8804,5227
+__all__,0,9,4,0.8679,5226
+__all__,0,9,5,1.2934,4831
+__all__,0,9,6,1.317,5010
+__all__,0,10,0,0.9238,5329
+__all__,0,10,1,0.8508,5114
+__all__,0,10,2,0.8277,5385
+__all__,0,10,3,0.8551,5750
+__all__,0,10,4,0.9214,5596
+__all__,0,10,5,1.2759,5720
+__all__,0,10,6,1.3128,5327
+__all__,0,11,0,0.9459,5364
+__all__,0,11,1,0.9209,5369
+__all__,0,11,2,0.8359,5369
+__all__,0,11,3,0.8239,4973
+__all__,0,11,4,0.8439,5155
+__all__,0,11,5,1.1916,5427
+__all__,0,11,6,1.2892,5641
+__all__,0,12,0,1.2006,5439
+__all__,0,12,1,1.2243,5832
+__all__,0,12,2,1.227,5469
+__all__,0,12,3,1.1468,5503
+__all__,0,12,4,1.1533,4984
+__all__,0,12,5,1.4933,5380
+__all__,0,12,6,1.3847,4768
+__all__,1,1,0,1.016,6957
+__all__,1,1,1,0.9692,6959
+__all__,1,1,2,0.9646,6731
+__all__,1,1,3,0.9388,7049
+__all__,1,1,4,1.0102,7225
+__all__,1,1,5,1.3409,7310
+__all__,1,1,6,1.2125,7009
+__all__,1,2,0,0.9023,6766
+__all__,1,2,1,0.8657,6365
+__all__,1,2,2,0.8575,6365
+__all__,1,2,3,0.8591,6366
+__all__,1,2,4,0.9629,6388
+__all__,1,2,5,1.2872,6388
+__all__,1,2,6,1.0428,6365
+__all__,1,3,0,1.0008,7332
+__all__,1,3,1,0.9401,7411
+__all__,1,3,2,0.9796,7491
+__all__,1,3,3,0.958,7491
+__all__,1,3,4,1.0304,7291
+__all__,1,3,5,1.4385,7210
+__all__,1,3,6,1.1881,7538
+__all__,1,4,0,0.8824,5798
+__all__,1,4,1,0.8476,6120
+__all__,1,4,2,0.8468,6243
+__all__,1,4,3,0.8434,6000
+__all__,1,4,4,0.9465,6067
+__all__,1,4,5,1.2196,6076
+__all__,1,4,6,1.038,6076
+__all__,1,5,0,0.9019,6533
+__all__,1,5,1,0.8535,6533
+__all__,1,5,2,0.8368,6338
+__all__,1,5,3,0.839,6211
+__all__,1,5,4,0.9494,6546
+__all__,1,5,5,1.2459,6319
+__all__,1,5,6,1.0805,6052
+__all__,1,6,0,0.877,7578
+__all__,1,6,1,0.8693,7233
+__all__,1,6,2,0.8716,7237
+__all__,1,6,3,0.8319,7649
+__all__,1,6,4,0.9004,7247
+__all__,1,6,5,1.245,7066
+__all__,1,6,6,1.1237,7333
+__all__,1,7,0,0.9414,7867
+__all__,1,7,1,0.9102,7816
+__all__,1,7,2,0.9237,8216
+__all__,1,7,3,0.8905,7989
+__all__,1,7,4,0.9661,8028
+__all__,1,7,5,1.2652,8040
+__all__,1,7,6,1.1422,8040
+__all__,1,8,0,0.9227,6658
+__all__,1,8,1,0.8856,6669
+__all__,1,8,2,0.8724,6258
+__all__,1,8,3,0.808,6133
+__all__,1,8,4,0.9185,6497
+__all__,1,8,5,1.157,6898
+__all__,1,8,6,1.0035,6671
+__all__,1,9,0,0.9945,5967
+__all__,1,9,1,0.9803,6137
+__all__,1,9,2,0.9683,5771
+__all__,1,9,3,0.9023,5724
+__all__,1,9,4,0.9685,5725
+__all__,1,9,5,1.3246,5371
+__all__,1,9,6,1.1991,5598
+__all__,1,10,0,0.9531,5824
+__all__,1,10,1,0.8908,5667
+__all__,1,10,2,0.9047,6037
+__all__,1,10,3,0.9287,6442
+__all__,1,10,4,1.0175,6213
+__all__,1,10,5,1.2888,6200
+__all__,1,10,6,1.1723,5800
+__all__,1,11,0,0.9535,5959
+__all__,1,11,1,0.9213,5947
+__all__,1,11,2,0.9035,5947
+__all__,1,11,3,0.8571,5535
+__all__,1,11,4,0.9033,5764
+__all__,1,11,5,1.2406,6132
+__all__,1,11,6,1.1569,6302
+__all__,1,12,0,1.268,6239
+__all__,1,12,1,1.3046,6639
+__all__,1,12,2,1.3084,6180
+__all__,1,12,3,1.1699,6086
+__all__,1,12,4,1.2528,5651
+__all__,1,12,5,1.5166,6053
+__all__,1,12,6,1.2939,5459
+__all__,2,1,0,1.004,7600
+__all__,2,1,1,0.9759,7603
+__all__,2,1,2,0.9666,7431
+__all__,2,1,3,0.9394,7807
+__all__,2,1,4,1.0177,7955
+__all__,2,1,5,1.3757,7984
+__all__,2,1,6,1.3589,7655
+__all__,2,2,0,0.8582,7322
+__all__,2,2,1,0.8724,6920
+__all__,2,2,2,0.8541,6920
+__all__,2,2,3,0.8068,6922
+__all__,2,2,4,0.8959,6921
+__all__,2,2,5,1.1938,6924
+__all__,2,2,6,1.0741,6924
+__all__,2,3,0,0.9787,7976
+__all__,2,3,1,0.9482,7994
+__all__,2,3,2,0.9703,8076
+__all__,2,3,3,0.9325,8076
+__all__,2,3,4,0.9906,7937
+__all__,2,3,5,1.3614,7913
+__all__,2,3,6,1.312,8243
+__all__,2,4,0,0.8778,6320
+__all__,2,4,1,0.874,6706
+__all__,2,4,2,0.8319,6768
+__all__,2,4,3,0.8031,6493
+__all__,2,4,4,0.8891,6559
+__all__,2,4,5,1.197,6572
+__all__,2,4,6,1.1196,6572
+__all__,2,5,0,0.8768,6915
+__all__,2,5,1,0.864,6915
+__all__,2,5,2,0.8436,6785
+__all__,2,5,3,0.7885,6643
+__all__,2,5,4,0.9212,6982
+__all__,2,5,5,1.2111,6707
+__all__,2,5,6,1.1778,6431
+__all__,2,6,0,0.8842,7865
+__all__,2,6,1,0.8442,7502
+__all__,2,6,2,0.8409,7503
+__all__,2,6,3,0.7853,7921
+__all__,2,6,4,0.8883,7518
+__all__,2,6,5,1.2481,7376
+__all__,2,6,6,1.2281,7652
+__all__,2,7,0,0.9335,8228
+__all__,2,7,1,0.9025,8176
+__all__,2,7,2,0.9,8581
+__all__,2,7,3,0.8682,8311
+__all__,2,7,4,0.9502,8314
+__all__,2,7,5,1.2533,8332
+__all__,2,7,6,1.2323,8332
+__all__,2,8,0,0.8976,7196
+__all__,2,8,1,0.8681,7211
+__all__,2,8,2,0.8492,6793
+__all__,2,8,3,0.7852,6659
+__all__,2,8,4,0.8922,7061
+__all__,2,8,5,1.131,7464
+__all__,2,8,6,1.1055,7191
+__all__,2,9,0,1.0036,6616
+__all__,2,9,1,0.9729,6745
+__all__,2,9,2,0.9475,6343
+__all__,2,9,3,0.8773,6346
+__all__,2,9,4,0.9642,6346
+__all__,2,9,5,1.346,5939
+__all__,2,9,6,1.3433,6212
+__all__,2,10,0,0.9515,6382
+__all__,2,10,1,0.91,6244
+__all__,2,10,2,0.9083,6649
+__all__,2,10,3,0.8812,7055
+__all__,2,10,4,1.012,6781
+__all__,2,10,5,1.2891,6785
+__all__,2,10,6,1.3302,6380
+__all__,2,11,0,0.9699,6395
+__all__,2,11,1,0.9356,6404
+__all__,2,11,2,0.9046,6404
+__all__,2,11,3,0.8295,5988
+__all__,2,11,4,0.9288,6263
+__all__,2,11,5,1.2665,6666
+__all__,2,11,6,1.328,6796
+__all__,2,12,0,1.2739,6668
+__all__,2,12,1,1.274,7073
+__all__,2,12,2,1.2719,6523
+__all__,2,12,3,1.1505,6411
+__all__,2,12,4,1.2316,6003
+__all__,2,12,5,1.488,6409
+__all__,2,12,6,1.4394,5850
+__all__,3,1,0,0.9915,8221
+__all__,3,1,1,0.8835,8221
+__all__,3,1,2,0.9706,8043
+__all__,3,1,3,0.8959,8472
+__all__,3,1,4,1.062,8631
+__all__,3,1,5,1.4465,8642
+__all__,3,1,6,1.5398,8299
+__all__,3,2,0,0.8741,7853
+__all__,3,2,1,0.8358,7418
+__all__,3,2,2,0.8387,7422
+__all__,3,2,3,0.7403,7422
+__all__,3,2,4,0.8986,7413
+__all__,3,2,5,1.2181,7413
+__all__,3,2,6,1.1831,7415
+__all__,3,3,0,0.9515,8626
+__all__,3,3,1,0.8882,8633
+__all__,3,3,2,0.9411,8733
+__all__,3,3,3,0.8301,8733
+__all__,3,3,4,0.9941,8590
+__all__,3,3,5,1.4221,8581
+__all__,3,3,6,1.4972,8925
+__all__,3,4,0,0.8244,6870
+__all__,3,4,1,0.7584,7299
+__all__,3,4,2,0.8217,7345
+__all__,3,4,3,0.7385,7034
+__all__,3,4,4,0.9049,7115
+__all__,3,4,5,1.2464,7130
+__all__,3,4,6,1.2834,7130
+__all__,3,5,0,0.8623,7516
+__all__,3,5,1,0.7566,7516
+__all__,3,5,2,0.8371,7386
+__all__,3,5,3,0.7498,7246
+__all__,3,5,4,0.9856,7601
+__all__,3,5,5,1.2747,7295
+__all__,3,5,6,1.2408,6984
+__all__,3,6,0,0.8519,8628
+__all__,3,6,1,0.7806,8196
+__all__,3,6,2,0.8479,8196
+__all__,3,6,3,0.7499,8647
+__all__,3,6,4,0.9506,8211
+__all__,3,6,5,1.2958,8066
+__all__,3,6,6,1.2907,8377
 __all__,3,7,0,0.8978,9013
 __all__,3,7,1,0.846,8998
 __all__,3,7,2,0.9132,9434
@@ -5004,13 +5004,13 @@ __all__,3,7,3,0.8023,9129
 __all__,3,7,4,0.9716,9129
 __all__,3,7,5,1.2419,9145
 __all__,3,7,6,1.2594,9145
-__all__,3,8,0,0.8767,8234
-__all__,3,8,1,0.8005,8247
-__all__,3,8,2,0.8278,7797
-__all__,3,8,3,0.7426,7666
-__all__,3,8,4,0.9076,8101
-__all__,3,8,5,1.1151,8537
-__all__,3,8,6,1.1099,8231
+__all__,3,8,0,0.9314,7750
+__all__,3,8,1,0.8504,7763
+__all__,3,8,2,0.8825,7313
+__all__,3,8,3,0.7926,7182
+__all__,3,8,4,0.9653,7617
+__all__,3,8,5,1.1821,8053
+__all__,3,8,6,1.1793,7747
 __all__,3,9,0,1.0036,7197
 __all__,3,9,1,0.9394,7327
 __all__,3,9,2,0.9718,6892

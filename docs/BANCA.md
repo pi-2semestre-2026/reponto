@@ -9,7 +9,8 @@ pelos comandos do fim.
 ```bash
 docker compose up -d --build                     # app (3000), API (8000), caixa (3301)
 # esperar o backend treinar o modelo (~3 min): http://localhost:3000/modelo deixa de mostrar "Treinando"
-python scripts/popular_demo.py --email banca@reponto.com.br --days 91   # 3 meses de vendas: ~1 h, faça na véspera
+python scripts/popular_demo.py --email banca@reponto.com.br --name "Banca Reponto" --days 91   # 3 meses de vendas: ~30 min, faça na véspera
+# NÃO rode "docker compose up --build" enquanto a demo é gerada: reinicia o backend e interrompe a geração
 ```
 
 - Login: `banca@reponto.com.br` / `reponto123`.
@@ -36,19 +37,28 @@ python scripts/popular_demo.py --email banca@reponto.com.br --days 91   # 3 mese
    - **Previsão do modelo treinado:** a previsão da semana e o "limite 95%".
      > "Em 95 de cada 100 semanas a venda fica abaixo desse limite: a margem de segurança cobre até ele."
    - **Explicação em português:** é verificada número a número contra o cálculo, então a IA de texto não pode inventar números.
-3. **Lista de compras:** o quanto comprar de cada produto e por quê.
+   - **Datas comerciais:** o card mostra as próximas datas (salário, VR/VA, feriado, Natal...) e quanto cada uma
+     mexe na venda deste produto, com a origem: "referência de mercado" (medida em vendas reais) ou "aprendido na loja".
+     > "Quando cai o salário, esta loja vende 40% mais cerveja. Ninguém configurou: a IA comparou os dias de
+     > salário com as semanas anteriores." (O dia do VR/VA o dono informa nas configurações do mercado.)
+3. **Lista de compras:** o quanto comprar de cada produto e por quê. Botões para copiar a mensagem ao
+   fornecedor, baixar a planilha (abre no Excel) ou imprimir.
+4. **Painel:** além do faturamento, o **lucro bruto e a margem**, o **dinheiro parado em estoque** (a custo),
+   o **excesso** acima do máximo recomendado e os produtos esgotados.
+   > "É o que o dono quer saber no fim do mês: quanto ganhou e quanto dinheiro está parado na prateleira."
 
 ## 3. O modelo funciona? (4 min): `/modelo`, prova com dados reais
 
-> "Não testamos com dados inventados. Usamos 4,5 anos de vendas reais de 54 supermercados (dataset
-> Favorita): 1.729 séries de produto × loja."
+> "Não testamos com dados inventados. Usamos 4,5 anos de vendas reais de uma rede de supermercados
+> (dataset Favorita): 4.000 produtos em suas lojas, cada um uma série loja × produto, como no app."
 
 | O que mostrar | Número | O que significa |
 |---|---|---|
-| Erro do modelo × regra anterior do app | **8,06% × 10,24% (−21%)** | Erra 1/5 a menos que a regra antiga |
-| Erro × média móvel (o que faria uma planilha) | 8,06% × 10,20% | Ganha da planilha |
-| Margem de 95% acerta | **95,1%** das semanas | A margem de segurança é honesta, nem exagerada nem curta |
-| Por volume (tabela) | vence em todas as faixas; empata abaixo de 5/semana | Honestidade: produto que vende 2 por semana é quase sorte |
+| Erro do modelo × regra anterior do app | **20,3% × 23,1% (−12%)** | Erra 1/8 a menos que a regra antiga, por produto |
+| Erro × média móvel (o que faria uma planilha) | 20,3% × 23,3% (−13%) | Ganha da planilha |
+| Séries em que o modelo vence a planilha | **76%** | Não é uma média boa puxada por poucos produtos |
+| Margem de 95% acerta | **94,1%** das semanas | A margem de segurança é honesta, nem exagerada nem curta |
+| Por volume (tabela) | vence a partir de 5/semana; abaixo disso a regra simples é levemente melhor | Honestidade: produto que vende 2 por semana é quase sorte |
 | Validação × teste | escolhido no ano de validação, confirmado no ano de teste | O número não é otimista: o teste ficou guardado |
 
 **Prova extra do "ritmo da semana"** (Fase 3, `scripts/experimentos/perfil_dia_semana.py`): distribuir a
@@ -69,27 +79,46 @@ venda da semana pelos dias com o padrão de cada produto e loja erra **12,2%**. 
    A curva de aprendizado sobe e volta a cair. A quarta da IA vai subindo semana a semana.
    > "Ela não muda no primeiro dia de propósito: precisa de algumas semanas para ter certeza de que não foi um acaso."
 4. Por volta do **dia 63**, o selo muda para **"modelo treinado"**: com 8 semanas de histórico, o modelo validado assume.
-5. **Placar final** (três execuções de 91 dias, média):
+5. **Datas comerciais (tabela no fim de cada produto):** a realidade do laboratório tem salário, VR/VA (dia 10)
+   e feriado, com efeitos diferentes por produto. A coluna "Real" fica escondida da IA; compare com "IA aprendeu".
+   > "A IA começa pela referência medida em supermercados de verdade e, a cada salário ou VR, corrige para o
+   > que esta loja mostra. O leite sobe com o VR; a cerveja, com o salário e o feriado."
+6. **Placar final** (sementes 7, 11 e 23, "jogo toda quarta" no dia 49, média):
 
 | | Com Reponto | Sem IA |
 |---|---|---|
-| Procura atendida | ~93% | ~89% |
-| Dias com falta de produto | ~45 | ~90 |
-| Vendas perdidas | ~R$ 2,1 mil | ~R$ 8,3 mil |
-| Lucro | **+7%** | — |
+| Procura atendida | **93%** | 86% |
+| Dias com falta de produto | **41** | 102 |
+| Vendas perdidas | R$ 2,3 mil | R$ 11,1 mil |
+| Descarte (pão) | R$ 1,1 mil | R$ 0,8 mil |
+| Lucro bruto (vendas − custo do vendido − descarte) | **R$ 18,0 mil (+15%)** | R$ 15,6 mil |
+| Estoque médio (a custo) | R$ 853 | R$ 429 |
+
+   > "O Reponto mantém mais estoque, cerca do dobro, e joga fora um pouco mais de pão. Em troca, quase não
+   > deixa faltar. Para um mercadinho, perder a venda e o cliente custa mais do que o capital parado."
 
 ## 5. Decisões de engenharia que valem perguntas (2 min)
 
 - **Validação sem vazamento:** cada previsão só usa semanas anteriores, e o modelo foi escolhido na validação e reportado no teste.
 - **Qualidade dos dados:** encontramos semanas de "apagão de registro" no Favorita (a série zera por semanas e volta). Elas ensinavam ao modelo saltos de 50× e foram tratadas como falha, não como demanda zero.
+- **Dados do nível certo:** o primeiro modelo foi treinado com *famílias* de produto por loja e, medido em produtos individuais, perdia para a média móvel. Trocamos o treino para dados **por item** (outro dataset da mesma rede). O erro caiu 7% na validação e ele passou a vencer. Misturar os dois níveis piorava.
 - **Perecíveis:** o pão não mira 95% de atendimento. A regra do jornaleiro equilibra o custo de jogar fora com o de perder o cliente.
 - **Demanda censurada:** quando esgota, a venda registrada é só um piso da procura. Sem corrigir isso, o sistema entra numa espiral de comprar cada vez menos.
 - **Trava de sanidade:** a previsão nunca passa de 4× (nem fica abaixo de ¼) do ritmo recente do produto.
+- **Datas comerciais validadas antes de entrar:** o efeito de cada data foi medido no Favorita e só entrou se
+  melhorou a previsão no ano de validação (semana do Natal, feriados, pagamento, Ano Novo, véspera de Natal).
+  Carnaval, Páscoa, Dia das Mães e Black Friday não melhoraram e começam neutros; a loja aprende o próprio efeito.
+  No teste, o erro nos dias dessas datas caiu de 16,8% para 14,1%. No laboratório, com e sem calendário: −10% de
+  dias de falta e −13% de venda perdida, com o lucro empatado.
 
 ## 6. Limitações (dizer antes que perguntem)
 
-- Os dados de treino são do Equador. Natal e fim de semana se transferem bem, mas Carnaval, Dia das Mães e Black Friday não estão nos dados. Em produção, o feriado usa o calendário do Brasil e o ritmo da semana vem da própria loja.
-- O Favorita mede famílias de produto por loja, não itens. Por isso o modelo usa atributos sem escala e foi avaliado por faixa de volume.
+- Os dados de treino são do Equador. Natal, feriados e fim de semana se transferem bem. Carnaval, Dia das Mães e
+  Black Friday foram medidos, mas não melhoraram a previsão lá, e começam neutros aqui. Em produção, as datas
+  seguem o calendário do Brasil (salário no 5º dia útil, VR no dia informado) e o efeito de cada uma é aprendido
+  na própria loja. Datas raras (uma vez por ano) levam anos para serem aprendidas com precisão.
+- O lucro bruto usa o custo cadastrado hoje no produto: a venda não guarda o custo da época.
+- Os dados são de produtos de supermercados maiores que um mercadinho. Por isso o modelo usa atributos sem escala e foi avaliado por faixa de volume.
 - O nível inicial de um produto novo ainda vem de referências por categoria; ele se ajusta com as vendas.
 - O laboratório usa um mercado simulado. O ganho real precisa ser confirmado num piloto com uma loja de verdade.
 
@@ -99,6 +128,9 @@ venda da semana pelos dias com o padrão de cada produto e loja erra **12,2%**. 
 python -m pipeline.phase1                                  # Fase 1 (baseline)
 python -m pipeline.app_export                              # recorte do Favorita para o app
 python scripts/experimentos/perfil_dia_semana.py           # prova do ritmo da semana
+python -m pipeline.eventos                                 # efeito das datas comerciais (validação e teste)
+PYTHONPATH=backend DATASET_DIR=$PWD/datasets ML_MODEL_PATH=$PWD/backend/ml_data/model.txt \
+  python scripts/experimentos/ab_calendario.py 8           # laboratório com e sem calendário
 PYTHONPATH=backend DATASET_DIR=$PWD/datasets ML_MODEL_PATH=$PWD/backend/ml_data/model.txt \
   python scripts/experimentos/rodar_laboratorio.py 7 49    # laboratório no terminal
 # backtest completo: POST /ml/evaluation/run (ou a página /modelo)

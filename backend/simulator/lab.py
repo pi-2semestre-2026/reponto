@@ -15,6 +15,11 @@ weekday-profile learning, the same rule->model switch at 8 weeks and the
 same calibrated safety margin as production); the other is an owner
 without AI who restocks what he sold last week, ignoring the weekday.
 
+Commercial calendar: reality also has payday (5th business day), VR/VA day (the 10th) and
+holiday effects that differ by product. The brain starts from the market reference measured
+on real data (app/services/calendario.py) and learns each store's own effect; the snapshot
+shows real x learned.
+
 Mid-demo the presenter can change reality ("jogo de futebol às quartas":
 beer sales on Wednesday jump) and watch the AI adapt.
 
@@ -25,6 +30,7 @@ import datetime as dt
 import math
 import random
 
+from app.services import calendario as cal
 from simulator.brain import SimRecommender
 
 WEEKDAY_SHORT = ("seg", "ter", "qua", "qui", "sex", "sáb", "dom")
@@ -33,6 +39,7 @@ CUSTOMERS_PER_DAY = 150
 NOISE_SIGMA = 0.15
 NOAI_MARGIN = 1.10
 CHART_DAYS = 35
+LAB_VR_DAY = 10
 
 LAB_PRODUCTS = [
     {
@@ -46,7 +53,8 @@ LAB_PRODUCTS = [
         "price": 3.49,
         "cost": 2.40,
         "perishable": False,
-        "story": "Vende pouco na terça e muito de sexta a domingo.",
+        "story": "Vende pouco na terça e muito de sexta a domingo. Dispara em feriado e quando cai o salário.",
+        "events": {"salario": 1.45, "feriado": 1.60, "vespera_feriado": 1.30},
     },
     {
         "key": "pao",
@@ -59,7 +67,8 @@ LAB_PRODUCTS = [
         "price": 0.80,
         "cost": 0.35,
         "perishable": True,
-        "story": "Vende todo dia, um pouco mais no domingo. O que sobra no fim do dia vai fora.",
+        "story": "Vende todo dia, um pouco mais no domingo. O que sobra no fim do dia vai fora. Cai no feriado (o bairro viaja).",
+        "events": {"feriado": 0.70, "vale": 1.10},
     },
     {
         "key": "leite",
@@ -72,7 +81,8 @@ LAB_PRODUCTS = [
         "price": 5.49,
         "cost": 4.10,
         "perishable": False,
-        "story": "Venda estável a semana toda (produto de controle).",
+        "story": "Venda estável a semana toda. Sobe quando o VR/VA cai na conta (dia 10).",
+        "events": {"vale": 1.35, "salario": 1.10},
     },
 ]
 
@@ -121,7 +131,7 @@ class LabEngine:
         for spec in LAB_PRODUCTS:
             p = dict(spec)
             p["true_pattern"] = list(spec["pattern"])
-            p["brain"] = SimRecommender(CUSTOMERS_PER_DAY, spec["cycle_days"])
+            p["brain"] = SimRecommender(CUSTOMERS_PER_DAY, spec["cycle_days"], vr_day=LAB_VR_DAY)
             start = round(spec["base"] * spec["cycle_days"] * 1.1)
             p["ai"] = {"stock": float(start), "history": {}, "rec": None, "sold_out": set()}
             p["noai"] = {"stock": float(start), "sales": {}}
@@ -130,8 +140,8 @@ class LabEngine:
             self.products.append(p)
         self.store_history: dict[dt.date, float] = {}
         self.cash = {
-            "ai": {"revenue": 0.0, "cost": 0.0, "lost_r": 0.0, "waste_r": 0.0, "stock_value_sum": 0.0},
-            "noai": {"revenue": 0.0, "cost": 0.0, "lost_r": 0.0, "waste_r": 0.0, "stock_value_sum": 0.0},
+            "ai": {"revenue": 0.0, "cost": 0.0, "cogs": 0.0, "lost_r": 0.0, "waste_r": 0.0, "stock_value_sum": 0.0},
+            "noai": {"revenue": 0.0, "cost": 0.0, "cogs": 0.0, "lost_r": 0.0, "waste_r": 0.0, "stock_value_sum": 0.0},
         }
 
     @property
@@ -156,8 +166,15 @@ class LabEngine:
         self.shifts.append(event)
         return event
 
+    def event_multiplier(self, p: dict, date: dt.date) -> float:
+        mult = 1.0
+        for key in cal.events_on(date, LAB_VR_DAY):
+            mult *= p["events"].get(key, 1.0)
+        return mult
+
     def demand(self, p: dict, date: dt.date) -> int:
-        lam = p["base"] * p["true_pattern"][date.weekday()] * math.exp(self.rng.gauss(0.0, NOISE_SIGMA))
+        lam = (p["base"] * p["true_pattern"][date.weekday()] * self.event_multiplier(p, date)
+               * math.exp(self.rng.gauss(0.0, NOISE_SIGMA)))
         return poisson(self.rng, lam)
 
     # ------------------------------------------------------------ policies
@@ -214,6 +231,7 @@ class LabEngine:
             for key, store, sold in (("ai", ai, ai_sold), ("noai", noai, noai_sold)):
                 c = self.cash[key]
                 c["revenue"] += sold * p["price"]
+                c["cogs"] += sold * p["cost"]
                 c["lost_r"] += (demand - sold) * p["price"]
                 if p["perishable"] and store["stock"] > 0:
                     c["waste_r"] += store["stock"] * p["cost"]
@@ -221,7 +239,7 @@ class LabEngine:
                 c["stock_value_sum"] += store["stock"] * p["cost"]
 
             index = rec["weekday_index"]
-            ai_forecast = rec["final_rate"] * index[wd]
+            ai_forecast = rec["final_rate"] * index[wd] * rec.get("today_multiplier", 1.0)
             noai_forecast = noai_target / (p["cycle_days"] * NOAI_MARGIN)
             truth = self.true_index(p)
             err = sum(abs(index[i] - truth[i]) for i in range(7)) / 7 * 100
@@ -241,6 +259,7 @@ class LabEngine:
                 "ai_stock": round(ai["stock"], 1),
                 "noai_stock": round(noai["stock"], 1),
                 "source": rec.get("forecast_source", "regra"),
+                "events": sorted(cal.events_on(date, LAB_VR_DAY)),
             }
             p["log"].append(entry)
             day["products"].append({"key": p["key"], "demand": demand, "ai_sold": ai_sold, "noai_sold": noai_sold})
@@ -272,8 +291,27 @@ class LabEngine:
             "cost": round(c["cost"], 2),
             "lost_r": round(c["lost_r"], 2),
             "waste_r": round(c["waste_r"], 2),
+            # Lucro bruto contábil: receita - custo do que foi vendido (CMV) - descarte.
+            # O estoque que sobra no fim continua sendo da loja e não conta como prejuízo.
+            "gross_profit": round(c["revenue"] - c["cogs"] - c["waste_r"], 2),
             "avg_stock_value": round(c["stock_value_sum"] / days, 2),
         }
+
+    def _calendar_view(self, p: dict, rec: dict) -> list[dict]:
+        """Efeito real x aprendido de cada data comercial que mexe neste produto."""
+        learned = rec.get("calendar_effects") or {}
+        rows = []
+        for key, real in p["events"].items():
+            e = learned.get(key, {})
+            rows.append({
+                "event": key,
+                "label": cal.EVENTS[key][0],
+                "real": real,
+                "learned": round(e.get("effect", 1.0), 3),
+                "reference": round(e.get("reference", cal.reference_effect(key, p["category"])), 3),
+                "n": e.get("n", 0),
+            })
+        return rows
 
     def snapshot(self) -> dict:
         products = []
@@ -311,6 +349,7 @@ class LabEngine:
                     "wape_noai_28": self._wape(recent, "noai_forecast"),
                     "stockouts_ai": sum(1 for r in p["log"] if r["ai_stockout"]),
                     "stockouts_noai": sum(1 for r in p["log"] if r["noai_stockout"]),
+                    "calendar": self._calendar_view(p, rec),
                 }
             )
         date = self.current_date
@@ -323,6 +362,7 @@ class LabEngine:
             "weekday": WEEKDAY_SHORT[date.weekday()],
             "done": self.done,
             "customers_per_day": CUSTOMERS_PER_DAY,
+            "vr_day": LAB_VR_DAY,
             "products": products,
             "stores": {"ai": self._store_summary("ai"), "noai": self._store_summary("noai")},
             "shifts": self.shifts,

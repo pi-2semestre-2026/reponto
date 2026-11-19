@@ -32,6 +32,7 @@ async def create_market(payload: MarketIn, user=Depends(get_current_user), db: A
         name=payload.name.strip(),
         location=payload.location.strip(),
         customers_per_day=payload.customers_per_day,
+        vr_day=payload.vr_day,
         replenishment_cycle_days=days,
         cycle_unit=unit,
     )
@@ -56,11 +57,14 @@ async def update_market(
     unit = payload.cycle_unit.lower().strip()
     days = CYCLE_DAYS.get(unit, payload.replenishment_cycle_days)
     rate_relevant = (
-        market.customers_per_day != payload.customers_per_day or market.replenishment_cycle_days != days
+        market.customers_per_day != payload.customers_per_day
+        or market.replenishment_cycle_days != days
+        or (market.vr_day or 0) != payload.vr_day
     )
     market.name = payload.name.strip()
     market.location = payload.location.strip()
     market.customers_per_day = payload.customers_per_day
+    market.vr_day = payload.vr_day
     market.cycle_unit = unit
     market.replenishment_cycle_days = days
     db.add(market)

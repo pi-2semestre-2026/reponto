@@ -1,8 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
 import {
   Brain,
+  CalendarDays,
   FileUp,
   Loader2,
   MessageSquareText,
@@ -30,8 +32,8 @@ import {
 } from "recharts";
 import { api } from "@/lib/api";
 import { useI18n } from "@/lib/i18n";
-import { fmtDateTime, fmtNum } from "@/lib/format";
-import type { Explanation, ForecastInfo, LearningPanel as LearningPanelData, WeekProfile } from "@/lib/types";
+import { fmtDate, fmtDateTime, fmtNum } from "@/lib/format";
+import type { CalendarInfo, Explanation, ForecastInfo, LearningPanel as LearningPanelData, WeekProfile } from "@/lib/types";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -76,7 +78,10 @@ export function LearningPanelDialog({
       api
         .learning(productId)
         .then(setData)
-        .catch(() => {})
+        .catch((e) => {
+          toast.error((e as Error).message || t("common.error"));
+          onOpenChange(false);
+        })
         .finally(() => setLoading(false));
     }
   }, [open, productId]);
@@ -114,6 +119,8 @@ export function LearningPanelDialog({
             </div>
 
             {data.profile && <WeekProfileCard profile={data.profile} />}
+
+            {data.calendar && <CalendarCard calendar={data.calendar} />}
 
             {data.forecast?.source === "modelo" ? (
               <ModelForecastCard forecast={data.forecast} formula={data.formula} />
@@ -154,9 +161,9 @@ export function LearningPanelDialog({
                       <ReTooltip
                         contentStyle={{ borderRadius: 12, border: "1px solid hsl(var(--border))", background: "hsl(var(--popover))" }}
                       />
-                      <Line type="monotone" dataKey="final_rate" name="final" stroke="hsl(var(--ponto))" strokeWidth={2.5} dot={false} />
-                      <Line type="monotone" dataKey="observed_rate" name="obs" stroke="hsl(var(--chart-1))" strokeWidth={1.5} dot={false} strokeDasharray="4 3" />
-                      <Line type="monotone" dataKey="prior_rate" name="prior" stroke="hsl(150 10% 60%)" strokeWidth={1.5} dot={false} strokeDasharray="4 3" />
+                      <Line type="monotone" dataKey="final_rate" name={t("aiPanel.col.final")} stroke="hsl(var(--ponto))" strokeWidth={2.5} dot={false} />
+                      <Line type="monotone" dataKey="observed_rate" name={t("aiPanel.col.observed")} stroke="hsl(var(--chart-1))" strokeWidth={1.5} dot={false} strokeDasharray="4 3" />
+                      <Line type="monotone" dataKey="prior_rate" name={t("aiPanel.col.prior")} stroke="hsl(150 10% 60%)" strokeWidth={1.5} dot={false} strokeDasharray="4 3" />
                     </LineChart>
                   </ResponsiveContainer>
                 </div>
@@ -172,7 +179,7 @@ export function LearningPanelDialog({
                 <Metric
                   label={t("aiPanel.safety")}
                   value={
-                    data.logs[0] ? fmtNum(JSON.parse(data.logs[0].details).seguranca ?? "0") : "—"
+                    data.logs[0] ? fmtNum(JSON.parse(data.logs[0].details || "{}").seguranca ?? "0") : "—"
                   }
                 />
               </div>
@@ -186,11 +193,11 @@ export function LearningPanelDialog({
                   <TableHeader>
                     <TableRow>
                       <TableHead className="w-[130px]">{t("aiPanel.reason")}</TableHead>
-                      <TableHead>Prior</TableHead>
-                      <TableHead>Obs.</TableHead>
-                      <TableHead>α</TableHead>
-                      <TableHead>Final</TableHead>
-                      <TableHead>n</TableHead>
+                      <TableHead>{t("aiPanel.col.prior")}</TableHead>
+                      <TableHead>{t("aiPanel.col.observed")}</TableHead>
+                      <TableHead>{t("aiPanel.col.weight")}</TableHead>
+                      <TableHead>{t("aiPanel.col.final")}</TableHead>
+                      <TableHead>{t("aiPanel.col.sales")}</TableHead>
                       <TableHead className="w-[140px]">{t("common.stock")}</TableHead>
                     </TableRow>
                   </TableHeader>
@@ -219,13 +226,13 @@ export function LearningPanelDialog({
                               </span>
                             </span>
                           </TableCell>
-                          <TableCell className="text-xs">{log.prior_rate.toFixed(3)}</TableCell>
-                          <TableCell className="text-xs">{log.observed_rate.toFixed(3)}</TableCell>
-                          <TableCell className="text-xs">{log.alpha.toFixed(2)}</TableCell>
-                          <TableCell className="text-xs font-bold text-primary">{log.final_rate.toFixed(3)}</TableCell>
+                          <TableCell className="text-xs">{fmtNum(Math.round(log.prior_rate * 100) / 100)}</TableCell>
+                          <TableCell className="text-xs">{fmtNum(Math.round(log.observed_rate * 100) / 100)}</TableCell>
+                          <TableCell className="text-xs">{Math.round(log.alpha * 100)}%</TableCell>
+                          <TableCell className="text-xs font-bold text-primary">{fmtNum(Math.round(log.final_rate * 100) / 100)}</TableCell>
                           <TableCell className="text-xs">{log.n_sales}</TableCell>
                           <TableCell className="text-xs text-muted-foreground">
-                            min {fmtNum(log.min_stock)} · rec {fmtNum(log.recommended_quantity)}
+                            {t("dash.minShort")} {fmtNum(log.min_stock)} · {t("aiPanel.recShort")} {fmtNum(log.recommended_quantity)}
                           </TableCell>
                         </TableRow>
                       );
@@ -413,6 +420,94 @@ function WeekProfileCard({ profile }: { profile: WeekProfile }) {
   );
 }
 
+function CalendarCard({ calendar }: { calendar: CalendarInfo }) {
+  const { t } = useI18n();
+  const pct = (e: number) => {
+    const v = Math.round((e - 1) * 100);
+    return v === 0 ? "0%" : `${v > 0 ? "+" : ""}${v}%`;
+  };
+  const label = (key: string, fallback: string) => {
+    const k = `cal.ev.${key}`;
+    const tr = t(k);
+    return tr === k ? fallback : tr;
+  };
+  const sourceBadge = (s: string, n: number) =>
+    s === "loja" ? (
+      <Badge variant="ai">{t("cal.src.store").replace("{n}", String(n))}</Badge>
+    ) : s === "referencia" ? (
+      <Badge variant="secondary">{t("cal.src.reference")}</Badge>
+    ) : (
+      <Badge variant="outline">{t("cal.src.neutral")}</Badge>
+    );
+  // Uma linha por data (primeira ocorrência de cada evento nas próximas semanas).
+  const seen = new Set<string>();
+  const next = calendar.upcoming
+    .filter((u) => {
+      if (seen.has(u.event)) return false;
+      seen.add(u.event);
+      return true;
+    })
+    .slice(0, 6);
+  const learned = Object.entries(calendar.effects)
+    .filter(([, e]) => e.n > 0)
+    .sort((a, b) => b[1].n - a[1].n);
+  return (
+    <div className="rounded-2xl border bg-card p-4">
+      <div className="mb-1 flex flex-wrap items-center gap-2">
+        <CalendarDays className="h-4 w-4 text-primary" />
+        <p className="text-sm font-bold">{t("cal.title")}</p>
+      </div>
+      <p className="mb-3 text-xs text-muted-foreground">
+        {t("cal.sub")}
+        {calendar.vr_day ? ` ${t("cal.vrDay").replace("{d}", String(calendar.vr_day))}` : ` ${t("cal.noVr")}`}
+      </p>
+      {next.length === 0 ? (
+        <p className="text-xs text-muted-foreground">{t("cal.none")}</p>
+      ) : (
+        <ul className="divide-y text-sm">
+          {next.map((u) => (
+            <li key={`${u.event}-${u.date}`} className="flex flex-wrap items-center justify-between gap-2 py-2">
+              <span>
+                <span className="font-mono text-xs text-muted-foreground">{fmtDate(u.date).slice(0, 5)}</span>{" "}
+                <span className="font-medium">{label(u.event, u.label)}</span>
+              </span>
+              <span className="flex items-center gap-2">
+                <span
+                  className={`font-mono text-sm font-bold ${
+                    u.effect > 1.005 ? "text-emerald-600" : u.effect < 0.995 ? "text-rose-600" : "text-muted-foreground"
+                  }`}
+                >
+                  {pct(u.effect)}
+                </span>
+                {sourceBadge(u.source, u.n)}
+              </span>
+            </li>
+          ))}
+        </ul>
+      )}
+      {learned.length > 0 && (
+        <div className="mt-3 rounded-xl bg-muted/50 p-3">
+          <p className="mb-1 text-[11px] font-semibold uppercase text-muted-foreground">{t("cal.learnedTitle")}</p>
+          <ul className="space-y-1 text-xs">
+            {learned.map(([key, e]) => (
+              <li key={key} className="flex flex-wrap justify-between gap-2">
+                <span>{label(key, e.label)}</span>
+                <span className="font-mono">
+                  {t("cal.learnedRow")
+                    .replace("{obs}", e.observed != null ? pct(e.observed) : "—")
+                    .replace("{n}", String(e.n))
+                    .replace("{ref}", pct(e.reference))
+                    .replace("{eff}", pct(e.effect))}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </div>
+  );
+}
+
 function ModelForecastCard({ forecast, formula }: { forecast: ForecastInfo; formula: string }) {
   const { t } = useI18n();
   const r = (v: number | null) => fmtNum(Math.round((v ?? 0) * 10) / 10);
@@ -462,12 +557,13 @@ function Metric({
   variant?: "success" | "warning" | "destructive";
   small?: boolean;
 }) {
+  const { t } = useI18n();
   return (
     <div className={`rounded-2xl border bg-card p-3 ${highlight ? "ring-2 ring-primary/40" : ""}`}>
       <p className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">{label}</p>
       {badge ? (
         <Badge variant={variant} className="mt-1">
-          {badge === "alta" ? "Alta" : badge === "media" ? "Média" : "Baixa"}
+          {t(`market.confidence.${badge}`)}
         </Badge>
       ) : (
         <p className={`mt-1 font-black ${small ? "text-xs" : "text-lg"}`}>{value}</p>

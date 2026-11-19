@@ -1,0 +1,11 @@
+event,dias_validacao,WAPE_validacao_sem_%,WAPE_validacao_com_%,adotado,dias_teste,WAPE_teste_sem_%,WAPE_teste_com_%
+ano_novo,12,3988.69,1440.8,True,14,8789.44,115.81
+carnaval,48,19.19,2031.69,False,56,17.56,67.12
+dia_das_maes,39,13.68,32.71,False,42,15.46,29.7
+feriado,98,16.75,11.88,True,126,24.56,17.1
+pagamento,980,13.03,12.2,True,1022,14.33,13.31
+pascoa,42,13.92,15.32,False,42,11.56,11.59
+reveillon,12,29.85,30.98,False,14,11.8,24.77
+semana_natal,84,27.03,15.74,True,84,28.94,14.88
+vespera_feriado,98,17.2,17.78,False,126,33.62,34.33
+vespera_natal,12,42.03,17.3,True,14,20.68,28.95

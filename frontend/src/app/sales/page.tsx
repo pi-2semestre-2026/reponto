@@ -161,11 +161,11 @@ export default function SalesPage() {
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Data</TableHead>
+                    <TableHead>{t("import.col.date")}</TableHead>
                     <TableHead>{t("sales.market")}</TableHead>
                     <TableHead>{t("sales.items")}</TableHead>
                     <TableHead>{t("sale.total")}</TableHead>
-                    <TableHead>Status</TableHead>
+                    <TableHead>{t("purchase.col.status")}</TableHead>
                     <TableHead className="text-right">{t("common.actions")}</TableHead>
                   </TableRow>
                 </TableHeader>

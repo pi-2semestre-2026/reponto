@@ -11,6 +11,10 @@ import {
   Coins,
   Inbox,
   Loader2,
+  PackageX,
+  PiggyBank,
+  TrendingUp,
+  Warehouse,
   Plus,
   Receipt,
   ShoppingBasket,
@@ -121,7 +125,7 @@ export default function DashboardPage() {
     return (
       <span className={cn("flex items-center gap-0.5 text-xs font-bold", good ? "text-primary" : "text-destructive")}>
         {v >= 0 ? <ArrowUpRight className="h-3.5 w-3.5" /> : <ArrowDownRight className="h-3.5 w-3.5" />}
-        {Math.abs(v)}% <span className="font-medium text-muted-foreground">{t("dash.vsPrev")}</span>
+        {fmtNum(Math.abs(v))}% <span className="font-medium text-muted-foreground">{t("dash.vsPrev")}</span>
       </span>
     );
   };
@@ -180,10 +184,60 @@ export default function DashboardPage() {
           <>
             <div className="stagger grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               <StatCard icon={Coins} label={t("dash.revenue")} value={parseFloat(data.stats.revenue)} format={fmtMoney} sub={pct(data.revenue_change_pct)} />
-              <StatCard icon={Receipt} label={t("dash.sales")} value={data.stats.sales_count} format={fmtNum} sub={pct(data.sales_change_pct)} />
+              <StatCard icon={Receipt} label={t("dash.sales")} value={data.stats.sales_count} format={(v) => fmtNum(Math.round(v))} sub={pct(data.sales_change_pct)} />
               <StatCard icon={BarChart3} label={t("dash.ticket")} value={parseFloat(data.stats.avg_ticket)} format={fmtMoney} />
               <StatCard icon={ShoppingBasket} label={t("dash.items")} value={parseFloat(data.stats.items_sold)} format={fmtNum} />
             </div>
+
+            {(data.profit || data.inventory) && (
+              <div className="stagger grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                {data.profit && (
+                  <StatCard
+                    icon={TrendingUp}
+                    label={t("dash.grossProfit")}
+                    value={parseFloat(data.profit.gross_profit)}
+                    format={fmtMoney}
+                    sub={
+                      <span className="text-xs text-muted-foreground">
+                        {data.profit.margin_pct != null ? t("dash.margin").replace("{m}", fmtNum(data.profit.margin_pct)) : "—"}
+                        {data.profit.coverage_pct != null && data.profit.coverage_pct < 99.5
+                          ? ` · ${t("dash.marginCoverage").replace("{c}", fmtNum(Math.round(data.profit.coverage_pct)))}`
+                          : ""}
+                      </span>
+                    }
+                  />
+                )}
+                {data.inventory && (
+                  <>
+                    <StatCard
+                      icon={Warehouse}
+                      label={t("dash.stockCost")}
+                      value={parseFloat(data.inventory.value_cost)}
+                      format={fmtMoney}
+                      sub={<span className="text-xs text-muted-foreground">{t("dash.stockCostSub")}</span>}
+                    />
+                    <StatCard
+                      icon={PiggyBank}
+                      label={t("dash.excess")}
+                      value={parseFloat(data.inventory.excess_value)}
+                      format={fmtMoney}
+                      sub={
+                        <span className="text-xs text-muted-foreground">
+                          {t("dash.excessSub").replace("{n}", String(data.inventory.excess_products))}
+                        </span>
+                      }
+                    />
+                    <StatCard
+                      icon={PackageX}
+                      label={t("dash.stockouts")}
+                      value={data.inventory.stockout_products}
+                      format={fmtNum}
+                      sub={<span className="text-xs text-muted-foreground">{t("dash.stockoutsSub")}</span>}
+                    />
+                  </>
+                )}
+              </div>
+            )}
 
             <div className="grid gap-4 lg:grid-cols-5">
               <Card className="animate-fade-in-up lg:col-span-3">
@@ -269,7 +323,7 @@ export default function DashboardPage() {
                       </span>
                       <div className="min-w-0 flex-1">
                         <p className="truncate text-sm font-bold">{p.product_name}</p>
-                        <p className="text-xs text-muted-foreground">{fmtNum(p.quantity)} un · {p.category_name ?? "—"}</p>
+                        <p className="text-xs text-muted-foreground">{fmtNum(p.quantity)} {t("dash.unitsSold")} · {p.category_name ?? "—"}</p>
                       </div>
                       <span className="font-mono text-sm font-semibold text-primary">{fmtMoney(p.revenue)}</span>
                     </div>
@@ -304,7 +358,7 @@ export default function DashboardPage() {
                         <p className="truncate text-xs text-muted-foreground">{a.market_name}</p>
                       </div>
                       <span className="font-mono text-sm font-semibold">
-                        {fmtNum(a.stock)} <span className="text-xs font-normal text-muted-foreground">/ min {fmtNum(a.min_stock)}</span>
+                        {fmtNum(a.stock)} <span className="text-xs font-normal text-muted-foreground">/ {t("dash.minShort")} {fmtNum(a.min_stock)}</span>
                       </span>
                     </Link>
                   ))}

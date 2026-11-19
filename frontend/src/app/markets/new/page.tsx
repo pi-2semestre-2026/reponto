@@ -138,7 +138,7 @@ export default function MarketWizardPage() {
                     onClick={() => {
                       setCustomers(c);
                       setCustomCustomers("");
-                      setTimeout(next, 350);
+                      setTimeout(() => setStep((s) => Math.min(s + 1, STEPS - 1)), 350);
                     }}
                     title={c === 1000 ? "1000+" : `≈${c}`}
                     subtitle={t("wizard.customersUnit")}
@@ -203,7 +203,7 @@ export default function MarketWizardPage() {
                     selected={cycle === c.unit}
                     onClick={() => {
                       setCycle(c.unit);
-                      setTimeout(next, 350);
+                      setTimeout(() => setStep((s) => Math.min(s + 1, STEPS - 1)), 350);
                     }}
                     title={c.label}
                     icon={c.icon}
@@ -242,16 +242,16 @@ export default function MarketWizardPage() {
           )}
         </div>
 
-        {step < 4 && (
-          <div className="mt-10 flex items-center justify-between">
-            <Button variant="ghost" onClick={back}>
-              <ArrowLeft /> {t("common.back")}
-            </Button>
+        <div className="mt-10 flex items-center justify-between">
+          <Button variant="ghost" onClick={back}>
+            <ArrowLeft /> {t("common.back")}
+          </Button>
+          {step < 4 && (
             <Button variant="press" onClick={next} disabled={!canAdvance()} size="lg">
               {t("common.confirm")} <ArrowRight />
             </Button>
-          </div>
-        )}
+          )}
+        </div>
       </main>
     </div>
   );

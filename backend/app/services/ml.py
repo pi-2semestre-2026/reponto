@@ -24,7 +24,7 @@ import numpy as np
 logger = logging.getLogger("ml")
 
 META_SUFFIX = ".meta.json"
-MODEL_VERSION = 3
+MODEL_VERSION = 4
 ALL_FAMILY = "__all__"
 
 
@@ -72,12 +72,12 @@ class RateModel:
         os.makedirs(os.path.dirname(model_path), exist_ok=True)
         booster.save_model(model_path)
         with open(model_path + META_SUFFIX, "w") as f:
-            json.dump({"version": MODEL_VERSION, "overall_mean": float(y.mean()), "families": families}, f, ensure_ascii=False)
+            json.dump({"version": MODEL_VERSION, "overall_mean": float(y.mean()), "families": families, "y_sum": round(float(y.sum()), 3)}, f, ensure_ascii=False)
         self.booster, self.overall_mean, self.families = booster, float(y.mean()), families
         self._clear()
         logger.info("seasonal LightGBM trained on %d rows, %d families, saved to %s", len(rows), len(families), model_path)
 
-    def _load(self, model_path: str, families: list[str] | None) -> bool:
+    def _load(self, model_path: str, families: list[str] | None, y_sum: float | None = None) -> bool:
         meta_path = model_path + META_SUFFIX
         if not (os.path.exists(model_path) and os.path.exists(meta_path)):
             return False
@@ -85,6 +85,9 @@ class RateModel:
             meta = json.load(f)
         if meta.get("version") != MODEL_VERSION:
             logger.info("saved model meta version %r != %s — retraining", meta.get("version"), MODEL_VERSION)
+            return False
+        if y_sum is not None and abs((meta.get("y_sum") or 0.0) - y_sum) > 0.01:
+            logger.info("dataset values changed — retraining the seasonal model")
             return False
         if families is not None and meta.get("families") != families:
             logger.info("dataset families changed — retraining the seasonal model")
@@ -100,7 +103,8 @@ class RateModel:
         """Load the saved model if it matches the dataset; otherwise train once and save."""
         try:
             families = sorted({r.get("family") or "geral" for r in rows}) if rows else None
-            if self._load(model_path, families):
+            y_sum = round(float(sum(r["avg_sales_per_tx"] for r in rows if r.get("avg_sales_per_tx") is not None)), 3) if rows else None
+            if self._load(model_path, families, y_sum):
                 return
             if not rows:
                 logger.warning("no saved model and no rows provided — static priors will be used")

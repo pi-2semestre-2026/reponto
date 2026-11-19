@@ -39,7 +39,7 @@ import pandas as pd
 
 logger = logging.getLogger("weekly_model")
 
-MODEL_VERSION = 3
+MODEL_VERSION = 5
 LEVEL_WEEKS = 8
 MIN_WEEKS = 8
 MAX_HISTORY_WEEKS = 60
@@ -97,6 +97,10 @@ FEATURE_LABELS = {
     "size_bucket": "Porte da loja",
     "category": "Categoria",
     "holiday_days": "Feriados na semana",
+    "promo": "Promoção na semana",
+    "promo_hist": "Promoção nas 8 semanas anteriores",
+    "promo_log": "Intensidade de promoção",
+    "promo_change": "Promoção acima do normal",
 }
 PARAMS = {
     "objective": "tweedie",
@@ -195,16 +199,36 @@ def add_features(df: pd.DataFrame) -> pd.DataFrame:
     w["weekofyear"] = week.dt.isocalendar().week.astype(int).to_numpy()
     w["month"] = week.dt.month
     w["category"] = w["category"].map(category_code).astype(float)
+    # Promotion (Favorita only). The app records no promotions: it asks for a week
+    # without promotion after history without promotion (both 0).
+    promo = w["promo"].astype(float) if "promo" in w else pd.Series(0.0, index=w.index)
+    w["promo"] = promo.fillna(0.0)
+    w["promo_hist"] = w["promo"].groupby(key, sort=False).shift(1).groupby(key, sort=False).transform(
+        lambda s: s.rolling(LEVEL_WEEKS, min_periods=1).mean()
+    ).fillna(0.0)
+    # Scale-free versions: big families have hundreds of items on promotion.
+    w["promo_log"] = np.log1p(w["promo"])
+    w["promo_change"] = w["promo_log"] - np.log1p(w["promo_hist"])
     return w
 
 
 def trainable(features: pd.DataFrame) -> pd.DataFrame:
-    """Rows usable to fit or score: known level, known sales, not an extreme one-off shock."""
+    """Rows usable to score and calibrate: known level and sales, no extreme one-off spike.
+
+    Shock weeks (2016 earthquake) stay here: shocks happen in real life, so the
+    uncertainty calibration must see them. `fit` leaves them out of training.
+    """
     ok = (features["level"] > 0) & features["sales"].notna()
     return features[ok & (features["sales"] <= MAX_TRAIN_RATIO * features["level"])]
 
 
+def fit_rows(rows: pd.DataFrame) -> pd.DataFrame:
+    """Training rows: without weeks distorted by a one-off disaster (column `shock`)."""
+    return rows[rows["shock"].fillna(0) == 0] if "shock" in rows else rows
+
+
 def fit(rows: pd.DataFrame, num_rounds: int = NUM_ROUNDS) -> lgb.Booster:
+    rows = fit_rows(rows)
     data = lgb.Dataset(
         rows[FEATURES],
         label=rows["sales"].to_numpy(),
@@ -236,7 +260,13 @@ def conformal_quantiles(actual, forecast, level, q: float = SERVICE_QUANTILE) ->
     out = {}
     for i, label in enumerate(TIER_LABELS):
         r = ratio[tiers == i]
-        src = r if len(r) >= MIN_TIER_ROWS else ratio
+        # Too few rows: borrow the NEIGHBOUR tiers (closest volume first), never the
+        # overall pool — the overall bound is driven by the noisy small series and,
+        # pushed down by the monotonic rule below, would inflate every larger tier.
+        src, lo_t, hi_t = r, i, i
+        while len(src) < MIN_TIER_ROWS and (lo_t > 0 or hi_t < len(TIER_LABELS) - 1):
+            lo_t, hi_t = max(0, lo_t - 1), min(len(TIER_LABELS) - 1, hi_t + 1)
+            src = ratio[(tiers >= lo_t) & (tiers <= hi_t)]
         levels = {str(lv): round(float(np.quantile(src, lv)), 4) for lv in SERVICE_LEVELS} if len(src) else {}
         out[label] = {"q": round(float(np.quantile(src, q)), 4) if len(src) else 2.0, "levels": levels, "n": int(len(r))}
     # The multiplier must not grow with volume: larger series are relatively more predictable.

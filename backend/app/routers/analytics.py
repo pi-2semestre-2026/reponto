@@ -3,7 +3,7 @@ import uuid
 from decimal import Decimal
 
 from fastapi import APIRouter, Depends, HTTPException, Query
-from sqlalchemy import and_, bindparam, func, select
+from sqlalchemy import and_, bindparam, case, func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.database import get_db
@@ -14,9 +14,11 @@ from app.schemas import (
     AnalyticsOut,
     CategoryRevenueOut,
     DailyPointOut,
+    InventoryStats,
     LowStockAlert,
     MarketOverview,
     PeriodStats,
+    ProfitStats,
     TopProductOut,
 )
 
@@ -180,7 +182,11 @@ async def analytics(
         await db.execute(
             select(Product, Market)
             .join(Market, Market.id == Product.market_id)
-            .where(Market.owner_id == user.id, Product.stock <= Product.min_stock)
+            .where(
+                Market.owner_id == user.id,
+                Product.stock <= Product.min_stock,
+                *([Market.id == market_id] if market_id is not None else []),
+            )
             .order_by((Product.stock - Product.min_stock).asc())
             .limit(20)
         )
@@ -224,7 +230,57 @@ async def analytics(
             )
         )
 
+    # Lucro bruto do período (CMV pelo custo cadastrado no produto).
+    profit_row = (
+        await db.execute(
+            select(
+                func.coalesce(func.sum(SaleItem.subtotal), 0),
+                func.coalesce(func.sum(SaleItem.quantity * Product.cost), 0),
+            )
+            .join(Sale, Sale.id == SaleItem.sale_id)
+            .join(Market, Market.id == Sale.market_id)
+            .join(Product, Product.id == SaleItem.product_id)
+            .where(*scope, Product.cost > 0)
+        )
+    ).one()
+    rev_known, cogs = Decimal(profit_row[0] or 0), Decimal(profit_row[1] or 0)
+    gross = (rev_known - cogs).quantize(Decimal("0.01"))
+    profit = ProfitStats(
+        revenue_with_cost=rev_known,
+        cogs=cogs.quantize(Decimal("0.01")),
+        gross_profit=gross,
+        margin_pct=round(float(gross / rev_known) * 100, 1) if rev_known > 0 else None,
+        coverage_pct=round(float(rev_known / stats.revenue) * 100, 1) if stats.revenue > 0 else None,
+    )
+
+    # Estoque: valor a custo, excesso acima do máximo recomendado e rupturas.
+    unit_cost = case((Product.cost > 0, Product.cost), else_=Product.price)
+    inv_row = (
+        await db.execute(
+            select(
+                func.coalesce(func.sum(Product.stock * unit_cost), 0),
+                func.coalesce(
+                    func.sum(case((and_(Product.max_stock > 0, Product.stock > Product.max_stock),
+                                   (Product.stock - Product.max_stock) * unit_cost), else_=0)), 0),
+                func.count(Product.id).filter(and_(Product.max_stock > 0, Product.stock > Product.max_stock)),
+                func.count(Product.id).filter(Product.stock <= 0),
+                func.count(Product.id).filter(func.coalesce(Product.cost, 0) <= 0),
+            )
+            .join(Market, Market.id == Product.market_id)
+            .where(Market.owner_id == user.id, *([Market.id == market_id] if market_id is not None else []))
+        )
+    ).one()
+    inventory = InventoryStats(
+        value_cost=Decimal(inv_row[0] or 0).quantize(Decimal("0.01")),
+        excess_value=Decimal(inv_row[1] or 0).quantize(Decimal("0.01")),
+        excess_products=int(inv_row[2] or 0),
+        stockout_products=int(inv_row[3] or 0),
+        products_without_cost=int(inv_row[4] or 0),
+    )
+
     return AnalyticsOut(
+        profit=profit,
+        inventory=inventory,
         from_date=date_from,
         to_date=date_to,
         stats=stats,

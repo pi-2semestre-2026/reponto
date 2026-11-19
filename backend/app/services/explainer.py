@@ -8,6 +8,7 @@ the text, and a deterministic template — consistent by construction — is sho
 instead. The response says which of the two was used and what was checked.
 """
 
+import datetime as dt
 import logging
 import math
 import re
@@ -48,6 +49,11 @@ def unit_label(unit: str | None) -> str:
 
 WEEKDAY_PLURAL = fm.WEEKDAY_PLURAL
 MIN_PEAK_PCT = 10
+STRONG_DAY_PCT = 15  # dias com venda pelo menos 15% acima da média do dia entram em "dias fortes"
+
+
+def join_pt(items: list[str]) -> str:
+    return items[0] if len(items) == 1 else ", ".join(items[:-1]) + " e " + items[-1]
 
 
 def build_facts(product, market, blend: dict) -> dict:
@@ -82,6 +88,10 @@ def build_facts(product, market, blend: dict) -> dict:
         "perfil_fonte": blend["profile_source"],
         "dia_pico": WEEKDAY_PLURAL[peak["peak_weekday"]] if own_profile else None,
         "pico_pct": peak["peak_pct"] if own_profile else None,
+        "dias_fortes": join_pt([WEEKDAY_PLURAL[w] for w in range(7) if (blend["weekday_index"][w] - 1) * 100 >= STRONG_DAY_PCT]) if own_profile else None,
+        "dia_fraco": WEEKDAY_PLURAL[peak["low_weekday"]] if own_profile and peak["low_pct"] <= -MIN_PEAK_PCT else None,
+        "fraco_pct": abs(peak["low_pct"]) if own_profile and peak["low_pct"] <= -MIN_PEAK_PCT else None,
+        "nome_dia_pico": fm.WEEKDAY_NAMES[peak["peak_weekday"]] if own_profile else None,
         "dias_reposicao": round(blend["reorder_days"], 1),
         "metodo_seguranca": blend["safety_method"],
         "erro_diario": round(blend["sigma_daily"], 1) if blend["sigma_daily"] is not None else None,
@@ -91,7 +101,41 @@ def build_facts(product, market, blend: dict) -> dict:
         "semanas_historico": blend.get("model_weeks"),
         "previsao_semana": round(blend["weekly_forecast"], 1) if blend.get("weekly_forecast") is not None else None,
         "limite_semana": round(blend["weekly_upper"], 1) if blend.get("weekly_upper") is not None else None,
+        **calendar_facts(blend, cycle),
     }
+
+
+MONTHS_PT = ("janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro",
+             "outubro", "novembro", "dezembro")
+
+
+def calendar_facts(blend: dict, cycle: int) -> dict:
+    """Data comercial de MAIOR efeito dentro do ciclo (pelo menos 8%); empate fica com a mais próxima."""
+    empty = {"data_destaque": None, "data_quando": None, "efeito_data_pct": None, "efeito_data_fonte": None}
+    cal = blend.get("calendar") or {}
+    best = None
+    for row in cal.get("upcoming", []):
+        day = dt.date.fromisoformat(row["date"])
+        if (day - blend_today(blend)).days >= cycle:
+            continue
+        pct = round((row["effect"] - 1) * 100)
+        if abs(pct) >= 8 and (best is None or abs(pct) > abs(best[1])):
+            best = (row, pct, day)
+    if best is None:
+        return empty
+    row, pct, day = best
+    return {
+        "data_destaque": row["label"],
+        "data_quando": f"{fm.WEEKDAY_NAMES[day.weekday()]}, dia {day.day} de {MONTHS_PT[day.month - 1]}",
+        "data_dia": day.day,
+        "efeito_data_pct": abs(pct) if pct > -100 else 99,
+        "efeito_data_sinal": "mais" if pct > 0 else "menos",
+        "efeito_data_fonte": row["source"],
+    }
+
+
+def blend_today(blend: dict) -> dt.date:
+    return dt.date.fromisoformat(blend["today"]) if blend.get("today") else dt.date.today()
 
 
 NUMERIC_FACTS = (
@@ -109,12 +153,14 @@ NUMERIC_FACTS = (
     ("peso_vendas_loja_pct", "peso das vendas da loja"),
     ("peso_padrao_mercado_pct", "peso do padrão de mercado"),
     ("pico_pct", "venda acima da média no dia forte"),
+    ("fraco_pct", "venda abaixo da média no dia fraco"),
     ("dias_reposicao", "dias cobertos pelo mínimo"),
     ("erro_diario", "erro típico por dia"),
     ("nivel_servico_pct", "nível de serviço"),
     ("semanas_historico", "semanas de histórico"),
     ("previsao_semana", "previsão da semana"),
     ("limite_semana", "limite de 95% da semana"),
+    ("efeito_data_pct", "efeito da data comercial"),
 )
 
 
@@ -135,9 +181,11 @@ def template_text(f: dict) -> str:
         f"A loja deve vender em torno de {fmt(f['venda_por_dia'])} {u} por dia, ou {fmt(f['venda_no_ciclo'])} no ciclo de {f['ciclo_dias']} dias."
     )
     if f["dia_pico"]:
+        strong = f"vende mais {f['dias_fortes']}" if f["dias_fortes"] else f"vende mais {f['dia_pico']}"
+        weak = f" e menos {f['dia_fraco']} ({f['fraco_pct']}% abaixo da média do dia)" if f["dia_fraco"] else ""
         parts.append(
-            f"Na sua loja, este produto vende {f['pico_pct']}% acima da média {f['dia_pico']}, "
-            "e a previsão de cada dia já leva isso em conta."
+            f"Na sua loja, este produto {strong}, com pico {f['dia_pico']} ({f['pico_pct']}% acima da média do dia){weak}; "
+            "a previsão de cada dia já leva isso em conta."
         )
     if f["comprar"] > 0:
         parts.append(
@@ -146,6 +194,12 @@ def template_text(f: dict) -> str:
         )
     else:
         parts.append(f"Não precisa comprar agora: o estoque já está acima do nível recomendado de {fmt(f['nivel_recomendado'])}.")
+    if f.get("data_destaque"):
+        origem = "nas vendas da sua loja" if f["efeito_data_fonte"] == "loja" else "em vendas reais de supermercados"
+        parts.append(
+            f"Data comercial dentro do ciclo: {f['data_destaque']}, {f['data_quando']}. Nesses dias este produto costuma vender "
+            f"{f['efeito_data_pct']}% {f['efeito_data_sinal']} (medido {origem}), e a recomendação já considera isso."
+        )
     if f["metodo_seguranca"] == "erro" and f["erro_diario"] is not None:
         parts.append(
             f"Essa margem vem do erro típico da previsão, de {fmt(f['erro_diario'])} {u} por dia, "
@@ -204,6 +258,9 @@ def verify(text: str, facts: dict) -> dict:
     checked, unmatched, values = [], [], []
     # Numbers that belong to the product name ("Água 500ml", "Arroz 5kg") are not claims.
     name_numbers = {v for _, v in extract_numbers(f"{facts['produto']} {facts.get('categoria') or ''}")}
+    # Dia do mês e o "5º" do salário não são afirmações numéricas a conferir.
+    if facts.get("data_dia"):
+        name_numbers |= {float(facts["data_dia"]), 5.0, 20.0}
     for raw, value in extract_numbers(text):
         if value in name_numbers:
             continue
@@ -222,6 +279,10 @@ def verify(text: str, facts: dict) -> dict:
     problems = []
     if unmatched:
         problems.append(f"números que não existem no cálculo: {', '.join(unmatched)}")
+    if facts.get("nome_dia_pico") and facts["nome_dia_pico"][:4] not in text.lower():
+        problems.append("não mencionou o ritmo da semana (dia de pico)")
+    if facts.get("data_destaque") and facts["data_destaque"].split()[0].lower() not in text.lower():
+        problems.append("não mencionou a data comercial dentro do ciclo")
     if facts["comprar"] > 0 and not mentions("comprar"):
         problems.append("não informou a quantidade a comprar")
     if not mentions("venda_por_dia", "venda_no_ciclo"):
@@ -254,6 +315,16 @@ def facts_for_prompt(f: dict) -> str:
         lines.append(f"O estoque atual dura: {fmt(f['dias_cobertura'])} dias")
     if f["dia_pico"]:
         lines.append(f"Dia em que este produto mais vende nesta loja: {f['dia_pico']} ({f['pico_pct']}% acima da média do dia)")
+        if f["dias_fortes"]:
+            lines.append(f"Dias em que vende bem acima da média nesta loja: {f['dias_fortes']}")
+        if f["dia_fraco"]:
+            lines.append(f"Dia em que menos vende nesta loja: {f['dia_fraco']} ({f['fraco_pct']}% abaixo da média do dia)")
+    if f.get("data_destaque"):
+        origem = "nas vendas desta loja" if f["efeito_data_fonte"] == "loja" else "em vendas reais de supermercados"
+        lines.append(
+            f"Data comercial dentro do ciclo: {f['data_destaque']} ({f['data_quando']}); nesses dias o produto vende "
+            f"{f['efeito_data_pct']}% {f['efeito_data_sinal']} (medido {origem}); a recomendação já considera. Mencione esta data."
+        )
     if f["metodo_seguranca"] == "erro" and f["erro_diario"] is not None:
         lines.append(
             f"A margem de segurança vem do erro típico da previsão: {fmt(f['erro_diario'])} {u} por dia, "
@@ -284,7 +355,8 @@ SYSTEM_PROMPT = (
     "- Não faça contas, não arredonde de outro jeito e não invente números, datas ou porcentagens.\n"
     "- Diga quanto comprar (ou que não precisa comprar) e por quê: ritmo de venda e quantos dias o estoque dura.\n"
     "- Cite sempre a venda estimada por dia.\n"
-    "- Se houver um dia em que o produto vende mais nesta loja, mencione isso.\n"
+    "- Se a lista trouxer o ritmo da semana, diga em quais dias o produto vende mais e em qual vende menos nesta loja. "
+    "As porcentagens são em relação à média do dia (não 'dos outros dias').\n"
     "- Diga de onde vem a estimativa: vendas da própria loja e padrão de mercados parecidos (ou o modelo treinado, se for o caso).\n"
     "- 3 ou 4 frases curtas, tom direto e respeitoso, sem listas e sem markdown.\n"
     "- Não use as palavras alpha, prior, blend, LightGBM ou 'taxa observada'."
@@ -359,6 +431,10 @@ async def explain(session, product, market, last_log_id: int | None, refresh: bo
     result["facts"] = facts
     result["llm_enabled"] = bool(settings.OPENROUTER_API_KEY)
     result["elapsed_ms"] = round((time.perf_counter() - started) * 1000)
+    # The LLM was expected but did not answer (network, provider down): show the
+    # template now, but do not keep it, so the next opening tries the LLM again.
+    if result["llm_enabled"] and not candidate:
+        return result
     if len(_cache) >= CACHE_MAX:
         _cache.pop(next(iter(_cache)))
     _cache[key] = result

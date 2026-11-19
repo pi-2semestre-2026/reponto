@@ -41,7 +41,8 @@ docker compose down -v                 # CUIDADO: apaga banco e modelo treinado
 
 - Frontend: http://localhost:3000 — Backend: http://localhost:8000 (docs em `/docs`) — Health: `GET /health`.
 - Não existe fluxo de dev local fora do Docker documentado. O backend assume `DATASET_DIR=/datasets` e `ML_MODEL_PATH=/app/ml_data/model.txt`; o frontend roda `next build` + `node server.js`.
-- Reconstruir só um serviço: `docker compose up -d --build frontend` (ou `backend`).
+- Reconstruir só um serviço: `docker compose up -d --build frontend` (ou `backend`). Atenção: subir o frontend também recria o backend se a imagem dele mudou; não faça isso durante `popular_demo.py`.
+- Há `.dockerignore` em `backend/` e `frontend/` (sem ele o `COPY . .` levava o `node_modules` do Windows para a imagem).
 - Windows: o Docker Desktop precisa estar aberto (`docker info` falha se o daemon estiver parado).
 
 ### Variáveis de ambiente (`.env` na raiz; modelo em `.env.example`)
@@ -136,7 +137,7 @@ reponto/
 | `PATCH/DELETE /products/{id}`, `POST /products/{id}/stock`, `GET /products/{id}/learning` | stock não pode ficar negativo; `learning` devolve fórmula, evolução e últimos 50 logs |
 | `POST /sales`, `GET /sales`, `GET /sales/{id}`, `POST /sales/{id}/cancel`, `GET /sales/stats/count` | ver §4.5 |
 | `GET/POST/PATCH/DELETE /categories` | ver acima |
-| `GET /analytics?date_from&date_to&market_id` | KPIs do período vs. período anterior, top produtos, receita/estoque por categoria, série diária, alertas de estoque baixo, visão por mercado. Default: últimos 30 dias |
+| `GET /analytics?date_from&date_to&market_id` | KPIs do período vs. período anterior, top produtos, receita/estoque por categoria, série diária, alertas de estoque baixo, visão por mercado, `profit` (lucro bruto = vendas − quantidade × custo atual do produto; `coverage_pct` = parte do faturamento com custo cadastrado) e `inventory` (estoque a custo, excesso acima do máximo, esgotados). Default: últimos 30 dias |
 | `POST /markets/{id}/import/preview`, `POST /markets/{id}/import`, `GET /markets/{id}/imports` | upload multipart (`file`). Ver §4.8 |
 | `GET /markets/{id}/purchase-list`, `POST /markets/{id}/purchases` | lista de compras (ponto de pedido + reposição até o recomendado) e registro de recebimento (sobe estoque, recalcula com trigger `purchase`) |
 | `GET /products/{id}/explanation?refresh=` | explicação em PT-BR verificada. Ver §4.9 |
@@ -162,6 +163,7 @@ Comum aos dois caminhos:
 - **Perfil por dia da semana**: o perfil do próprio produto, com as semanas recentes pesando mais (meia-vida de 42 dias), é encolhido (k=2) para o padrão da **categoria ajustado ao ritmo da loja** (`category_store_prior`). Foi escolhido no Favorita (`scripts/experimentos/perfil_dia_semana.py`): erro diário 12,2% contra 22,3% com "igual todo dia" e 16,6% com um padrão único. A projeção dia a dia = taxa × índice do dia.
 - **Nível de atendimento** (`service_target`): produto que estraga antes da próxima entrega (`SHELF_LIFE_DAYS`: Padaria 1 dia, Peixes 2, Carnes 3, Hortifrúti 5 ≤ ciclo) segue a regra do jornaleiro, `Cu/(Cu+Co)` com Cu = margem + 50% do preço (cliente perdido) e Co = custo. O resultado fica limitado a [50%, 95%]. Os demais produtos miram 95%.
 - **Margem de segurança**: no caminho regra, `z(nível)·σ_diário·√ciclo` (sem histórico: 30% da demanda do ciclo). No caminho modelo, o quantil calibrado `q(nível)` é dividido em erro de nível (cresce com ciclo/7) e ruído diário (cresce com √ciclo); para ciclo = 7 ele é exatamente o limite calibrado.
+- **Calendário comercial** (`calendario.py`): salário (5º dia útil + 2 dias), adiantamento (dia 20 + 1), VR/VA (`Market.vr_day`, 0 = não informado, + 2 dias), semana do Natal, véspera, Natal, Réveillon, Ano Novo, Carnaval, Páscoa, Dia das Mães/Pais, Black Friday, feriado e véspera. O efeito de referência por categoria vem do Favorita (`datasets/favorita/eventos.csv`, `python -m pipeline.eventos`; só datas que melhoraram a previsão na validação têm efeito ≠ 1). Cada produto aprende o próprio efeito: `(n·observado + 6·referência)/(n + 6)`, com observado = venda do dia ÷ média do mesmo dia da semana nas 4 semanas anteriores; dias com duas datas juntas não entram. Na projeção diária, no caminho modelo, as datas que o modelo semanal já enxerga (feriados, fim de ano) só redistribuem dentro da semana e as demais multiplicam; no caminho regra, todas multiplicam (teto 3×). O painel do produto mostra as próximas datas e o efeito aprendido, e o explicador cita a próxima data relevante do ciclo.
 - **Demanda censurada**: dia em que a venda zerou o estoque (detectado pelo campo `estoque` do `RecommendationLog.details` com trigger `sale`) tem a procura estimada em +25% (`STOCKOUT_UPLIFT`). Sem isso, produto que esgota entra numa espiral de subestimar.
 - **Níveis**: no caminho modelo, `recomendado = demanda do ciclo + margem`; no caminho regra, `1,2 × demanda + margem` (com 95%). `mínimo = demanda dos próximos 0,4×ciclo dias + margem`; `máximo = 2 × demanda + margem`.
 - `refresh_stale_products` recalcula na listagem de produtos e na lista de compras quem foi calculado em outro dia ou antes do modelo atual (trigger `daily`).
@@ -187,11 +189,11 @@ Os números vêm de `compute_blend`; o LLM só redige. `verify()` extrai todo n�
 
 ### 4.10 Backtest e treino do modelo semanal (`app/services/evaluation.py`)
 
-Usa os dados reais do Favorita (`datasets/favorita/semanal.csv.gz`, 3.214 trechos limpos de 1.729 séries loja × família). Protocolo: **ano de validação** (escolha do modelo) e **ano de teste** (as últimas 52 semanas, resultado final), ambos em walk-forward com re-treino a cada 13 semanas e horizonte de 1 semana. Os baselines entram nas mesmas linhas: média móvel de 4 semanas, a regra anterior do app (EMA com meia-vida de 30 dias), semana passada e mesma semana do ano anterior. O intervalo é **conformal**, calibrado na validação e com a cobertura medida no teste, em vários níveis (50–95%) por faixa de volume. Ao final, treina o modelo de produção com todos os dados e grava `ml_data/weekly_model.txt` + `.meta.json` e `ml_data/evaluation.json`.
+Treina com os dados **por item** do Favorita (`datasets/favorita_itens/semanal.csv.gz`: 4.000 séries loja × produto, amostra estratificada por volume; `TRAINING_DATASETS` cai para o recorte por família se o de item não existir). A troca foi decidida na validação (`scripts/experimentos/frente_b.py`): treinado por família, o modelo não se transfere para produto individual e perde para a média móvel nesse nível. Protocolo: **ano de validação** (escolha do modelo) e **ano de teste** (as últimas 52 semanas, resultado final), ambos em walk-forward com re-treino a cada 13 semanas e horizonte de 1 semana. Os baselines entram nas mesmas linhas: média móvel de 4 semanas, a regra anterior do app (EMA com meia-vida de 30 dias), semana passada e mesma semana do ano anterior. O intervalo é **conformal**, calibrado na validação e com a cobertura medida no teste, em vários níveis (50–95%) por faixa de volume. Ao final, treina o modelo de produção com todos os dados e grava `ml_data/weekly_model.txt` + `.meta.json` e `ml_data/evaluation.json`.
 
 Roda em thread na inicialização (~3 min) se `EVAL_VERSION`/`weekly_model.MODEL_VERSION` mudarem, ou via `POST /ml/evaluation/run`.
 
-Resultado no teste: **WAPE 8,06%** contra 10,24% da regra anterior (−21%) e 10,2% da média móvel; viés ≈ 0; cobertura do limite de 95% de 95,1% (de 94,6% a 96,5% por faixa). Abaixo de 5 un/semana o modelo empata com a média móvel (ruído de contagem).
+Resultado no teste (por item): **WAPE 20,3%** contra 23,1% da regra anterior (−12%) e 23,3% da média móvel (−13%); vence a média móvel em 76% das séries; viés −1,6%; cobertura do limite de 95% de 94,1% (93,8–94,7% por faixa). Abaixo de 5 un/semana a regra anterior é levemente melhor (ruído de contagem). Calibração: uma faixa de volume com poucas linhas empresta o resíduo das faixas vizinhas, não o geral. As semanas do terremoto de 2016 (`shock`) ficam fora do **treino** (`fit_rows`), mas entram na **calibração**: choques acontecem na vida real e a margem precisa vê-los.
 
 ### 4.7 Tempo
 
@@ -212,9 +214,10 @@ O banco guarda UTC; o produto fala em "dia do mercado" (`America/Sao_Paulo`, `AP
 
 ## 6. Dataset
 
-- **Favorita** (dados reais de uma rede de supermercados do Equador; ativo): o bruto fica em `data/raw/favorita/` (fora do git). `python -m pipeline.app_export` gera `datasets/favorita/` com `semanal.csv.gz` (treino do modelo semanal) e `perfil_diario.csv` (perfil sazonal por categoria, que o `ml.py` usa para produtos sem histórico). Tratamentos: zeros iniciais removidos, séries cortadas em apagões de registro (3+ semanas zeradas numa série de 20+/semana), perfil sem tendência. Ficha e limitações em `datasets/favorita/README.md`.
+- **Favorita** (dados reais de uma rede de supermercados do Equador; ativo): o bruto fica em `data/raw/favorita/` (fora do git). `python -m pipeline.app_export` gera `datasets/favorita/` com `semanal.csv.gz` (reserva do treino do modelo semanal; o treino usa o recorte por item) e `perfil_diario.csv` (perfil sazonal por categoria, que o `ml.py` usa para produtos sem histórico). Tratamentos: zeros iniciais removidos, séries cortadas em apagões de registro (3+ semanas zeradas numa série de 20+/semana), semanas do terremoto marcadas (`shock`), perfil sem tendência e sem os apagões. A coluna `promo` é exportada, mas **não** é usada pelo modelo: testada na validação (`scripts/experimentos/frente_a.py`), não ganhou de forma clara, e o app não registra promoções. O backend reingere o perfil e retreina o `ml.py` quando o **conteúdo** do arquivo muda, não só quando mudam as categorias. Ficha e limitações em `datasets/favorita/README.md`.
+- **Favorita por item** (Kaggle *Grocery Sales Forecasting*, mesma rede; 125 milhões de linhas, fora do git em `data/raw/favorita_itens/`): `scripts/baixar_favorita_itens.py` (token do Kaggle em `~/.kaggle/access_token`) → `python -m pipeline.itens` → `python -m pipeline.app_export_itens` gera `datasets/favorita_itens/semanal.csv.gz`, que **treina o modelo semanal**. Ficha em `datasets/favorita_itens/README.md`.
 - **Store Item Demand** (Kaggle, sintético): reserva do `datasets.py`, usado só se o Favorita não estiver presente.
-- Trocar de dataset = adapter em `app/services/datasets.py`. O `ml.py` retreina sozinho quando o conjunto de famílias muda (`MODEL_VERSION` = 3).
+- Trocar de dataset = adapter em `app/services/datasets.py`. O `ml.py` retreina sozinho quando o conjunto de famílias ou os valores do perfil mudam (`MODEL_VERSION` = 4).
 
 ## 7. Simulador (`backend/simulator/`, rota `/admin/simulador`)
 
@@ -236,7 +239,7 @@ Jogo que **estressa o recomendador real** contra uma "realidade" estocástica in
 - **Recálculo**: ao mudar qualquer coisa que afete estoque, preço de produto, categoria ou configuração do mercado, chame `recalc_product`/`recalc_market_products` com um `trigger` conhecido (e adicione o rótulo em `TRIGGER_LABELS`).
 - **Frontend**: componentes client, alias `@/`, textos via `t()`, valores monetários/numéricos via `lib/format.ts` (`fmtMoney`, `fmtNum`).
 - **Shell scripts** (`*.sh`) devem ficar com **LF**. Já houve falha de container por CRLF; `.gitattributes` e um `sed` no Dockerfile cobrem isso.
-- **Commits**: mensagens em inglês no padrão Conventional Commits (`feat:`, `fix:`, `chore:`), como no histórico.
+- **Commits**: prefixo Conventional Commits (`feat:`, `fix:`, `docs:`, `chore:`) e **texto em português** (desde 2026-11, para os sócios). O corpo explica: o que é, por que foi feito, como foi validado (com os números) e como testar ou reproduzir. Os commits antigos estão em inglês.
 - Branch atual de trabalho: `pipeline-ml` (inclui `main` com o caixa); principal: `main`.
 
 ## 9. Pontos de atenção e dívidas conhecidas

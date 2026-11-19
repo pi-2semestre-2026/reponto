@@ -11,14 +11,14 @@ python -m pipeline.app_export      # requer data/raw/favorita/{train,holidays_ev
 
 | Arquivo | Conteúdo | Uso no app |
 |---|---|---|
-| `semanal.csv.gz` | 349.246 semanas (seg–dom) de 1.729 séries loja × família, a partir da semana em que cada série começa a vender | Treina, valida e calibra o modelo semanal de produção (`backend/app/services/weekly_model.py`, `evaluation.py`) |
+| `semanal.csv.gz` | 335.180 semanas (seg–dom) de 1.729 séries loja × família (3.214 trechos entre apagões), a partir da semana em que cada série começa a vender | Treina, valida e calibra o modelo semanal de produção (`backend/app/services/weekly_model.py`, `evaluation.py`) |
 | `perfil_diario.csv` | Índice sazonal sem tendência por categoria do app × porte da loja × mês × dia da semana (5.040 linhas, inclui `__all__`) | Molda a sazonalidade da estimativa inicial de produtos sem histórico (`ml.py`) |
 
 ## Colunas
 
-`semanal.csv.gz`: `store_nbr`, `family` (Favorita), `category` (categoria do app), `size_bucket`
+`semanal.csv.gz`: `store_nbr`, `family` (Favorita), `segment` (trecho entre apagões de registro), `category` (categoria do app), `size_bucket`
 (quartil de volume da loja, 0 = menor), `week_start` (segunda-feira), `sales` (unidades na semana),
-`holiday_days` (feriados nacionais na semana).
+`holiday_days` (feriados nacionais na semana), `promo` (itens da família em promoção por dia; exportado, não usado pelo modelo) e `shock` (1 = semana distorcida pelo terremoto de 2016: fora do treino, dentro da calibração).
 
 `perfil_diario.csv`: `category`, `size_bucket`, `month`, `weekday` (0 = segunda), `index`
 (venda do dia ÷ média móvel de um ano da própria série, média das séries), `n_obs`.
@@ -28,6 +28,7 @@ python -m pipeline.app_export      # requer data/raw/favorita/{train,holidays_ev
 - **Zeros iniciais removidos:** antes da primeira venda, a série "ainda não existia" (loja não aberta
   ou família não registrada), não é demanda zero. Zeros depois disso ficam: são demanda real.
 - **Só semanas completas** (240, de 2013-01-07 a 2017-08-07), sem as bordas parciais.
+- **Apagões de registro:** 3 ou mais semanas zeradas numa série que vende 20+/semana são falha de registro (comum em PRODUCE). A série é cortada ali (`segment`), e esses dias também ficam fora do perfil diário.
 - **Perfil sem tendência:** cada dia é dividido pela média móvel centrada de um ano da sua série,
   para o crescimento de 2013 a 2017 não aparecer como "efeito do mês". Ficam de fora o 1º de janeiro
   (lojas fechadas) e o mês do terremoto de 16/04/2016.

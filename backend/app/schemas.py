@@ -50,6 +50,7 @@ class MarketIn(BaseModel):
     customers_per_day: int = Field(default=100, ge=1, le=1_000_000)
     cycle_unit: str = Field(default="semanal")
     replenishment_cycle_days: int = Field(default=7, ge=1, le=365)
+    vr_day: int = Field(default=0, ge=0, le=31)
 
 
 class MarketOut(BaseModel):
@@ -60,6 +61,7 @@ class MarketOut(BaseModel):
     customers_per_day: int
     replenishment_cycle_days: int
     cycle_unit: str
+    vr_day: int = 0
     created_at: dt.datetime
 
 
@@ -208,6 +210,7 @@ class LearningPanelOut(BaseModel):
     logs: list[LearningLogOut]
     profile: dict | None = None
     forecast: dict | None = None
+    calendar: dict | None = None
 
 
 class AnalyticsQuery(BaseModel):
@@ -263,6 +266,30 @@ class MarketOverview(BaseModel):
     processing_count: int
 
 
+class ProfitStats(BaseModel):
+    """Lucro bruto do período: vendas - custo das mercadorias vendidas (CMV).
+
+    O custo é o cadastrado hoje no produto (o item de venda não guarda o custo da época);
+    itens sem custo cadastrado ficam fora da conta e `coverage_pct` diz quanto do
+    faturamento foi coberto."""
+
+    revenue_with_cost: Decimal
+    cogs: Decimal
+    gross_profit: Decimal
+    margin_pct: float | None
+    coverage_pct: float | None
+
+
+class InventoryStats(BaseModel):
+    """Dinheiro parado na prateleira, a preço de custo (ou de venda se o custo faltar)."""
+
+    value_cost: Decimal
+    excess_value: Decimal
+    excess_products: int
+    stockout_products: int
+    products_without_cost: int
+
+
 class AnalyticsOut(BaseModel):
     from_date: dt.date
     to_date: dt.date
@@ -276,3 +303,5 @@ class AnalyticsOut(BaseModel):
     stock_by_category: list[CategoryRevenueOut]
     low_stock_alerts: list[LowStockAlert]
     markets_overview: list[MarketOverview]
+    profit: ProfitStats | None = None
+    inventory: InventoryStats | None = None

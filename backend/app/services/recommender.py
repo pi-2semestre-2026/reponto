@@ -39,6 +39,7 @@ from app.services.clock import LOCAL_TZ_NAME, day_bounds, local_date, today_loca
 from app.services import forecast_math as fm
 from app.services.ml import rate_model
 from app.services import weekly_model as wm
+from app.services import calendario as cal
 from app.services.seed_data import baseline_by_name, size_bucket_from_customers
 
 settings = get_settings()
@@ -236,7 +237,7 @@ async def compute_blend(session, product: Product, market: Market) -> dict:
         )
     ).all()
 
-    sold_out = await stockout_days(session, product.id, min(window_start, today - dt.timedelta(weeks=wm.MAX_HISTORY_WEEKS)))
+    sold_out = await stockout_days(session, product.id, min(window_start, today - dt.timedelta(days=max(cal.LEARN_LOOKBACK_DAYS, 7 * wm.MAX_HISTORY_WEEKS))))
     n_sales = 0
     seen_sales: set = set()
     day_totals: dict[dt.date, float] = {}
@@ -294,17 +295,34 @@ async def compute_blend(session, product: Product, market: Market) -> dict:
 
     service = fm.service_target(prior_ctx["category_name"], cycle, float(product.price or 0), float(product.cost or 0))
 
+    # Calendário comercial: efeito de cada data aprendido nas vendas deste produto
+    # (encolhido para a referência medida no Favorita enquanto há poucas ocorrências).
+    vr_day = int(getattr(market, "vr_day", 0) or 0)
+    learn_start = today - dt.timedelta(days=cal.LEARN_LOOKBACK_DAYS)
+    if first_sale_date is not None:
+        first_any = first_sale_date if isinstance(first_sale_date, dt.date) else _local_date(first_sale_date)
+        learn_start = max(learn_start, first_any)
+    long_totals = await product_day_totals(session, product.id, learn_start, yesterday)
+    long_totals = {d: fm.uncensor(q, d in sold_out) for d, q in long_totals.items()}
+    event_effects = cal.learn_effects(long_totals, learn_start, yesterday, prior_ctx["category_name"], vr_day)
+
     first_local = None
     if first_sale_date is not None:
         first_local = first_sale_date if isinstance(first_sale_date, dt.date) else _local_date(first_sale_date)
     forecast = await weekly_forecast(session, product, first_local, today, prior_ctx["category_name"], size, sold_out)
+    for row in cal.upcoming(today, cycle, event_effects, vr_day):
+        if abs(row["effect"] - 1) >= 0.08:
+            notes.append(f"{row['label']} em {dt.date.fromisoformat(row['date']).strftime('%d/%m')}: efeito de "
+                         f"{row['effect']:.2f}× na venda do dia ({'aprendido nesta loja' if row['source'] == 'loja' else 'referência de mercado'})")
+            break
     if sold_out:
         notes.append(f"{len(sold_out)} dia(s) em que o produto esgotou: a procura real foi estimada {round(fm.STOCKOUT_UPLIFT * 100)}% acima da venda registrada")
 
     if forecast is not None:
         forecast_source = "modelo"
         final_rate = forecast["weekly"] / 7.0
-        levels = fm.model_stock_levels(final_rate, weekday_index, today, cycle, forecast, series, service["level"])
+        mults = cal.day_multipliers(today, cycle, event_effects, vr_day, model_path=True)
+        levels = fm.model_stock_levels(final_rate, weekday_index, today, cycle, forecast, series, service["level"], mults)
         confidence = "alta" if forecast["weeks"] >= 12 else "media"
         notes.append(
             f"Previsão do modelo semanal validado, a partir de {forecast['weeks']} semanas de vendas deste produto; "
@@ -312,7 +330,8 @@ async def compute_blend(session, product: Product, market: Market) -> dict:
         )
     else:
         forecast_source = "regra"
-        levels = fm.stock_levels(final_rate, weekday_index, today, cycle, series, service["level"])
+        mults = cal.day_multipliers(today, cycle, event_effects, vr_day, model_path=False)
+        levels = fm.stock_levels(final_rate, weekday_index, today, cycle, series, service["level"], mults)
         if levels["safety_method"] == "regra":
             notes.append(f"Menos de {fm.MIN_DAYS_FOR_ERROR} dias de histórico: margem de segurança pela regra fixa (30% do ciclo)")
         confidence = "baixa" if n_sales < 3 else ("media" if n_sales < 10 else "alta")
@@ -332,6 +351,17 @@ async def compute_blend(session, product: Product, market: Market) -> dict:
         "alpha": alpha,
         "final_rate": final_rate,
         "forecast_source": forecast_source,
+        "today": today.isoformat(),
+        "calendar": {
+            "vr_day": vr_day,
+            "upcoming": cal.upcoming(today, 35, event_effects, vr_day),
+            "effects": {
+                k: {**{kk: (round(vv, 3) if isinstance(vv, float) else vv) for kk, vv in v.items()}, "label": cal.EVENTS[k][0]}
+                for k, v in event_effects.items()
+                if v["n"] > 0 or abs(v["effect"] - 1.0) > 0.005
+            },
+            "cycle_multipliers": [round(m, 3) for m in mults],
+        },
         "service_level": service["level"],
         "perishable": service["perishable"],
         "shelf_life_days": service["shelf_life_days"],

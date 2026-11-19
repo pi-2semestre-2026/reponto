@@ -43,6 +43,7 @@ COLUMN_PATCHES = (
     "ALTER TABLE sales ADD COLUMN IF NOT EXISTS request_hash VARCHAR(64)",
     "CREATE UNIQUE INDEX IF NOT EXISTS ix_sales_user_idempotency ON sales (user_id, idempotency_key)",
     "ALTER TABLE products ADD COLUMN IF NOT EXISTS sku VARCHAR(60)",
+    "ALTER TABLE markets ADD COLUMN IF NOT EXISTS vr_day INTEGER DEFAULT 0",
     "ALTER TABLE products ADD COLUMN IF NOT EXISTS cost NUMERIC(12, 2) DEFAULT 0",
     "ALTER TABLE sales ADD COLUMN IF NOT EXISTS source VARCHAR(12) DEFAULT 'app'",
     "CREATE INDEX IF NOT EXISTS ix_products_sku ON products (sku)",

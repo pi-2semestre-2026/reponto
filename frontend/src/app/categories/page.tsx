@@ -42,7 +42,14 @@ export default function CategoriesPage() {
   const [saving, setSaving] = useState(false);
   const [deleteTarget, setDeleteTarget] = useState<Category | null>(null);
 
-  const load = () => api.categories().then(setCats).catch((e) => toast.error(e.message));
+  const load = () =>
+    api
+      .categories()
+      .then(setCats)
+      .catch((e) => {
+        toast.error(e.message);
+        setCats((c) => c ?? []);
+      });
   useEffect(() => {
     load();
   }, []);
@@ -68,7 +75,7 @@ export default function CategoriesPage() {
         toast.success(t("toast.updated"));
       } else {
         await api.createCategory({ name, description, keywords });
-        toast.success(t("toast.updated"));
+        toast.success(t("toast.created"));
       }
       closeForm();
       load();
@@ -84,6 +91,12 @@ export default function CategoriesPage() {
       toast.error(t("categories.deleteBlocked"));
       return;
     }
+    if (deleteTarget?.id !== c.id) {
+      setDeleteTarget(c);
+      toast(t("categories.deleteAgain").replace("{name}", c.name));
+      return;
+    }
+    setDeleteTarget(null);
     try {
       await api.deleteCategory(c.id);
       toast.success(t("toast.deleted"));
@@ -154,7 +167,7 @@ export default function CategoriesPage() {
                           <Button
                             variant="ghost"
                             size="icon"
-                            className="h-8 w-8 text-destructive disabled:opacity-30"
+                            className={`h-8 w-8 text-destructive disabled:opacity-30 ${deleteTarget?.id === c.id ? "bg-destructive/15" : ""}`}
                             disabled={c.is_seed}
                             onClick={() => remove(c)}
                           >

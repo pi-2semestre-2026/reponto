@@ -49,15 +49,13 @@ export function SaleCartDialog({ open, onOpenChange, marketId, products, onDone 
 
   const ready = products.filter((p) => p.status === "ready");
 
-  const addToCart = (p: Product) => {
-    setCart((c) => ({ ...c, [p.id]: (c[p.id] || 0) + 1 }));
-  };
+  const addToCart = (p: Product) => changeQty(p, 1);
   const changeQty = (p: Product, delta: number) => {
     setCart((c) => {
       const next = Math.max(0, (c[p.id] || 0) + delta);
       if (next > parseFloat(p.stock)) {
         toast.error(
-          `${t("common.error")}: ${p.name} — ${t("common.stock")} ${fmtNum(p.stock)}`
+          t("sale.noStock").replace("{name}", p.name).replace("{n}", fmtNum(p.stock))
         );
         return { ...c, [p.id]: parseFloat(p.stock) };
       }
@@ -71,7 +69,7 @@ export function SaleCartDialog({ open, onOpenChange, marketId, products, onDone 
     const v = parseFloat(raw) || 0;
     const max = parseFloat(p.stock);
     if (v > max) {
-      toast.error(`Estoque insuficiente para ${p.name}: ${fmtNum(p.stock)} disponível`);
+      toast.error(t("sale.noStock").replace("{name}", p.name).replace("{n}", fmtNum(p.stock)));
       setCart((c) => ({ ...c, [p.id]: max }));
       return;
     }
@@ -199,7 +197,7 @@ export function SaleCartDialog({ open, onOpenChange, marketId, products, onDone 
           <Button variant="outline" onClick={() => onOpenChange(false)}>
             {t("common.cancel")}
           </Button>
-          <Button variant="press" onClick={finish} disabled={cartItems.length === 0 || finishing}>
+          <Button variant="press" onClick={finish} disabled={cartItems.length === 0 || finishing || (retro && !retroDate)}>
             {finishing ? <Loader2 className="animate-spin" /> : <Badge variant="default" className="rounded-md px-1.5 text-[10px]">{cartItems.length}</Badge>}
             {t("sale.finish")}
           </Button>
