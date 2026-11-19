@@ -110,26 +110,28 @@ MONTHS_PT = ("janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho"
 
 
 def calendar_facts(blend: dict, cycle: int) -> dict:
-    """Próxima data comercial relevante dentro do ciclo (efeito de pelo menos 8%)."""
+    """Data comercial de MAIOR efeito dentro do ciclo (pelo menos 8%); empate fica com a mais próxima."""
     empty = {"data_destaque": None, "data_quando": None, "efeito_data_pct": None, "efeito_data_fonte": None}
     cal = blend.get("calendar") or {}
-    seen = set()
+    best = None
     for row in cal.get("upcoming", []):
         day = dt.date.fromisoformat(row["date"])
-        if (day - blend_today(blend)).days >= cycle or row["event"] in seen:
+        if (day - blend_today(blend)).days >= cycle:
             continue
-        seen.add(row["event"])
         pct = round((row["effect"] - 1) * 100)
-        if abs(pct) >= 8:
-            return {
-                "data_destaque": row["label"],
-                "data_quando": f"{fm.WEEKDAY_NAMES[day.weekday()]}, dia {day.day} de {MONTHS_PT[day.month - 1]}",
-                "data_dia": day.day,
-                "efeito_data_pct": abs(pct) if pct > -100 else 99,
-                "efeito_data_sinal": "mais" if pct > 0 else "menos",
-                "efeito_data_fonte": row["source"],
-            }
-    return empty
+        if abs(pct) >= 8 and (best is None or abs(pct) > abs(best[1])):
+            best = (row, pct, day)
+    if best is None:
+        return empty
+    row, pct, day = best
+    return {
+        "data_destaque": row["label"],
+        "data_quando": f"{fm.WEEKDAY_NAMES[day.weekday()]}, dia {day.day} de {MONTHS_PT[day.month - 1]}",
+        "data_dia": day.day,
+        "efeito_data_pct": abs(pct) if pct > -100 else 99,
+        "efeito_data_sinal": "mais" if pct > 0 else "menos",
+        "efeito_data_fonte": row["source"],
+    }
 
 
 def blend_today(blend: dict) -> dt.date:
