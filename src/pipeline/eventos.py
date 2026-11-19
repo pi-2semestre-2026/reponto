@@ -3,8 +3,11 @@
 Para cada categoria do app e cada tipo de data (pagamento, Natal, Carnaval, Dia das Mães...),
 quanto a venda do dia fica acima (ou abaixo) do "dia normal" equivalente:
 
-    efeito = venda do dia / média do mesmo dia da semana nas 4 semanas antes e 4 depois,
+    efeito = venda do dia / média do mesmo dia da semana nas 4 semanas ANTERIORES,
              sem contar outros dias de evento
+
+(Só as semanas anteriores: é o que o app conhece no momento de prever. A primeira versão usava
+também as semanas seguintes e inflava o efeito do fim de ano, porque janeiro é fraco.)
 
 A venda é somada por categoria entre todas as lojas abertas (série mais estável), e o efeito de
 cada evento é a mediana das ocorrências. Datas do Equador usadas como análogas das brasileiras:
@@ -16,10 +19,14 @@ cada evento é a mediana das ocorrências. Datas do Equador usadas como análoga
   black_friday     a sexta da Black Friday (2014-2016)
   feriado          outros feriados nacionais      vespera_feriado  véspera deles
 
-Validação: efeitos calculados só com datas ANTES do ano de teste; no ano de teste, a previsão
-"dia normal" (média do mesmo dia da semana nas 4 semanas anteriores) é comparada com a mesma
-previsão × efeito, nos dias de evento. Grava datasets/favorita/eventos.csv e
-reports/eventos_validacao.csv.
+Escolha sem olhar o teste (mesmo protocolo do modelo semanal):
+  1. efeito medido com as datas até ago/2015;
+  2. ano de VALIDAÇÃO (ago/2015-ago/2016): a data é ADOTADA se a previsão "dia normal x efeito"
+     erra menos que a previsão "dia normal" nos dias dessa data (somando as categorias);
+  3. ano de TESTE (ago/2016-ago/2017): só confirma o resultado das datas adotadas.
+Datas não adotadas entram com efeito 1,0 (o app aprende o efeito com as vendas da própria loja).
+O efeito exportado das datas adotadas usa todas as ocorrências. Grava datasets/favorita/eventos.csv
+e reports/eventos_validacao.csv.
 """
 
 import numpy as np
@@ -29,9 +36,10 @@ from pipeline.app_export import EXPORT_DIR, FAMILY_TO_CATEGORY, national_holiday
 from pipeline.config import REPORTS_DIR
 from pipeline.data import load_holidays, load_train
 
+VAL_START = pd.Timestamp("2015-08-17")
 TEST_START = pd.Timestamp("2016-08-15")
 ALL = "__all__"
-MIN_OCCURRENCES = 3
+MIN_OCCURRENCES = 2  # datas anuais de um dia (Natal, Ano Novo) têm 2 ocorrências no treino
 
 
 def event_days(holidays: pd.DataFrame, start: pd.Timestamp, end: pd.Timestamp) -> dict[str, set]:
@@ -98,47 +106,65 @@ def main() -> None:
     ev = event_days(holidays, start, end)
     any_event = set().union(*ev.values())
 
-    effects, validation = [], []
+    rows = []
     for category, g in cat.groupby("category"):
-        s = g.set_index("date")["sales"].asfreq("D")
-        flagged = pd.Series(s.index.isin(list(any_event)), index=s.index)
-        base_all = baseline(s, flagged, causal=False)
-        base_causal = baseline(s, flagged, causal=True)
-        ratio = s / base_all
+        s_ = g.set_index("date")["sales"].asfreq("D")
+        flagged = pd.Series(s_.index.isin(list(any_event)), index=s_.index)
+        base = baseline(s_, flagged, causal=True)
+        ok = (base > 0) & np.isfinite(base) & s_.notna()
         for name, days in ev.items():
-            idx = [d for d in days if d in ratio.index and np.isfinite(ratio.get(d, np.nan)) and base_all.get(d, 0) > 0]
-            train = [d for d in idx if d < TEST_START]
-            test = [d for d in idx if d >= TEST_START]
-            if len(train) < MIN_OCCURRENCES:
-                continue
-            effect_train = float(np.median(ratio.loc[train]))
-            effect_all = float(np.median(ratio.loc[idx]))
-            effects.append({"event": name, "category": category, "effect": round(effect_all, 4), "n": len(idx)})
-            test = [d for d in test if base_causal.get(d, 0) > 0 and np.isfinite(base_causal.get(d, np.nan))]
-            if test:
-                y, b = s.loc[test].to_numpy(), base_causal.loc[test].to_numpy()
-                validation.append({
-                    "event": name, "category": category, "test_days": len(test), "effect_train": round(effect_train, 3),
-                    "abs_err_without": float(np.abs(b - y).sum()), "abs_err_with": float(np.abs(b * effect_train - y).sum()),
-                    "sales": float(y.sum()),
-                })
+            for d in days:
+                if d in ok.index and ok.loc[d]:
+                    period = "treino" if d < VAL_START else ("validacao" if d < TEST_START else "teste")
+                    rows.append({"event": name, "category": category, "date": d, "period": period,
+                                 "sales": float(s_.loc[d]), "base": float(base.loc[d])})
+    obs = pd.DataFrame(rows)
+    obs["ratio"] = obs["sales"] / obs["base"]
 
-    eff = pd.DataFrame(effects).sort_values(["event", "category"])
-    EXPORT_DIR.mkdir(parents=True, exist_ok=True)
-    eff.to_csv(EXPORT_DIR / "eventos.csv", index=False)
+    def effect_from(frame):
+        return frame.groupby(["event", "category"])["ratio"].agg(["median", "size"]).reset_index()
 
-    val = pd.DataFrame(validation)
+    def score(frame, effects):
+        f = frame.merge(effects, on=["event", "category"], how="inner")
+        f = f[f["category"] != ALL]
+        out = f.assign(e0=(f["base"] - f["sales"]).abs(), e1=(f["base"] * f["median"] - f["sales"]).abs())
+        return out.groupby("event")[["e0", "e1", "sales"]].sum().assign(dias=out.groupby("event").size())
+
+    train_eff = effect_from(obs[obs["period"] == "treino"])
+    train_eff = train_eff[train_eff["size"] >= MIN_OCCURRENCES]
+    val = score(obs[obs["period"] == "validacao"], train_eff)
+    adopted = sorted(val.index[val["e1"] < val["e0"]])
+
+    trainval_eff = effect_from(obs[obs["period"] != "teste"])
+    test = score(obs[obs["period"] == "teste"], trainval_eff)
+
+    report = pd.DataFrame({
+        "dias_validacao": val["dias"],
+        "WAPE_validacao_sem_%": 100 * val["e0"] / val["sales"],
+        "WAPE_validacao_com_%": 100 * val["e1"] / val["sales"],
+        "adotado": [e in adopted for e in val.index],
+    }).join(pd.DataFrame({
+        "dias_teste": test["dias"],
+        "WAPE_teste_sem_%": 100 * test["e0"] / test["sales"],
+        "WAPE_teste_com_%": 100 * test["e1"] / test["sales"],
+    }), how="left")
     REPORTS_DIR.mkdir(parents=True, exist_ok=True)
-    val.to_csv(REPORTS_DIR / "eventos_validacao.csv", index=False)
-    by_event = val[val["category"] != ALL].groupby("event")[["abs_err_without", "abs_err_with", "sales", "test_days"]].sum()
-    by_event["WAPE sem efeito %"] = 100 * by_event["abs_err_without"] / by_event["sales"]
-    by_event["WAPE com efeito %"] = 100 * by_event["abs_err_with"] / by_event["sales"]
-    tot = by_event[["abs_err_without", "abs_err_with", "sales"]].sum()
-    print("Efeito (todas as categorias):")
-    print(eff[eff["category"] == ALL].set_index("event")[["effect", "n"]].to_string())
-    print("\nValidação no ano de teste (dias de evento, por categoria somadas):")
-    print(by_event[["test_days", "WAPE sem efeito %", "WAPE com efeito %"]].round(1).to_string())
-    print(f"\nTOTAL: sem efeito {100 * tot.abs_err_without / tot.sales:.1f}% | com efeito {100 * tot.abs_err_with / tot.sales:.1f}%")
+    report.round(2).to_csv(REPORTS_DIR / "eventos_validacao.csv")
+
+    final = effect_from(obs).rename(columns={"median": "effect", "size": "n"})
+    final["adopted"] = final["event"].isin(adopted)
+    final.loc[~final["adopted"], "effect"] = 1.0
+    final["effect"] = final["effect"].round(4)
+    EXPORT_DIR.mkdir(parents=True, exist_ok=True)
+    final.sort_values(["event", "category"]).to_csv(EXPORT_DIR / "eventos.csv", index=False)
+
+    print("Escolha na validação e confirmação no teste (WAPE nos dias de cada data, %):")
+    print(report.round(1).to_string())
+    a = test.loc[[e for e in adopted if e in test.index and e != "ano_novo"]]
+    print(f"\nTeste, datas adotadas (sem Ano Novo, que sem efeito erra ~100x a venda do dia): "
+          f"sem efeito {100 * a.e0.sum() / a.sales.sum():.1f}% | com efeito {100 * a.e1.sum() / a.sales.sum():.1f}%")
+    print("\nEfeito exportado (todas as categorias):")
+    print(final[final["category"] == ALL].set_index("event")[["effect", "n", "adopted"]].to_string())
 
 
 if __name__ == "__main__":

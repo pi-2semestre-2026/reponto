@@ -1,151 +1,166 @@
-event,category,effect,n
-ano_novo,Bebidas,0.0201,5
-ano_novo,Carnes e Aves,0.009,5
-ano_novo,Congelados e Frios,0.0275,5
-ano_novo,Diversos,0.0184,5
-ano_novo,Festa e Papelaria,0.017,4
-ano_novo,Higiene e Beleza,0.006,5
-ano_novo,Hortifrúti,0.0107,4
-ano_novo,Lar e Cozinha,0.0257,5
-ano_novo,Laticínios e Ovos,0.0109,5
-ano_novo,Limpeza,0.006,5
-ano_novo,Mercearia,0.0067,5
-ano_novo,Padaria,0.0133,5
-ano_novo,Peixes e Frutos do Mar,0.0094,5
-ano_novo,Pet e Bebê,0.0088,4
-ano_novo,__all__,0.0116,5
-carnaval,Bebidas,1.0231,20
-carnaval,Carnes e Aves,0.9627,20
-carnaval,Congelados e Frios,1.0198,20
-carnaval,Diversos,1.2181,20
-carnaval,Festa e Papelaria,1.2173,12
-carnaval,Higiene e Beleza,0.9635,20
-carnaval,Hortifrúti,1.2008,16
-carnaval,Lar e Cozinha,1.1467,20
-carnaval,Laticínios e Ovos,0.9153,20
-carnaval,Limpeza,0.9776,20
-carnaval,Mercearia,0.958,20
-carnaval,Padaria,0.8902,20
-carnaval,Peixes e Frutos do Mar,0.9117,20
-carnaval,Pet e Bebê,1.2741,12
-carnaval,__all__,0.9672,20
-dia_das_maes,Bebidas,0.9165,15
-dia_das_maes,Carnes e Aves,1.0312,15
-dia_das_maes,Congelados e Frios,1.0589,15
-dia_das_maes,Diversos,1.1152,15
-dia_das_maes,Festa e Papelaria,0.9061,9
-dia_das_maes,Higiene e Beleza,0.8846,15
-dia_das_maes,Hortifrúti,1.2002,15
-dia_das_maes,Lar e Cozinha,0.8591,15
-dia_das_maes,Laticínios e Ovos,1.041,15
-dia_das_maes,Limpeza,0.9726,15
-dia_das_maes,Mercearia,0.9983,15
-dia_das_maes,Padaria,0.96,15
-dia_das_maes,Peixes e Frutos do Mar,1.0653,15
-dia_das_maes,Pet e Bebê,0.9156,9
-dia_das_maes,__all__,0.9862,15
-feriado,Bebidas,1.208,34
-feriado,Carnes e Aves,1.091,34
-feriado,Congelados e Frios,1.2838,34
-feriado,Diversos,1.3188,34
-feriado,Festa e Papelaria,1.0263,26
-feriado,Higiene e Beleza,1.3941,34
-feriado,Hortifrúti,1.1207,34
-feriado,Lar e Cozinha,1.228,34
-feriado,Laticínios e Ovos,1.2144,34
-feriado,Limpeza,1.2488,34
-feriado,Mercearia,1.2391,34
-feriado,Padaria,1.119,34
-feriado,Peixes e Frutos do Mar,1.1111,34
-feriado,Pet e Bebê,1.3632,26
-feriado,__all__,1.2018,34
-pagamento,Bebidas,1.0489,331
-pagamento,Carnes e Aves,1.0603,331
-pagamento,Congelados e Frios,1.0603,331
-pagamento,Diversos,1.0499,331
-pagamento,Festa e Papelaria,0.9924,245
-pagamento,Higiene e Beleza,1.0966,331
-pagamento,Hortifrúti,1.0392,322
-pagamento,Lar e Cozinha,1.0532,331
-pagamento,Laticínios e Ovos,1.0569,331
-pagamento,Limpeza,1.0706,331
-pagamento,Mercearia,1.0676,331
-pagamento,Padaria,1.0495,331
-pagamento,Peixes e Frutos do Mar,1.0725,331
-pagamento,Pet e Bebê,1.0819,236
-pagamento,__all__,1.0575,331
-pascoa,Bebidas,1.0052,15
-pascoa,Carnes e Aves,0.8541,15
-pascoa,Congelados e Frios,1.0458,15
-pascoa,Diversos,1.0017,15
-pascoa,Festa e Papelaria,0.6783,12
-pascoa,Higiene e Beleza,1.0146,15
-pascoa,Hortifrúti,1.1398,15
-pascoa,Lar e Cozinha,0.9972,15
-pascoa,Laticínios e Ovos,1.0224,15
-pascoa,Limpeza,0.9228,15
-pascoa,Mercearia,0.9945,15
-pascoa,Padaria,0.9498,15
-pascoa,Peixes e Frutos do Mar,1.0542,15
-pascoa,Pet e Bebê,0.8413,9
-pascoa,__all__,0.9666,15
-reveillon,Bebidas,1.4913,4
-reveillon,Carnes e Aves,1.1249,4
-reveillon,Congelados e Frios,1.9214,4
-reveillon,Diversos,1.4569,4
-reveillon,Festa e Papelaria,0.9754,4
-reveillon,Higiene e Beleza,1.0784,4
-reveillon,Hortifrúti,1.5434,4
-reveillon,Lar e Cozinha,1.5132,4
-reveillon,Laticínios e Ovos,1.2267,4
-reveillon,Limpeza,1.1748,4
-reveillon,Mercearia,1.1412,4
-reveillon,Padaria,1.0673,4
-reveillon,Peixes e Frutos do Mar,0.8247,4
-reveillon,Pet e Bebê,0.9876,4
-reveillon,__all__,1.3049,4
-semana_natal,Bebidas,1.1385,24
-semana_natal,Carnes e Aves,1.0905,24
-semana_natal,Congelados e Frios,2.7947,24
-semana_natal,Diversos,1.3388,24
-semana_natal,Festa e Papelaria,1.5568,24
-semana_natal,Higiene e Beleza,1.0981,24
-semana_natal,Hortifrúti,1.1157,24
-semana_natal,Lar e Cozinha,1.3742,24
-semana_natal,Laticínios e Ovos,1.1449,24
-semana_natal,Limpeza,1.1611,24
-semana_natal,Mercearia,1.4605,24
-semana_natal,Padaria,1.0285,24
-semana_natal,Peixes e Frutos do Mar,0.9007,24
-semana_natal,Pet e Bebê,1.1927,24
-semana_natal,__all__,1.327,24
-vespera_feriado,Bebidas,1.0579,34
-vespera_feriado,Carnes e Aves,1.0055,34
-vespera_feriado,Congelados e Frios,1.0515,34
-vespera_feriado,Diversos,1.0701,34
-vespera_feriado,Festa e Papelaria,1.0135,26
-vespera_feriado,Higiene e Beleza,0.9774,34
-vespera_feriado,Hortifrúti,0.9856,34
-vespera_feriado,Lar e Cozinha,1.0279,34
-vespera_feriado,Laticínios e Ovos,1.0137,34
-vespera_feriado,Limpeza,0.987,34
-vespera_feriado,Mercearia,1.03,34
-vespera_feriado,Padaria,0.975,34
-vespera_feriado,Peixes e Frutos do Mar,0.9751,34
-vespera_feriado,Pet e Bebê,0.979,26
-vespera_feriado,__all__,1.0348,34
-vespera_natal,Bebidas,1.4167,4
-vespera_natal,Carnes e Aves,1.3262,4
-vespera_natal,Congelados e Frios,3.137,4
-vespera_natal,Diversos,1.733,4
-vespera_natal,Festa e Papelaria,1.5317,4
-vespera_natal,Higiene e Beleza,1.1805,4
-vespera_natal,Hortifrúti,1.6111,4
-vespera_natal,Lar e Cozinha,1.9133,4
-vespera_natal,Laticínios e Ovos,1.355,4
-vespera_natal,Limpeza,1.2897,4
-vespera_natal,Mercearia,1.6528,4
-vespera_natal,Padaria,0.9926,4
-vespera_natal,Peixes e Frutos do Mar,0.6058,4
-vespera_natal,Pet e Bebê,1.0439,4
-vespera_natal,__all__,1.5375,4
+event,category,effect,n,adopted
+ano_novo,Bebidas,0.0319,4,True
+ano_novo,Carnes e Aves,0.0118,4,True
+ano_novo,Congelados e Frios,0.0258,4,True
+ano_novo,Diversos,0.021,4,True
+ano_novo,Festa e Papelaria,0.0088,3,True
+ano_novo,Higiene e Beleza,0.0122,4,True
+ano_novo,Hortifrúti,0.0187,4,True
+ano_novo,Lar e Cozinha,0.0313,4,True
+ano_novo,Laticínios e Ovos,0.0203,4,True
+ano_novo,Limpeza,0.0108,4,True
+ano_novo,Mercearia,0.0108,4,True
+ano_novo,Padaria,0.0235,4,True
+ano_novo,Peixes e Frutos do Mar,0.0099,4,True
+ano_novo,Pet e Bebê,0.0086,3,True
+ano_novo,__all__,0.0173,4,True
+black_friday,Bebidas,1.0,3,False
+black_friday,Carnes e Aves,1.0,3,False
+black_friday,Congelados e Frios,1.0,3,False
+black_friday,Diversos,1.0,3,False
+black_friday,Festa e Papelaria,1.0,3,False
+black_friday,Higiene e Beleza,1.0,3,False
+black_friday,Hortifrúti,1.0,3,False
+black_friday,Lar e Cozinha,1.0,3,False
+black_friday,Laticínios e Ovos,1.0,3,False
+black_friday,Limpeza,1.0,3,False
+black_friday,Mercearia,1.0,3,False
+black_friday,Padaria,1.0,3,False
+black_friday,Peixes e Frutos do Mar,1.0,3,False
+black_friday,Pet e Bebê,1.0,3,False
+black_friday,__all__,1.0,3,False
+carnaval,Bebidas,1.0,20,False
+carnaval,Carnes e Aves,1.0,20,False
+carnaval,Congelados e Frios,1.0,20,False
+carnaval,Diversos,1.0,20,False
+carnaval,Festa e Papelaria,1.0,8,False
+carnaval,Higiene e Beleza,1.0,20,False
+carnaval,Hortifrúti,1.0,16,False
+carnaval,Lar e Cozinha,1.0,20,False
+carnaval,Laticínios e Ovos,1.0,20,False
+carnaval,Limpeza,1.0,20,False
+carnaval,Mercearia,1.0,20,False
+carnaval,Padaria,1.0,20,False
+carnaval,Peixes e Frutos do Mar,1.0,20,False
+carnaval,Pet e Bebê,1.0,8,False
+carnaval,__all__,1.0,20,False
+dia_das_maes,Bebidas,1.0,15,False
+dia_das_maes,Carnes e Aves,1.0,15,False
+dia_das_maes,Congelados e Frios,1.0,15,False
+dia_das_maes,Diversos,1.0,15,False
+dia_das_maes,Festa e Papelaria,1.0,9,False
+dia_das_maes,Higiene e Beleza,1.0,15,False
+dia_das_maes,Hortifrúti,1.0,15,False
+dia_das_maes,Lar e Cozinha,1.0,15,False
+dia_das_maes,Laticínios e Ovos,1.0,15,False
+dia_das_maes,Limpeza,1.0,15,False
+dia_das_maes,Mercearia,1.0,15,False
+dia_das_maes,Padaria,1.0,15,False
+dia_das_maes,Peixes e Frutos do Mar,1.0,15,False
+dia_das_maes,Pet e Bebê,1.0,6,False
+dia_das_maes,__all__,1.0,15,False
+feriado,Bebidas,1.2523,34,True
+feriado,Carnes e Aves,1.0993,34,True
+feriado,Congelados e Frios,1.2601,34,True
+feriado,Diversos,1.3347,34,True
+feriado,Festa e Papelaria,1.0075,25,True
+feriado,Higiene e Beleza,1.3547,34,True
+feriado,Hortifrúti,1.1808,34,True
+feriado,Lar e Cozinha,1.2793,34,True
+feriado,Laticínios e Ovos,1.225,34,True
+feriado,Limpeza,1.233,34,True
+feriado,Mercearia,1.1782,34,True
+feriado,Padaria,1.1176,34,True
+feriado,Peixes e Frutos do Mar,1.1262,34,True
+feriado,Pet e Bebê,1.4402,23,True
+feriado,__all__,1.2038,34,True
+pagamento,Bebidas,1.059,331,True
+pagamento,Carnes e Aves,1.0661,331,True
+pagamento,Congelados e Frios,1.0674,331,True
+pagamento,Diversos,1.0643,331,True
+pagamento,Festa e Papelaria,1.0481,221,True
+pagamento,Higiene e Beleza,1.1156,331,True
+pagamento,Hortifrúti,1.0422,316,True
+pagamento,Lar e Cozinha,1.0564,331,True
+pagamento,Laticínios e Ovos,1.0729,331,True
+pagamento,Limpeza,1.0739,331,True
+pagamento,Mercearia,1.0908,331,True
+pagamento,Padaria,1.0503,331,True
+pagamento,Peixes e Frutos do Mar,1.0649,331,True
+pagamento,Pet e Bebê,1.0915,211,True
+pagamento,__all__,1.0716,331,True
+pascoa,Bebidas,1.0,15,False
+pascoa,Carnes e Aves,1.0,15,False
+pascoa,Congelados e Frios,1.0,15,False
+pascoa,Diversos,1.0,15,False
+pascoa,Festa e Papelaria,1.0,9,False
+pascoa,Higiene e Beleza,1.0,15,False
+pascoa,Hortifrúti,1.0,15,False
+pascoa,Lar e Cozinha,1.0,15,False
+pascoa,Laticínios e Ovos,1.0,15,False
+pascoa,Limpeza,1.0,15,False
+pascoa,Mercearia,1.0,15,False
+pascoa,Padaria,1.0,15,False
+pascoa,Peixes e Frutos do Mar,1.0,15,False
+pascoa,Pet e Bebê,1.0,9,False
+pascoa,__all__,1.0,15,False
+reveillon,Bebidas,1.0,4,False
+reveillon,Carnes e Aves,1.0,4,False
+reveillon,Congelados e Frios,1.0,4,False
+reveillon,Diversos,1.0,4,False
+reveillon,Festa e Papelaria,1.0,3,False
+reveillon,Higiene e Beleza,1.0,4,False
+reveillon,Hortifrúti,1.0,4,False
+reveillon,Lar e Cozinha,1.0,4,False
+reveillon,Laticínios e Ovos,1.0,4,False
+reveillon,Limpeza,1.0,4,False
+reveillon,Mercearia,1.0,4,False
+reveillon,Padaria,1.0,4,False
+reveillon,Peixes e Frutos do Mar,1.0,4,False
+reveillon,Pet e Bebê,1.0,3,False
+reveillon,__all__,1.0,4,False
+semana_natal,Bebidas,1.2185,24,True
+semana_natal,Carnes e Aves,1.1057,24,True
+semana_natal,Congelados e Frios,2.9436,24,True
+semana_natal,Diversos,1.3142,24,True
+semana_natal,Festa e Papelaria,1.6018,18,True
+semana_natal,Higiene e Beleza,1.2089,24,True
+semana_natal,Hortifrúti,1.1893,24,True
+semana_natal,Lar e Cozinha,1.5196,24,True
+semana_natal,Laticínios e Ovos,1.1928,24,True
+semana_natal,Limpeza,1.2205,24,True
+semana_natal,Mercearia,1.4306,24,True
+semana_natal,Padaria,1.0588,24,True
+semana_natal,Peixes e Frutos do Mar,0.9531,24,True
+semana_natal,Pet e Bebê,1.2777,18,True
+semana_natal,__all__,1.3771,24,True
+vespera_feriado,Bebidas,1.0,34,False
+vespera_feriado,Carnes e Aves,1.0,34,False
+vespera_feriado,Congelados e Frios,1.0,34,False
+vespera_feriado,Diversos,1.0,34,False
+vespera_feriado,Festa e Papelaria,1.0,25,False
+vespera_feriado,Higiene e Beleza,1.0,34,False
+vespera_feriado,Hortifrúti,1.0,34,False
+vespera_feriado,Lar e Cozinha,1.0,34,False
+vespera_feriado,Laticínios e Ovos,1.0,34,False
+vespera_feriado,Limpeza,1.0,34,False
+vespera_feriado,Mercearia,1.0,34,False
+vespera_feriado,Padaria,1.0,34,False
+vespera_feriado,Peixes e Frutos do Mar,1.0,34,False
+vespera_feriado,Pet e Bebê,1.0,23,False
+vespera_feriado,__all__,1.0,34,False
+vespera_natal,Bebidas,1.5181,4,True
+vespera_natal,Carnes e Aves,1.3284,4,True
+vespera_natal,Congelados e Frios,2.8072,4,True
+vespera_natal,Diversos,1.6382,4,True
+vespera_natal,Festa e Papelaria,1.1779,3,True
+vespera_natal,Higiene e Beleza,1.2275,4,True
+vespera_natal,Hortifrúti,1.7077,4,True
+vespera_natal,Lar e Cozinha,2.1384,4,True
+vespera_natal,Laticínios e Ovos,1.3695,4,True
+vespera_natal,Limpeza,1.3478,4,True
+vespera_natal,Mercearia,1.5143,4,True
+vespera_natal,Padaria,1.0238,4,True
+vespera_natal,Peixes e Frutos do Mar,0.6414,4,True
+vespera_natal,Pet e Bebê,1.1503,3,True
+vespera_natal,__all__,1.5128,4,True
