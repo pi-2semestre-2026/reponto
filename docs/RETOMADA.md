@@ -92,58 +92,33 @@ Ideia: recalibrar o multiplicador da margem de 95% com o erro de cada loja, refa
 - **Conclusão:** o erro muda ao longo do ano, e calibrar com poucos meses de uma loja é arriscado. A calibração geral (um ano inteiro de 4.000 séries) se transfere bem e fica.
 - **Possível evolução:** acompanhar a cobertura medida em cada loja e só *aumentar* a margem com evidência longa (≥ 1 ano), sem nunca reduzi-la.
 
-## ⏸ PAUSA em 2026-11-15 — LEIA ISTO PRIMEIRO
+## ✅ Calendário comercial e acabamento — concluídos em 2026-11-18
 
-### Pedido do usuário em andamento (texto dele)
-> "Pode começar pelo 1 [regerar o mercado da demonstração], quero deixar o Reponto o mais completo e profissional possível para apresentação em banca. Além disso quero personalizar mais as variações para um escopo muito maior, como por exemplo, quando o VR caiu, então a demanda é maior, ou quando é ano novo, etc. Além disso analisar todo o acabamento do projeto por completo, para deixar 100% funcional e o mais completo possível quanto à visão de negócio. Pode fazer todos os push também."
+Pedido do usuário (2026-11-15): regenerar a demo, ampliar as variações (VR, salário, Ano Novo...) e revisar
+todo o acabamento e a visão de negócio, com push. Tudo feito na branch `pipeline-ml`:
 
-O usuário autorizou fazer os pushes desta tarefa.
+| Commit | O quê |
+|---|---|
+| `dae538e` | Efeito das datas comerciais medido no Favorita com protocolo validação/teste (`python -m pipeline.eventos`). Dias de evento: erro 16,8% → 14,1% no teste. |
+| `08d57eb` | Calendário no app (`backend/app/services/calendario.py`): salário, adiantamento, VR/VA (`Market.vr_day`), Natal, Ano Novo, Carnaval, Páscoa, Mães/Pais, Black Friday, feriados. Cada loja aprende o próprio efeito. Painel, explicador, laboratório e demo. Lucro do laboratório virou lucro bruto. |
+| `f496999` | `.dockerignore` (o build copiava o `node_modules` do Windows por cima do Linux). |
+| `6cd8111` | Painel com lucro bruto/margem, dinheiro em estoque, excesso e esgotados; lista de compras em planilha e impressão. |
+| `2e02118` | Auditoria do frontend: 8 travamentos/erros, proteção de login, confirmações, carrinho, textos pt/en. |
 
-### Estado no momento da pausa
-- Branch `pipeline-ml`, em dia com o remoto até `3ad90c3`.
-- **O mercado da demonstração está INCOMPLETO:** a geração foi interrompida (~1.000 de ~4.700 vendas). Antes de qualquer demo, apague os mercados da conta `banca@reponto.com.br` (`DELETE /markets/{id}`) e rode `python scripts/popular_demo.py --email banca@reponto.com.br --name "Banca Reponto" --days 91`. Depois do conserto de desempenho deve levar bem menos que 1 h; cronometre.
-- **WIP não validado:** `src/pipeline/eventos.py`, `datasets/favorita/eventos.csv` e `reports/eventos_validacao.csv` (calendário comercial, passo 2 abaixo).
+Validação do calendário no laboratório (`scripts/experimentos/ab_calendario.py`, 8 sementes): −10% dias de falta,
+−13% venda perdida, lucro empatado em 3 meses; em 1 ano a IA aprende salário da cerveja 1,41 (real 1,45) e VR do
+leite 1,34 (real 1,35). Feriado aprende devagar (poucos por ano). Placar do laboratório (3 sementes, lucro bruto):
+Reponto +15% de lucro, 41 × 102 dias de falta, com o dobro de estoque médio.
 
-### Passo 2 — Calendário comercial (em andamento)
-Desenho decidido:
-1. **Datas brasileiras** em `backend/app/services/calendario.py` (novo):
-   - salário (5º dia útil, mais os 2 dias seguintes);
-   - adiantamento (dia 20, mais o dia seguinte);
-   - VR/VA (dia configurável por mercado; campo novo `Market.vr_day` via `COLUMN_PATCHES` no `bootstrap.py`; 0 = desligado);
-   - semana do Natal (18–23/12), véspera de Natal, Réveillon, Ano Novo;
-   - Carnaval (sáb–ter), Páscoa (qui–sáb), Dia das Mães (sex–dom do 2º domingo de maio), Dia dos Pais (agosto), Black Friday;
-   - feriado e véspera de feriado (usar `weekly_model.br_national_holidays`).
-2. **Efeito de partida por categoria** medido no Favorita (`python -m pipeline.eventos` → `datasets/favorita/eventos.csv`), com as datas análogas do Equador: pagamento nos dias 15 e último do mês, Natal, Carnaval, Sexta Santa, Dia de la Madre, Black Friday. **Pendente: corrigir o método.**
-   - Problema: o efeito ainda é medido contra as semanas antes **e depois** da data, mas o app só conhece as anteriores. Isso infla o fim de ano (véspera de Natal e Réveillon pioraram na validação).
-   - Correção: medir contra as 4 semanas **anteriores** (usar `base_causal` para `ratio`) e tirar o Ano Novo do total da validação. Meu patch falhou no último `replace` e o arquivo **não foi alterado**.
-   - Resultado da primeira rodada, ainda viciado: total 19,1% → 16,3% nos dias de evento. Feriado 24,6 → 17,2; semana do Natal 28,9 → 15,7; pagamento 14,3 → 13,3; Carnaval e véspera de Natal pioraram.
-   - **Só adotar** os eventos que melhorarem no teste; os outros ficam com efeito 1,0, e a loja aprende.
-3. **Cada loja aprende o próprio efeito:**
-   - `efeito_loja = (n·observado + k·referência)/(n + k)`, com `n` = dias de evento já vistos e `k` ≈ 6.
-   - O "observado" é a venda do dia ÷ a venda esperada (ritmo da semana × nível recente).
-   - Usar a demanda já corrigida para o esgotamento (`uncensor`).
-4. **Aplicar na projeção diária** (`forecast_math.project`):
-   - multiplicador por dia, produto dos eventos do dia, com teto de 3×;
-   - no caminho **modelo**, os eventos que o modelo semanal já enxerga (feriados, semana do ano/Natal) só redistribuem dentro da semana, mantendo o total previsto;
-   - pagamento, VR, Dia das Mães/Pais e Black Friday somam por cima;
-   - no caminho **regra**, tudo multiplica.
-5. **Sincronia:** `simulator/brain.py`, `simulator/lab.py` e o laboratório precisam usar o mesmo calendário.
-6. **Laboratório:** a realidade ganha o VR (por exemplo, mercearia e bebidas +35% nos 3 dias após o dia do VR) e o salário. Mostrar "efeito do VR aprendido × real" no cartão do produto.
-7. **Interface:**
-   - painel do produto com a lista "Próximas datas que mexem neste produto" (data, nome, +x%, fonte loja/referência);
-   - configurações do mercado com o campo "dia do VR/VA";
-   - explicação em texto citando a próxima data relevante do ciclo;
-   - i18n pt/en.
-8. **Demonstração:** `popular_demo.py` aplica efeitos de salário, VR e feriado nas vendas geradas, para o painel mostrar o efeito aprendido. Regerar a demonstração **depois** disso.
+Demo da banca regenerada em 2026-11-18 (`popular_demo.py`, 27 min para ~4.760 vendas), já com custos e efeitos de calendário.
+Atenção: `docker compose up -d --build frontend` também reinicia o backend; não rode durante a geração da demo.
 
-### Passo 3 — Revisão completa de acabamento e negócio (não iniciada)
-Percorrer todas as telas (painel, mercados, produto, lista de compras, vendas, categorias, importação, `/modelo`, `/laboratorio`, simulador, caixa). Procurar erros, textos, estados vazios, tempo de resposta, consistência pt/en e lacunas de negócio, por exemplo:
-- custo/margem nos relatórios e valor do estoque parado;
-- alertas de validade;
-- exportar a lista de compras;
-- fornecedores e prazo de entrega (*lead time*, campo novo previsto na Fase 4 do PLANO_ML).
-
-Corrigir, testar no Docker, rodar os testes do caixa e do pipeline, atualizar `CLAUDE.md`, `docs/BANCA.md` e esta página, e dar push.
+### O que ficou de fora (se houver tempo)
+- Fornecedores e prazo de entrega (*lead time*) por produto; alertas de validade.
+- Custo histórico no item de venda (hoje o lucro bruto usa o custo atual do produto).
+- Itens menores da auditoria: textos que vêm do backend só em pt (laboratório, `/modelo`, motivos do histórico),
+  rótulos técnicos da tabela de histórico do painel (Prior/Obs./α), formato de data nos gráficos do simulador,
+  estado de erro em `/categories`, `/modelo` e lista de compras (hoje só aviso).
 
 ### Lembretes operacionais
 - **Docker Desktop:** se `docker info` falhar, abra `"%LOCALAPPDATA%\Programs\DockerDesktop\Docker Desktop.exe"`.

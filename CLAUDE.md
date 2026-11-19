@@ -41,7 +41,8 @@ docker compose down -v                 # CUIDADO: apaga banco e modelo treinado
 
 - Frontend: http://localhost:3000 — Backend: http://localhost:8000 (docs em `/docs`) — Health: `GET /health`.
 - Não existe fluxo de dev local fora do Docker documentado. O backend assume `DATASET_DIR=/datasets` e `ML_MODEL_PATH=/app/ml_data/model.txt`; o frontend roda `next build` + `node server.js`.
-- Reconstruir só um serviço: `docker compose up -d --build frontend` (ou `backend`).
+- Reconstruir só um serviço: `docker compose up -d --build frontend` (ou `backend`). Atenção: subir o frontend também recria o backend se a imagem dele mudou; não faça isso durante `popular_demo.py`.
+- Há `.dockerignore` em `backend/` e `frontend/` (sem ele o `COPY . .` levava o `node_modules` do Windows para a imagem).
 - Windows: o Docker Desktop precisa estar aberto (`docker info` falha se o daemon estiver parado).
 
 ### Variáveis de ambiente (`.env` na raiz; modelo em `.env.example`)
@@ -136,7 +137,7 @@ reponto/
 | `PATCH/DELETE /products/{id}`, `POST /products/{id}/stock`, `GET /products/{id}/learning` | stock não pode ficar negativo; `learning` devolve fórmula, evolução e últimos 50 logs |
 | `POST /sales`, `GET /sales`, `GET /sales/{id}`, `POST /sales/{id}/cancel`, `GET /sales/stats/count` | ver §4.5 |
 | `GET/POST/PATCH/DELETE /categories` | ver acima |
-| `GET /analytics?date_from&date_to&market_id` | KPIs do período vs. período anterior, top produtos, receita/estoque por categoria, série diária, alertas de estoque baixo, visão por mercado. Default: últimos 30 dias |
+| `GET /analytics?date_from&date_to&market_id` | KPIs do período vs. período anterior, top produtos, receita/estoque por categoria, série diária, alertas de estoque baixo, visão por mercado, `profit` (lucro bruto = vendas − quantidade × custo atual do produto; `coverage_pct` = parte do faturamento com custo cadastrado) e `inventory` (estoque a custo, excesso acima do máximo, esgotados). Default: últimos 30 dias |
 | `POST /markets/{id}/import/preview`, `POST /markets/{id}/import`, `GET /markets/{id}/imports` | upload multipart (`file`). Ver §4.8 |
 | `GET /markets/{id}/purchase-list`, `POST /markets/{id}/purchases` | lista de compras (ponto de pedido + reposição até o recomendado) e registro de recebimento (sobe estoque, recalcula com trigger `purchase`) |
 | `GET /products/{id}/explanation?refresh=` | explicação em PT-BR verificada. Ver §4.9 |
