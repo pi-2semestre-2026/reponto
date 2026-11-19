@@ -161,9 +161,9 @@ export function LearningPanelDialog({
                       <ReTooltip
                         contentStyle={{ borderRadius: 12, border: "1px solid hsl(var(--border))", background: "hsl(var(--popover))" }}
                       />
-                      <Line type="monotone" dataKey="final_rate" name="final" stroke="hsl(var(--ponto))" strokeWidth={2.5} dot={false} />
-                      <Line type="monotone" dataKey="observed_rate" name="obs" stroke="hsl(var(--chart-1))" strokeWidth={1.5} dot={false} strokeDasharray="4 3" />
-                      <Line type="monotone" dataKey="prior_rate" name="prior" stroke="hsl(150 10% 60%)" strokeWidth={1.5} dot={false} strokeDasharray="4 3" />
+                      <Line type="monotone" dataKey="final_rate" name={t("aiPanel.col.final")} stroke="hsl(var(--ponto))" strokeWidth={2.5} dot={false} />
+                      <Line type="monotone" dataKey="observed_rate" name={t("aiPanel.col.observed")} stroke="hsl(var(--chart-1))" strokeWidth={1.5} dot={false} strokeDasharray="4 3" />
+                      <Line type="monotone" dataKey="prior_rate" name={t("aiPanel.col.prior")} stroke="hsl(150 10% 60%)" strokeWidth={1.5} dot={false} strokeDasharray="4 3" />
                     </LineChart>
                   </ResponsiveContainer>
                 </div>
@@ -193,11 +193,11 @@ export function LearningPanelDialog({
                   <TableHeader>
                     <TableRow>
                       <TableHead className="w-[130px]">{t("aiPanel.reason")}</TableHead>
-                      <TableHead>Prior</TableHead>
-                      <TableHead>Obs.</TableHead>
-                      <TableHead>α</TableHead>
-                      <TableHead>Final</TableHead>
-                      <TableHead>n</TableHead>
+                      <TableHead>{t("aiPanel.col.prior")}</TableHead>
+                      <TableHead>{t("aiPanel.col.observed")}</TableHead>
+                      <TableHead>{t("aiPanel.col.weight")}</TableHead>
+                      <TableHead>{t("aiPanel.col.final")}</TableHead>
+                      <TableHead>{t("aiPanel.col.sales")}</TableHead>
                       <TableHead className="w-[140px]">{t("common.stock")}</TableHead>
                     </TableRow>
                   </TableHeader>
@@ -226,13 +226,13 @@ export function LearningPanelDialog({
                               </span>
                             </span>
                           </TableCell>
-                          <TableCell className="text-xs">{log.prior_rate.toFixed(3)}</TableCell>
-                          <TableCell className="text-xs">{log.observed_rate.toFixed(3)}</TableCell>
-                          <TableCell className="text-xs">{log.alpha.toFixed(2)}</TableCell>
-                          <TableCell className="text-xs font-bold text-primary">{log.final_rate.toFixed(3)}</TableCell>
+                          <TableCell className="text-xs">{fmtNum(Math.round(log.prior_rate * 100) / 100)}</TableCell>
+                          <TableCell className="text-xs">{fmtNum(Math.round(log.observed_rate * 100) / 100)}</TableCell>
+                          <TableCell className="text-xs">{Math.round(log.alpha * 100)}%</TableCell>
+                          <TableCell className="text-xs font-bold text-primary">{fmtNum(Math.round(log.final_rate * 100) / 100)}</TableCell>
                           <TableCell className="text-xs">{log.n_sales}</TableCell>
                           <TableCell className="text-xs text-muted-foreground">
-                            min {fmtNum(log.min_stock)} · rec {fmtNum(log.recommended_quantity)}
+                            {t("dash.minShort")} {fmtNum(log.min_stock)} · {t("aiPanel.recShort")} {fmtNum(log.recommended_quantity)}
                           </TableCell>
                         </TableRow>
                       );

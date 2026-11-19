@@ -30,6 +30,7 @@ export default function PurchaseListPage() {
   const [qty, setQty] = useState<Record<string, string>>({});
   const [selected, setSelected] = useState<Record<string, boolean>>({});
   const [saving, setSaving] = useState(false);
+  const [failed, setFailed] = useState(false);
 
   const load = useCallback(async () => {
     try {
@@ -37,8 +38,10 @@ export default function PurchaseListPage() {
       setData(d);
       setQty(Object.fromEntries(d.items.map((i) => [i.product_id, String(i.buy_quantity)])));
       setSelected(Object.fromEntries(d.items.map((i) => [i.product_id, i.status !== "atencao"])));
+      setFailed(false);
     } catch (e) {
       toast.error((e as Error).message);
+      setFailed(true);
     }
   }, [marketId]);
 
@@ -141,7 +144,14 @@ export default function PurchaseListPage() {
           </div>
         </div>
 
-        {data === null ? (
+        {data === null && failed ? (
+          <div className="py-12 text-center">
+            <p className="font-display text-xl font-bold">{t("common.error")}</p>
+            <Button variant="press" className="mt-4" onClick={load}>
+              {t("common.retry")}
+            </Button>
+          </div>
+        ) : data === null ? (
           <div className="space-y-4">
             <Skeleton className="h-24" />
             <Skeleton className="h-72" />

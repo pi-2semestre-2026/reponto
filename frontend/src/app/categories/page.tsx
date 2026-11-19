@@ -42,7 +42,14 @@ export default function CategoriesPage() {
   const [saving, setSaving] = useState(false);
   const [deleteTarget, setDeleteTarget] = useState<Category | null>(null);
 
-  const load = () => api.categories().then(setCats).catch((e) => toast.error(e.message));
+  const load = () =>
+    api
+      .categories()
+      .then(setCats)
+      .catch((e) => {
+        toast.error(e.message);
+        setCats((c) => c ?? []);
+      });
   useEffect(() => {
     load();
   }, []);

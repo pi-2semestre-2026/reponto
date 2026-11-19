@@ -315,13 +315,13 @@ function SetupScreen({
   const dayOptions = [
     { v: 90, label: "3m" },
     { v: 180, label: "6m" },
-    { v: 365, label: "1 ano" },
-    { v: 730, label: "2 anos" },
+    { v: 365, label: t("sim.opt.1y") },
+    { v: 730, label: t("sim.opt.2y") },
   ];
   const cycleOptions = [
-    { v: 3, label: "3 dias" },
-    { v: 7, label: "1 semana" },
-    { v: 14, label: "2 semanas" },
+    { v: 3, label: t("sim.opt.3d") },
+    { v: 7, label: t("sim.opt.1w") },
+    { v: 14, label: t("sim.opt.2w") },
   ];
 
   return (

@@ -44,6 +44,7 @@ export default function ModelPage() {
   const { t } = useI18n();
   const [data, setData] = useState<Evaluation | null>(null);
   const [sample, setSample] = useState(0);
+  const [failures, setFailures] = useState(0);
 
   useEffect(() => {
     if (!getToken()) {
@@ -57,8 +58,10 @@ export default function ModelPage() {
         const d = await api.evaluation();
         if (!active) return;
         setData(d);
+        setFailures(0);
         if (d.status === "running" || d.status === "idle") timer = setTimeout(poll, 5000);
       } catch {
+        if (active) setFailures((f) => f + 1);
         timer = setTimeout(poll, 8000);
       }
     };
@@ -84,6 +87,9 @@ export default function ModelPage() {
           <p className="mt-1 max-w-3xl text-muted-foreground">{t("model.subtitle")}</p>
         </div>
 
+        {!data && failures >= 3 && (
+          <p className="rounded-xl border bg-muted/40 p-4 text-sm text-muted-foreground">{t("common.offline")}</p>
+        )}
         {!data && (
           <div className="space-y-4">
             <Skeleton className="h-32" />

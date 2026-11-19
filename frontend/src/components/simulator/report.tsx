@@ -36,7 +36,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { burstConfetti } from "@/lib/confetti";
-import { fmtMoney, fmtNum } from "@/lib/format";
+import { fmtDate, fmtMoney, fmtNum } from "@/lib/format";
 import { useI18n } from "@/lib/i18n";
 import { simApi, type SimCoach, type SimReport } from "@/lib/simulator-api";
 
@@ -183,7 +183,7 @@ export function ReportPanel({ sid, onNewGame }: { sid: string; onNewGame: () => 
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart data={report.daily_compare}>
                   <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" vertical={false} />
-                  <XAxis dataKey="date" tick={{ fontSize: 10 }} stroke="hsl(var(--muted-foreground))" />
+                  <XAxis dataKey="date" tick={{ fontSize: 10 }} stroke="hsl(var(--muted-foreground))" tickFormatter={(d: string) => fmtDate(d).slice(0, 5)} />
                   <YAxis tick={{ fontSize: 10 }} stroke="hsl(var(--muted-foreground))" width={40} />
                   <ReTooltip contentStyle={{ borderRadius: 12, border: "1px solid hsl(var(--border))" }} />
                   <Legend wrapperStyle={{ fontSize: 12 }} />
@@ -217,7 +217,7 @@ export function ReportPanel({ sid, onNewGame }: { sid: string; onNewGame: () => 
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={report.daily_cash}>
                   <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" vertical={false} />
-                  <XAxis dataKey="date" tick={{ fontSize: 10 }} stroke="hsl(var(--muted-foreground))" />
+                  <XAxis dataKey="date" tick={{ fontSize: 10 }} stroke="hsl(var(--muted-foreground))" tickFormatter={(d: string) => fmtDate(d).slice(0, 5)} />
                   <YAxis tick={{ fontSize: 10 }} stroke="hsl(var(--muted-foreground))" width={52} />
                   <ReTooltip
                     formatter={(v: number) => fmtMoney(v)}
