@@ -19,6 +19,7 @@ export interface Market {
   customers_per_day: number;
   replenishment_cycle_days: number;
   cycle_unit: string;
+  vr_day?: number;
   created_at: string;
 }
 
@@ -116,6 +117,32 @@ export interface LearningPanel {
   logs: LearningLog[];
   profile: WeekProfile | null;
   forecast?: ForecastInfo | null;
+  calendar?: CalendarInfo | null;
+}
+
+export interface CalendarEffect {
+  effect: number;
+  reference: number;
+  observed: number | null;
+  n: number;
+  source: "loja" | "referencia" | "neutro";
+  label: string;
+}
+
+export interface CalendarUpcoming {
+  date: string;
+  event: string;
+  label: string;
+  effect: number;
+  source: "loja" | "referencia" | "neutro";
+  n: number;
+}
+
+export interface CalendarInfo {
+  vr_day: number;
+  upcoming: CalendarUpcoming[];
+  effects: Record<string, CalendarEffect>;
+  cycle_multipliers: number[];
 }
 
 export interface ForecastInfo {

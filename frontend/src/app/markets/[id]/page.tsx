@@ -705,7 +705,9 @@ function MarketSettingsDialog({
   const [location, setLocation] = useState(market.location);
   const [customers, setCustomers] = useState(String(market.customers_per_day));
   const [cycle, setCycle] = useState(market.cycle_unit);
+  const [vrDay, setVrDay] = useState(String(market.vr_day ?? 0));
   const [saving, setSaving] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState(false);
 
   useEffect(() => {
     if (open) {
@@ -713,6 +715,8 @@ function MarketSettingsDialog({
       setLocation(market.location);
       setCustomers(String(market.customers_per_day));
       setCycle(market.cycle_unit);
+      setVrDay(String(market.vr_day ?? 0));
+      setConfirmDelete(false);
     }
   }, [open, market]);
 
@@ -725,6 +729,7 @@ function MarketSettingsDialog({
         customers_per_day: parseInt(customers, 10),
         cycle_unit: cycle,
         replenishment_cycle_days: 7,
+        vr_day: Math.min(31, Math.max(0, parseInt(vrDay || "0", 10) || 0)),
       });
       toast.success(t("toast.updated"));
       onOpenChange(false);
@@ -737,6 +742,11 @@ function MarketSettingsDialog({
   };
 
   const remove = async () => {
+    // Excluir apaga produtos e histórico de recomendação: pede um segundo clique.
+    if (!confirmDelete) {
+      setConfirmDelete(true);
+      return;
+    }
     setSaving(true);
     try {
       await api.deleteMarket(market.id);
@@ -784,10 +794,15 @@ function MarketSettingsDialog({
               </Select>
             </div>
           </div>
+          <div className="space-y-2">
+            <Label>{t("market.vrDay")}</Label>
+            <Input type="number" min={0} max={31} value={vrDay} onChange={(e) => setVrDay(e.target.value)} className="w-28" />
+            <p className="text-xs text-muted-foreground">{t("market.vrDayHint")}</p>
+          </div>
         </div>
         <DialogFooter className="sm:justify-between">
-          <Button variant="destructive" onClick={remove}>
-            <Trash2 /> {t("market.delete")}
+          <Button variant="destructive" onClick={remove} disabled={saving}>
+            <Trash2 /> {confirmDelete ? t("market.deleteConfirm") : t("market.delete")}
           </Button>
           <div className="flex gap-2">
             <Button variant="outline" onClick={() => onOpenChange(false)}>

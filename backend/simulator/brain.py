@@ -23,6 +23,7 @@ calibrated 95% margin — so the game measures the system the owner really uses.
 import datetime as dt
 
 from app.config import get_settings
+from app.services import calendario as cal
 from app.services import forecast_math as fm
 from app.services.ml import rate_model
 from app.services import weekly_model as wm
@@ -46,8 +47,11 @@ def window_denominator(window_days: int, half_life: float) -> float:
 class SimRecommender:
     """Replicates compute_prior_rate + compute_blend for virtual products."""
 
-    def __init__(self, customers_per_day: int, cycle_days: int, use_weekly_model: bool = True) -> None:
+    def __init__(self, customers_per_day: int, cycle_days: int, use_weekly_model: bool = True, vr_day: int = 0,
+                 use_calendar: bool = True) -> None:
         self.use_weekly_model = use_weekly_model
+        self.vr_day = vr_day
+        self.use_calendar = use_calendar
         self.customers_per_day = customers_per_day
         self.cycle_days = max(1, cycle_days)
         settings = get_settings()
@@ -129,6 +133,16 @@ class SimRecommender:
             weekday_index = list(product_prior)
         service = fm.service_target(product["category"], cycle, product.get("price"), product.get("cost"))
 
+        # Calendário comercial: mesmo aprendizado do app (recommender.compute_blend).
+        effects = {}
+        if self.use_calendar and history:
+            first_any = min(history)
+            learn_start = max(first_any, today - dt.timedelta(days=cal.LEARN_LOOKBACK_DAYS))
+            totals = {d: q for d, (q, _) in history.items()}
+            effects = cal.learn_effects(totals, learn_start, yesterday, product["category"], self.vr_day)
+        elif self.use_calendar:
+            effects = cal.learn_effects({}, today, yesterday, product["category"], self.vr_day)
+
         forecast = None
         sold_days = [d for d, (q, _) in history.items() if q > 0]
         if self.use_weekly_model and sold_days and wm.weekly_model.ready:
@@ -137,10 +151,12 @@ class SimRecommender:
             forecast = wm.weekly_model.forecast(weeks, target_monday, product["category"], self.size_bucket)
         if forecast is not None:
             final = forecast["weekly"] / 7.0
-            levels = fm.model_stock_levels(final, weekday_index, today, cycle, forecast, series, service["level"])
+            mults = cal.day_multipliers(today, cycle, effects, self.vr_day, model_path=True) if self.use_calendar else None
+            levels = fm.model_stock_levels(final, weekday_index, today, cycle, forecast, series, service["level"], mults)
             confidence = "alta" if forecast["weeks"] >= 12 else "media"
         else:
-            levels = fm.stock_levels(final, weekday_index, today, cycle, series, service["level"])
+            mults = cal.day_multipliers(today, cycle, effects, self.vr_day, model_path=False) if self.use_calendar else None
+            levels = fm.stock_levels(final, weekday_index, today, cycle, series, service["level"], mults)
             confidence = "baixa" if n_sales < 3 else ("media" if n_sales < 10 else "alta")
 
         return {
@@ -165,4 +181,6 @@ class SimRecommender:
             "n_sales": n_sales,
             "confidence": confidence,
             "window_days": win["window_days"],
+            "calendar_effects": effects,
+            "today_multiplier": mults[0] if mults else 1.0,
         }

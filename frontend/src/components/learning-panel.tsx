@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import {
   Brain,
+  CalendarDays,
   FileUp,
   Loader2,
   MessageSquareText,
@@ -30,8 +31,8 @@ import {
 } from "recharts";
 import { api } from "@/lib/api";
 import { useI18n } from "@/lib/i18n";
-import { fmtDateTime, fmtNum } from "@/lib/format";
-import type { Explanation, ForecastInfo, LearningPanel as LearningPanelData, WeekProfile } from "@/lib/types";
+import { fmtDate, fmtDateTime, fmtNum } from "@/lib/format";
+import type { CalendarInfo, Explanation, ForecastInfo, LearningPanel as LearningPanelData, WeekProfile } from "@/lib/types";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -114,6 +115,8 @@ export function LearningPanelDialog({
             </div>
 
             {data.profile && <WeekProfileCard profile={data.profile} />}
+
+            {data.calendar && <CalendarCard calendar={data.calendar} />}
 
             {data.forecast?.source === "modelo" ? (
               <ModelForecastCard forecast={data.forecast} formula={data.formula} />
@@ -409,6 +412,94 @@ function WeekProfileCard({ profile }: { profile: WeekProfile }) {
               .replace("{p}", String(profile.service_level_pct))
           : t("profile.safetyRule")}
       </p>
+    </div>
+  );
+}
+
+function CalendarCard({ calendar }: { calendar: CalendarInfo }) {
+  const { t } = useI18n();
+  const pct = (e: number) => {
+    const v = Math.round((e - 1) * 100);
+    return v === 0 ? "0%" : `${v > 0 ? "+" : ""}${v}%`;
+  };
+  const label = (key: string, fallback: string) => {
+    const k = `cal.ev.${key}`;
+    const tr = t(k);
+    return tr === k ? fallback : tr;
+  };
+  const sourceBadge = (s: string, n: number) =>
+    s === "loja" ? (
+      <Badge variant="ai">{t("cal.src.store").replace("{n}", String(n))}</Badge>
+    ) : s === "referencia" ? (
+      <Badge variant="secondary">{t("cal.src.reference")}</Badge>
+    ) : (
+      <Badge variant="outline">{t("cal.src.neutral")}</Badge>
+    );
+  // Uma linha por data (primeira ocorrência de cada evento nas próximas semanas).
+  const seen = new Set<string>();
+  const next = calendar.upcoming
+    .filter((u) => {
+      if (seen.has(u.event)) return false;
+      seen.add(u.event);
+      return true;
+    })
+    .slice(0, 6);
+  const learned = Object.entries(calendar.effects)
+    .filter(([, e]) => e.n > 0)
+    .sort((a, b) => b[1].n - a[1].n);
+  return (
+    <div className="rounded-2xl border bg-card p-4">
+      <div className="mb-1 flex flex-wrap items-center gap-2">
+        <CalendarDays className="h-4 w-4 text-primary" />
+        <p className="text-sm font-bold">{t("cal.title")}</p>
+      </div>
+      <p className="mb-3 text-xs text-muted-foreground">
+        {t("cal.sub")}
+        {calendar.vr_day ? ` ${t("cal.vrDay").replace("{d}", String(calendar.vr_day))}` : ` ${t("cal.noVr")}`}
+      </p>
+      {next.length === 0 ? (
+        <p className="text-xs text-muted-foreground">{t("cal.none")}</p>
+      ) : (
+        <ul className="divide-y text-sm">
+          {next.map((u) => (
+            <li key={`${u.event}-${u.date}`} className="flex flex-wrap items-center justify-between gap-2 py-2">
+              <span>
+                <span className="font-mono text-xs text-muted-foreground">{fmtDate(u.date).slice(0, 5)}</span>{" "}
+                <span className="font-medium">{label(u.event, u.label)}</span>
+              </span>
+              <span className="flex items-center gap-2">
+                <span
+                  className={`font-mono text-sm font-bold ${
+                    u.effect > 1.005 ? "text-emerald-600" : u.effect < 0.995 ? "text-rose-600" : "text-muted-foreground"
+                  }`}
+                >
+                  {pct(u.effect)}
+                </span>
+                {sourceBadge(u.source, u.n)}
+              </span>
+            </li>
+          ))}
+        </ul>
+      )}
+      {learned.length > 0 && (
+        <div className="mt-3 rounded-xl bg-muted/50 p-3">
+          <p className="mb-1 text-[11px] font-semibold uppercase text-muted-foreground">{t("cal.learnedTitle")}</p>
+          <ul className="space-y-1 text-xs">
+            {learned.map(([key, e]) => (
+              <li key={key} className="flex flex-wrap justify-between gap-2">
+                <span>{label(key, e.label)}</span>
+                <span className="font-mono">
+                  {t("cal.learnedRow")
+                    .replace("{obs}", e.observed != null ? pct(e.observed) : "—")
+                    .replace("{n}", String(e.n))
+                    .replace("{ref}", pct(e.reference))
+                    .replace("{eff}", pct(e.effect))}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
     </div>
   );
 }

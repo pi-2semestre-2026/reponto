@@ -6,6 +6,10 @@ produtos de várias categorias e um histórico de vendas retroativas com padrão
 realista: mais movimento na sexta e no sábado, leve crescimento ao longo do
 período e alguns produtos terminando com estoque baixo (geram alertas).
 
+Datas comerciais (para a IA ter o que aprender, ver app/services/calendario.py): o movimento
+sobe nos 3 dias do salário (5º dia útil), nos 3 dias do VR/VA (dia configurado em cada mercado)
+e na véspera de feriado; cai no feriado, exceto a cerveja, que dispara.
+
 O estoque inicial de cada produto é calculado para cobrir todo o histórico e
 terminar no nível escolhido em `final_days` (dias de venda que sobram na prateleira).
 
@@ -25,7 +29,7 @@ import threading
 import time
 import urllib.error
 import urllib.request
-from datetime import datetime, timedelta, timezone
+from datetime import date, datetime, timedelta, timezone
 
 APP_TZ = timezone(timedelta(hours=-3))
 
@@ -39,6 +43,69 @@ PRODUCT_WEEKDAY = {
     "Pão Francês": [1.10, 1.05, 1.00, 1.00, 0.95, 0.90, 1.30],
 }
 
+# Efeito das datas comerciais na venda (a "realidade" da demo; a IA não conhece estes números).
+EVENT_FACTOR = {"salario": 1.25, "vale": 1.20, "vespera_feriado": 1.15, "feriado": 0.85}
+PRODUCT_EVENT_FACTOR = {
+    "Cerveja Lata 350ml": {"salario": 1.40, "feriado": 1.60, "vespera_feriado": 1.30},
+    "Refrigerante Guaraná 2L": {"feriado": 1.30},
+    "Linguiça Toscana (kg)": {"feriado": 1.50, "vespera_feriado": 1.40},
+}
+
+
+def easter(year):
+    a, b, c = year % 19, year // 100, year % 100
+    d, e = divmod(b, 4)
+    g = (8 * b + 13) // 25
+    h = (19 * a + b - d - g + 15) % 30
+    i, k = divmod(c, 4)
+    l = (32 + 2 * e + 2 * i - h - k) % 7
+    m = (a + 11 * h + 22 * l) // 451
+    month, day = divmod(h + l - 7 * m + 114, 31)
+    return date(year, month, day + 1)
+
+
+def national_holidays(year):
+    e = easter(year)
+    fixed = [(1, 1), (4, 21), (5, 1), (9, 7), (10, 12), (11, 2), (11, 15), (11, 20), (12, 25)]
+    return {date(year, m, d) for m, d in fixed} | {e - timedelta(days=2), e + timedelta(days=60)}
+
+
+def business_day(d):
+    return d.weekday() < 6 and d not in national_holidays(d.year)
+
+
+def day_events(d, vr_day):
+    """Mesmas regras de app/services/calendario.py (resumidas para a demo)."""
+    ev = set()
+    first, count = date(d.year, d.month, 1), 0
+    while True:
+        if business_day(first):
+            count += 1
+            if count == 5:
+                break
+        first += timedelta(days=1)
+    if 0 <= (d - first).days < 3:
+        ev.add("salario")
+    if vr_day:
+        v = date(d.year, d.month, vr_day)
+        while not business_day(v):
+            v += timedelta(days=1)
+        if 0 <= (d - v).days < 3:
+            ev.add("vale")
+    if d in national_holidays(d.year):
+        ev.add("feriado")
+    elif (d + timedelta(days=1)) in national_holidays((d + timedelta(days=1)).year):
+        ev.add("vespera_feriado")
+    return ev
+
+
+def event_factor(name, events):
+    f = 1.0
+    for e in events:
+        f *= PRODUCT_EVENT_FACTOR.get(name, {}).get(e, EVENT_FACTOR.get(e, 1.0))
+    return f
+
+
 # (nome, preço, unidades vendidas por dia em média, unidades por compra (mín, máx), dias de estoque no fim)
 MARKETS = [
     {
@@ -46,6 +113,7 @@ MARKETS = [
         "location": "Vila Mariana, São Paulo/SP",
         "customers_per_day": 120,
         "cycle_unit": "semanal",
+        "vr_day": 10,
         "tickets_per_day": 22,
         "products": [
             ("Pão Francês", 0.90, 70, (4, 10), 2),
@@ -68,6 +136,7 @@ MARKETS = [
         "location": "Centro, Santo André/SP",
         "customers_per_day": 400,
         "cycle_unit": "quinzenal",
+        "vr_day": 15,
         "tickets_per_day": 30,
         "products": [
             ("Pão de Forma 500g", 9.49, 14, (1, 2), 16),
@@ -165,13 +234,14 @@ def plan_sales(spec, days, rng):
                 continue
         day_share = (close_h - open_h) / 14
 
-        n_tickets = max(1, poisson(rng, spec["tickets_per_day"] * wf * trend * day_share))
+        events = day_events(day, spec.get("vr_day", 0))
+        n_tickets = max(1, poisson(rng, spec["tickets_per_day"] * wf * trend * day_share * event_factor("", events)))
         day_tickets = [dict() for _ in range(n_tickets)]
 
         for name, _price, rate, (qmin, qmax), _final in spec["products"]:
             own = PRODUCT_WEEKDAY.get(name)
             pf = own[day.weekday()] / wf * (sum(WEEKDAY_FACTOR) / sum(own)) if own else 1.0
-            demand = poisson(rng, rate * wf * pf * trend * day_share)
+            demand = poisson(rng, rate * wf * pf * trend * day_share * event_factor(name, events))
             while demand > 0:
                 q = min(demand, rng.randint(qmin, qmax))
                 t = rng.choice(day_tickets)
@@ -212,6 +282,7 @@ def populate_market(api, token, spec, days, seed, log):
     market = request(api, "POST", "/markets", token, body={
         "name": spec["name"], "location": spec["location"],
         "customers_per_day": spec["customers_per_day"], "cycle_unit": spec["cycle_unit"],
+        "vr_day": spec.get("vr_day", 0),
     })
     log(f"[{spec['name']}] mercado criado (ciclo de {market['replenishment_cycle_days']} dias)")
 

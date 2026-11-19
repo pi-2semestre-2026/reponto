@@ -8,6 +8,7 @@ the text, and a deterministic template — consistent by construction — is sho
 instead. The response says which of the two was used and what was checked.
 """
 
+import datetime as dt
 import logging
 import math
 import re
@@ -100,7 +101,39 @@ def build_facts(product, market, blend: dict) -> dict:
         "semanas_historico": blend.get("model_weeks"),
         "previsao_semana": round(blend["weekly_forecast"], 1) if blend.get("weekly_forecast") is not None else None,
         "limite_semana": round(blend["weekly_upper"], 1) if blend.get("weekly_upper") is not None else None,
+        **calendar_facts(blend, cycle),
     }
+
+
+MONTHS_PT = ("janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro",
+             "outubro", "novembro", "dezembro")
+
+
+def calendar_facts(blend: dict, cycle: int) -> dict:
+    """Próxima data comercial relevante dentro do ciclo (efeito de pelo menos 8%)."""
+    empty = {"data_destaque": None, "data_quando": None, "efeito_data_pct": None, "efeito_data_fonte": None}
+    cal = blend.get("calendar") or {}
+    seen = set()
+    for row in cal.get("upcoming", []):
+        day = dt.date.fromisoformat(row["date"])
+        if (day - blend_today(blend)).days >= cycle or row["event"] in seen:
+            continue
+        seen.add(row["event"])
+        pct = round((row["effect"] - 1) * 100)
+        if abs(pct) >= 8:
+            return {
+                "data_destaque": row["label"],
+                "data_quando": f"{fm.WEEKDAY_NAMES[day.weekday()]}, dia {day.day} de {MONTHS_PT[day.month - 1]}",
+                "data_dia": day.day,
+                "efeito_data_pct": abs(pct) if pct > -100 else 99,
+                "efeito_data_sinal": "mais" if pct > 0 else "menos",
+                "efeito_data_fonte": row["source"],
+            }
+    return empty
+
+
+def blend_today(blend: dict) -> dt.date:
+    return dt.date.fromisoformat(blend["today"]) if blend.get("today") else dt.date.today()
 
 
 NUMERIC_FACTS = (
@@ -125,6 +158,7 @@ NUMERIC_FACTS = (
     ("semanas_historico", "semanas de histórico"),
     ("previsao_semana", "previsão da semana"),
     ("limite_semana", "limite de 95% da semana"),
+    ("efeito_data_pct", "efeito da data comercial"),
 )
 
 
@@ -158,6 +192,12 @@ def template_text(f: dict) -> str:
         )
     else:
         parts.append(f"Não precisa comprar agora: o estoque já está acima do nível recomendado de {fmt(f['nivel_recomendado'])}.")
+    if f.get("data_destaque"):
+        origem = "nas vendas da sua loja" if f["efeito_data_fonte"] == "loja" else "em vendas reais de supermercados"
+        parts.append(
+            f"Data comercial dentro do ciclo: {f['data_destaque']}, {f['data_quando']}. Nesses dias este produto costuma vender "
+            f"{f['efeito_data_pct']}% {f['efeito_data_sinal']} (medido {origem}), e a recomendação já considera isso."
+        )
     if f["metodo_seguranca"] == "erro" and f["erro_diario"] is not None:
         parts.append(
             f"Essa margem vem do erro típico da previsão, de {fmt(f['erro_diario'])} {u} por dia, "
@@ -216,6 +256,9 @@ def verify(text: str, facts: dict) -> dict:
     checked, unmatched, values = [], [], []
     # Numbers that belong to the product name ("Água 500ml", "Arroz 5kg") are not claims.
     name_numbers = {v for _, v in extract_numbers(f"{facts['produto']} {facts.get('categoria') or ''}")}
+    # Dia do mês e o "5º" do salário não são afirmações numéricas a conferir.
+    if facts.get("data_dia"):
+        name_numbers |= {float(facts["data_dia"]), 5.0, 20.0}
     for raw, value in extract_numbers(text):
         if value in name_numbers:
             continue
@@ -236,6 +279,8 @@ def verify(text: str, facts: dict) -> dict:
         problems.append(f"números que não existem no cálculo: {', '.join(unmatched)}")
     if facts.get("nome_dia_pico") and facts["nome_dia_pico"][:4] not in text.lower():
         problems.append("não mencionou o ritmo da semana (dia de pico)")
+    if facts.get("data_destaque") and facts["data_destaque"].split()[0].lower() not in text.lower():
+        problems.append("não mencionou a data comercial dentro do ciclo")
     if facts["comprar"] > 0 and not mentions("comprar"):
         problems.append("não informou a quantidade a comprar")
     if not mentions("venda_por_dia", "venda_no_ciclo"):
@@ -272,6 +317,12 @@ def facts_for_prompt(f: dict) -> str:
             lines.append(f"Dias em que vende bem acima da média nesta loja: {f['dias_fortes']}")
         if f["dia_fraco"]:
             lines.append(f"Dia em que menos vende nesta loja: {f['dia_fraco']} ({f['fraco_pct']}% abaixo da média do dia)")
+    if f.get("data_destaque"):
+        origem = "nas vendas desta loja" if f["efeito_data_fonte"] == "loja" else "em vendas reais de supermercados"
+        lines.append(
+            f"Data comercial dentro do ciclo: {f['data_destaque']} ({f['data_quando']}); nesses dias o produto vende "
+            f"{f['efeito_data_pct']}% {f['efeito_data_sinal']} (medido {origem}); a recomendação já considera. Mencione esta data."
+        )
     if f["metodo_seguranca"] == "erro" and f["erro_diario"] is not None:
         lines.append(
             f"A margem de segurança vem do erro típico da previsão: {fmt(f['erro_diario'])} {u} por dia, "

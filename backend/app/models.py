@@ -68,6 +68,9 @@ class Market(Base):
     location: Mapped[str] = mapped_column(Text, default="")
     customers_per_day: Mapped[int] = mapped_column(Integer, default=100)
     replenishment_cycle_days: Mapped[int] = mapped_column(Integer, default=7)
+    # Dia do mês em que o VR/VA dos clientes cai na conta (0 = não informado). Usado pelo
+    # calendário comercial (app/services/calendario.py).
+    vr_day: Mapped[int] = mapped_column(Integer, default=0)
     cycle_unit: Mapped[str] = mapped_column(String(20), default="semanal")
     created_at: Mapped[dt.datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
 

@@ -274,6 +274,7 @@ async def learning_panel(
             "min_weeks": MIN_WEEKS,
             "model_ready": weekly_model.ready,
         },
+        calendar=blend.get("calendar"),
     )
 
 

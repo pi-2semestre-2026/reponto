@@ -50,6 +50,7 @@ class MarketIn(BaseModel):
     customers_per_day: int = Field(default=100, ge=1, le=1_000_000)
     cycle_unit: str = Field(default="semanal")
     replenishment_cycle_days: int = Field(default=7, ge=1, le=365)
+    vr_day: int = Field(default=0, ge=0, le=31)
 
 
 class MarketOut(BaseModel):
@@ -60,6 +61,7 @@ class MarketOut(BaseModel):
     customers_per_day: int
     replenishment_cycle_days: int
     cycle_unit: str
+    vr_day: int = 0
     created_at: dt.datetime
 
 
@@ -208,6 +210,7 @@ class LearningPanelOut(BaseModel):
     logs: list[LearningLogOut]
     profile: dict | None = None
     forecast: dict | None = None
+    calendar: dict | None = None
 
 
 class AnalyticsQuery(BaseModel):

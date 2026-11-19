@@ -122,8 +122,9 @@ def category_store_prior(category_index: list[float], store_index: list[float], 
     return [v / mean for v in raw] if mean > 0 else list(category_index)
 
 
-def project(rate: float, index: list[float], start: dt.date, days: int) -> list[float]:
-    return [rate * index[(start + dt.timedelta(days=d)).weekday()] for d in range(days)]
+def project(rate: float, index: list[float], start: dt.date, days: int, mults: list[float] | None = None) -> list[float]:
+    """Venda prevista dia a dia: taxa × ritmo do dia da semana × efeito das datas comerciais."""
+    return [rate * index[(start + dt.timedelta(days=d)).weekday()] * (mults[d] if mults and d < len(mults) else 1.0) for d in range(days)]
 
 
 def partial_sum(values: list[float], length: float) -> float:
@@ -180,8 +181,8 @@ def safety_stock(series, rate: float, index: list[float], cycle: int, cycle_dema
     return {"safety": share * cycle_demand, "method": "regra", "sigma": None}
 
 
-def stock_levels(rate: float, index: list[float], today: dt.date, cycle: int, series, level: float = DEFAULT_SERVICE) -> dict:
-    projection = project(rate, index, today, cycle)
+def stock_levels(rate: float, index: list[float], today: dt.date, cycle: int, series, level: float = DEFAULT_SERVICE, mults: list[float] | None = None) -> dict:
+    projection = project(rate, index, today, cycle, mults)
     cycle_demand = sum(projection)
     reorder_demand = partial_sum(projection, REORDER_SHARE * cycle)
     s = safety_stock(series, rate, index, cycle, cycle_demand, level)
@@ -214,7 +215,7 @@ def quantile_at(quantiles: dict, level: float) -> float:
     return points[-1][1]
 
 
-def model_stock_levels(rate: float, index: list[float], today: dt.date, cycle: int, forecast: dict, series=None, level: float = DEFAULT_SERVICE) -> dict:
+def model_stock_levels(rate: float, index: list[float], today: dt.date, cycle: int, forecast: dict, series=None, level: float = DEFAULT_SERVICE, mults: list[float] | None = None) -> dict:
     """Order-up-to levels when the validated weekly model is in charge.
 
     h7 = q(level) - 1 is the calibrated half-width for one week. It is split
@@ -225,7 +226,7 @@ def model_stock_levels(rate: float, index: list[float], today: dt.date, cycle: i
     For cycle = 7 this is exactly W h7, the calibrated bound.
     recommended = demand of the cycle + safety (no extra cushion: the forecast is unbiased).
     """
-    projection = project(rate, index, today, cycle)
+    projection = project(rate, index, today, cycle, mults)
     cycle_demand = sum(projection)
     reorder_demand = partial_sum(projection, REORDER_SHARE * cycle)
     weekly = forecast["weekly"]

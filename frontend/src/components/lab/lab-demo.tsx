@@ -268,7 +268,7 @@ function Scoreboard({ ai, noai }: { ai: LabStore; noai: LabStore }) {
     { label: t("lab.kpi.stockoutDays"), a: fmtNum(ai.stockout_days), b: fmtNum(noai.stockout_days), better: ai.stockout_days <= noai.stockout_days },
     { label: t("lab.kpi.lost"), a: fmtMoney(ai.lost_r), b: fmtMoney(noai.lost_r), better: ai.lost_r <= noai.lost_r },
     { label: t("lab.kpi.waste"), a: fmtMoney(ai.waste_r), b: fmtMoney(noai.waste_r), better: ai.waste_r <= noai.waste_r },
-    { label: t("lab.kpi.profit"), a: fmtMoney(ai.revenue - ai.cost), b: fmtMoney(noai.revenue - noai.cost), better: ai.revenue - ai.cost >= noai.revenue - noai.cost },
+    { label: t("lab.kpi.profit"), a: fmtMoney(ai.gross_profit), b: fmtMoney(noai.gross_profit), better: ai.gross_profit >= noai.gross_profit },
   ];
   return (
     <Card className="animate-fade-in-up">
@@ -388,6 +388,36 @@ function ProductPanel({ p, day, shifts }: { p: LabProduct; day: number; shifts: 
             <Chip label={t("lab.chip.buy")} value={fmtNum(Math.round(p.recommended))} />
           </div>
         </div>
+        {p.calendar && p.calendar.length > 0 && (
+          <div className="lg:col-span-2">
+            <p className="mb-1 text-sm font-bold">{t("lab.calTitle")}</p>
+            <p className="mb-2 text-xs text-muted-foreground">{t("lab.calSub")}</p>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="text-left text-[11px] uppercase text-muted-foreground">
+                    <th className="py-1 pr-3 font-semibold">{t("lab.cal.date")}</th>
+                    <th className="py-1 pr-3 font-semibold">{t("lab.cal.real")}</th>
+                    <th className="py-1 pr-3 font-semibold">{t("lab.cal.reference")}</th>
+                    <th className="py-1 pr-3 font-semibold">{t("lab.cal.learned")}</th>
+                    <th className="py-1 font-semibold">{t("lab.cal.days")}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {p.calendar.map((c) => (
+                    <tr key={c.event} className="border-t">
+                      <td className="py-1.5 pr-3">{t(`cal.ev.${c.event}`) === `cal.ev.${c.event}` ? c.label : t(`cal.ev.${c.event}`)}</td>
+                      <td className="py-1.5 pr-3 font-mono">{signed(Math.round((c.real - 1) * 100))}</td>
+                      <td className="py-1.5 pr-3 font-mono text-muted-foreground">{signed(Math.round((c.reference - 1) * 100))}</td>
+                      <td className="py-1.5 pr-3 font-mono font-bold text-primary">{signed(Math.round((c.learned - 1) * 100))}</td>
+                      <td className="py-1.5 font-mono">{c.n}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
       </CardContent>
     </Card>
   );

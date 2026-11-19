@@ -194,6 +194,16 @@ export interface LabProduct {
   wape_noai_28: number | null;
   stockouts_ai: number;
   stockouts_noai: number;
+  calendar?: LabCalendarRow[];
+}
+
+export interface LabCalendarRow {
+  event: string;
+  label: string;
+  real: number;
+  learned: number;
+  reference: number;
+  n: number;
 }
 
 export interface LabStore {
@@ -203,6 +213,7 @@ export interface LabStore {
   cost: number;
   lost_r: number;
   waste_r: number;
+  gross_profit: number;
   avg_stock_value: number;
 }
 
