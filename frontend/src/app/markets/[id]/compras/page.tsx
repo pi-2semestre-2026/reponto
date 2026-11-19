@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { ArrowLeft, BadgeCheck, ClipboardCopy, ClipboardList, Loader2, PackageCheck } from "lucide-react";
+import { ArrowLeft, BadgeCheck, ClipboardCopy, ClipboardList, Download, Loader2, PackageCheck, Printer } from "lucide-react";
 import { toast } from "sonner";
 import { Header } from "@/components/header";
 import { Badge } from "@/components/ui/badge";
@@ -68,6 +68,25 @@ export default function PurchaseListPage() {
     }
   };
 
+  // CSV no padrão do Excel brasileiro: ";" como separador, vírgula decimal e BOM UTF-8.
+  const downloadCsv = () => {
+    if (!data || chosen.length === 0) return;
+    const num = (v: number) => String(Math.round(v * 100) / 100).replace(".", ",");
+    const esc = (v: string) => (/[";\n]/.test(v) ? `"${v.replace(/"/g, '""')}"` : v);
+    const header = [t("purchase.csv.product"), "SKU", t("purchase.csv.qty"), t("purchase.csv.unit"), t("purchase.csv.unitCost"), t("purchase.csv.total")];
+    const rows = chosen.map((i) => {
+      const q = parseFloat(qty[i.product_id] || "0");
+      return [esc(i.name), esc(i.sku ?? ""), num(q), esc(i.unit), i.unit_cost ? num(i.unit_cost) : "", i.unit_cost ? num(i.unit_cost * q) : ""].join(";");
+    });
+    const csv = "﻿" + [header.join(";"), ...rows, `;;;;${t("purchase.csv.total")};${num(chosenCost)}`].join("\r\n");
+    const url = URL.createObjectURL(new Blob([csv], { type: "text/csv;charset=utf-8" }));
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `pedido-${data.market_name.toLowerCase().replace(/[^a-z0-9]+/gi, "-")}-${new Date().toISOString().slice(0, 10)}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
   const receive = async () => {
     if (chosen.length === 0) return;
     setSaving(true);
@@ -88,7 +107,9 @@ export default function PurchaseListPage() {
 
   return (
     <div className="min-h-screen">
-      <Header active="/markets" />
+      <div className="print:hidden">
+        <Header active="/markets" />
+      </div>
       <main className="container space-y-6 py-8">
         <div className="animate-fade-in-up flex flex-wrap items-start justify-between gap-4">
           <div className="flex items-start gap-4">
@@ -107,6 +128,12 @@ export default function PurchaseListPage() {
           <div className="flex flex-wrap gap-2">
             <Button variant="outline" onClick={copyForSupplier} disabled={chosen.length === 0}>
               <ClipboardCopy /> {t("purchase.copy")}
+            </Button>
+            <Button variant="outline" onClick={downloadCsv} disabled={chosen.length === 0}>
+              <Download /> {t("purchase.csv")}
+            </Button>
+            <Button variant="outline" onClick={() => window.print()} disabled={!data} className="print:hidden">
+              <Printer /> {t("purchase.print")}
             </Button>
             <Button variant="press" size="lg" onClick={receive} disabled={chosen.length === 0 || saving}>
               {saving ? <Loader2 className="animate-spin" /> : <PackageCheck />} {t("purchase.receive")}
@@ -216,7 +243,7 @@ function Row({
         <Badge variant={STATUS_VARIANT[item.status]}>{t(`purchase.status.${item.status}`)}</Badge>
       </TableCell>
       <TableCell className="text-right font-mono text-sm">
-        {fmtNum(item.stock)} <span className="text-xs text-muted-foreground">/ min {fmtNum(Math.round(item.min_stock))}</span>
+        {fmtNum(item.stock)} <span className="text-xs text-muted-foreground">/ {t("dash.minShort")} {fmtNum(Math.round(item.min_stock))}</span>
       </TableCell>
       <TableCell className="text-right font-mono text-sm">
         {item.coverage_days === null ? "—" : `${fmtNum(item.coverage_days)} ${t("market.days")}`}

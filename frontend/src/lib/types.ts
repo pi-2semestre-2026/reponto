@@ -189,6 +189,20 @@ export interface PeriodStats {
 }
 
 export interface Analytics {
+  profit?: {
+    revenue_with_cost: string;
+    cogs: string;
+    gross_profit: string;
+    margin_pct: number | null;
+    coverage_pct: number | null;
+  } | null;
+  inventory?: {
+    value_cost: string;
+    excess_value: string;
+    excess_products: number;
+    stockout_products: number;
+    products_without_cost: number;
+  } | null;
   from_date: string;
   to_date: string;
   stats: PeriodStats;

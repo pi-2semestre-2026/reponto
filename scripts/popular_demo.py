@@ -52,6 +52,17 @@ PRODUCT_EVENT_FACTOR = {
 }
 
 
+# Custo de compra como fração do preço de venda (margem típica de mercado de bairro).
+COST_RATIO = {"Pão Francês": 0.45, "Pão de Forma 500g": 0.62, "Banana Prata (kg)": 0.55, "Tomate (kg)": 0.55,
+              "Carne Moída (kg)": 0.70, "Frango Inteiro Congelado (kg)": 0.72, "Linguiça Toscana (kg)": 0.68,
+              "Cerveja Lata 350ml": 0.68, "Refrigerante Guaraná 2L": 0.70, "Água Mineral 1,5L": 0.55}
+DEFAULT_COST_RATIO = 0.74
+
+
+def product_cost(name, price):
+    return round(price * COST_RATIO.get(name, DEFAULT_COST_RATIO), 2)
+
+
 def easter(year):
     a, b, c = year % 19, year // 100, year % 100
     d, e = divmod(b, 4)
@@ -291,7 +302,7 @@ def populate_market(api, token, spec, days, seed, log):
     for name, price, rate, _q, final_days in spec["products"]:
         stock = totals[name] + round(rate * final_days)
         request(api, "POST", f"/markets/{market['id']}/products", token, body={
-            "name": name, "price": price, "stock": stock, "unit": "unidade",
+            "name": name, "price": price, "cost": product_cost(name, price), "stock": stock, "unit": "unidade",
         })
     prods = wait_ready(api, token, market["id"], len(spec["products"]))
     ids = {p["name"]: p["id"] for p in prods}

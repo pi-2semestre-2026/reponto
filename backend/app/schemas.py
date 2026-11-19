@@ -266,6 +266,30 @@ class MarketOverview(BaseModel):
     processing_count: int
 
 
+class ProfitStats(BaseModel):
+    """Lucro bruto do período: vendas - custo das mercadorias vendidas (CMV).
+
+    O custo é o cadastrado hoje no produto (o item de venda não guarda o custo da época);
+    itens sem custo cadastrado ficam fora da conta e `coverage_pct` diz quanto do
+    faturamento foi coberto."""
+
+    revenue_with_cost: Decimal
+    cogs: Decimal
+    gross_profit: Decimal
+    margin_pct: float | None
+    coverage_pct: float | None
+
+
+class InventoryStats(BaseModel):
+    """Dinheiro parado na prateleira, a preço de custo (ou de venda se o custo faltar)."""
+
+    value_cost: Decimal
+    excess_value: Decimal
+    excess_products: int
+    stockout_products: int
+    products_without_cost: int
+
+
 class AnalyticsOut(BaseModel):
     from_date: dt.date
     to_date: dt.date
@@ -279,3 +303,5 @@ class AnalyticsOut(BaseModel):
     stock_by_category: list[CategoryRevenueOut]
     low_stock_alerts: list[LowStockAlert]
     markets_overview: list[MarketOverview]
+    profit: ProfitStats | None = None
+    inventory: InventoryStats | None = None
