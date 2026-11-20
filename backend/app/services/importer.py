@@ -326,6 +326,11 @@ def parse_file(raw: bytes) -> ParsedFile:
             item.quantity = qty
             item.unit_price = unit_price if unit_price is not None and unit_price >= 0 else None
             item.receipt = cell(row, "receipt") or None
+            if "cost" in mapping and cell(row, "cost"):
+                item.cost = parse_number(cell(row, "cost"), decimal_comma)
+                if item.cost is None or item.cost < 0:
+                    parsed.errors.append({"line": line, "message": f"Custo inválido: '{cell(row, 'cost')}'"})
+                    continue
         else:
             item.unit_price = parse_number(cell(row, "unit_price"), decimal_comma)
             item.cost = parse_number(cell(row, "cost"), decimal_comma)
@@ -482,6 +487,8 @@ async def apply_import(session, market, user, parsed: ParsedFile, raw: bytes, fi
                         category_id=product.category_id,
                         quantity=r.quantity,
                         unit_price=unit_price,
+                        unit_cost=r.cost if r.cost is not None else product.cost if product.cost > 0 else None,
+                        cost_estimated=r.cost is None,
                         subtotal=subtotal,
                     )
                 )

@@ -38,6 +38,7 @@ import { Progress } from "@/components/ui/progress";
 import { fmtMoney, fmtNum } from "@/lib/format";
 import { useI18n } from "@/lib/i18n";
 import { labApi, type LabProduct, type LabSnapshot, type LabStore } from "@/lib/simulator-api";
+import { chartTooltipProps } from "@/lib/chart-tooltip";
 import { cn } from "@/lib/utils";
 
 const SPEEDS = [
@@ -339,7 +340,7 @@ function ProductPanel({ p, day, shifts }: { p: LabProduct; day: number; shifts: 
                 <CartesianGrid strokeDasharray="3 3" vertical={false} />
                 <XAxis dataKey="label" tick={{ fontSize: 11 }} />
                 <YAxis tick={{ fontSize: 10 }} width={38} unit="%" />
-                <ReTooltip formatter={(v: number, n: string) => [signed(v), n]} />
+                <ReTooltip {...chartTooltipProps} formatter={(v: number, n: string) => [signed(v), n]} />
                 <Legend wrapperStyle={{ fontSize: 11 }} />
                 <ReferenceLine y={0} stroke="hsl(var(--border))" />
                 <Bar dataKey="real" name={t("lab.series.truth")} fill={C_TRUE} fillOpacity={0.45} radius={[4, 4, 0, 0]} />
@@ -364,7 +365,7 @@ function ProductPanel({ p, day, shifts }: { p: LabProduct; day: number; shifts: 
                 <CartesianGrid strokeDasharray="3 3" vertical={false} />
                 <XAxis dataKey="tick" tick={{ fontSize: 9 }} interval={Math.max(0, Math.floor(history.length / 8))} />
                 <YAxis tick={{ fontSize: 10 }} width={38} />
-                <ReTooltip formatter={(v: number) => fmtNum(Math.round(v * 10) / 10)} />
+                <ReTooltip {...chartTooltipProps} formatter={(v: number) => fmtNum(Math.round(v * 10) / 10)} />
                 <Legend wrapperStyle={{ fontSize: 11 }} />
                 {shifts.map((s) => {
                   const h = history.find((x) => x.day === s.day);
@@ -457,7 +458,7 @@ function LearningCurve({ snap }: { snap: LabSnapshot }) {
               <CartesianGrid strokeDasharray="3 3" vertical={false} />
               <XAxis dataKey="day" tick={{ fontSize: 10 }} />
               <YAxis tick={{ fontSize: 10 }} width={38} unit="pp" />
-              <ReTooltip formatter={(v: number) => fmtNum(Math.round(v * 10) / 10)} />
+              <ReTooltip {...chartTooltipProps} formatter={(v: number) => fmtNum(Math.round(v * 10) / 10)} />
               <Legend wrapperStyle={{ fontSize: 11 }} />
               {snap.shifts.map((s) => (
                 <ReferenceLine key={s.day} x={s.day + 1} stroke={C_NOAI} strokeDasharray="4 3" />

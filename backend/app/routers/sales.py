@@ -14,7 +14,7 @@ from app.database import get_db
 from app.models import Market, Product, Sale, SaleItem
 from app.routers.dep import get_current_user
 from app.schemas import SaleCreateIn, SaleHistoryOut, SaleOut
-from app.services.clock import day_bounds
+from app.services.clock import day_bounds, local_date, today_local
 from app.services.recommender import recalc_products
 
 router = APIRouter(prefix="/sales", tags=["sales"])
@@ -108,6 +108,8 @@ async def create_sale(
                 category_id=product.category_id,
                 quantity=qty,
                 unit_price=product.price,
+                unit_cost=product.cost if product.cost > 0 else None,
+                cost_estimated=payload.sold_at is not None and local_date(payload.sold_at) < today_local(),
                 subtotal=subtotal,
             )
         )

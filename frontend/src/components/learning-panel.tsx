@@ -1,5 +1,6 @@
 "use client";
 
+import { chartTooltipProps } from "@/lib/chart-tooltip";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import {
@@ -158,8 +159,7 @@ export function LearningPanelDialog({
                     <LineChart data={data.evolution.map((e, i) => ({ ...e, idx: i + 1 }))}>
                       <XAxis dataKey="idx" tick={{ fontSize: 11 }} stroke="hsl(var(--muted-foreground))" />
                       <YAxis tick={{ fontSize: 11 }} stroke="hsl(var(--muted-foreground))" width={45} />
-                      <ReTooltip
-                        contentStyle={{ borderRadius: 12, border: "1px solid hsl(var(--border))", background: "hsl(var(--popover))" }}
+                      <ReTooltip {...chartTooltipProps}
                       />
                       <Line type="monotone" dataKey="final_rate" name={t("aiPanel.col.final")} stroke="hsl(var(--ponto))" strokeWidth={2.5} dot={false} />
                       <Line type="monotone" dataKey="observed_rate" name={t("aiPanel.col.observed")} stroke="hsl(var(--chart-1))" strokeWidth={1.5} dot={false} strokeDasharray="4 3" />
@@ -361,9 +361,8 @@ function WeekProfileCard({ profile }: { profile: WeekProfile }) {
           <BarChart data={profile.next_days}>
             <XAxis dataKey="label" tick={{ fontSize: 11 }} stroke="hsl(var(--muted-foreground))" />
             <YAxis tick={{ fontSize: 11 }} stroke="hsl(var(--muted-foreground))" width={35} />
-            <ReTooltip
+            <ReTooltip {...chartTooltipProps}
               formatter={(v: number) => [fmtNum(Math.round(v * 10) / 10), t("profile.forecast")]}
-              contentStyle={{ borderRadius: 12, border: "1px solid hsl(var(--border))", background: "hsl(var(--popover))" }}
             />
             <Bar dataKey="qty" radius={[6, 6, 0, 0]}>
               {profile.next_days.map((d, i) => (
@@ -387,7 +386,7 @@ function WeekProfileCard({ profile }: { profile: WeekProfile }) {
               >
                 <XAxis dataKey="label" tick={{ fontSize: 11 }} />
                 <YAxis tick={{ fontSize: 10 }} width={34} unit="%" />
-                <ReTooltip formatter={(v: number, name: string) => [`${v > 0 ? "+" : ""}${v}%`, name]} />
+                <ReTooltip {...chartTooltipProps} formatter={(v: number, name: string) => [`${v > 0 ? "+" : ""}${v}%`, name]} />
                 <Bar dataKey="categoria" name={t("profile.compareCategory")} fill="hsl(var(--muted-foreground))" radius={[4, 4, 0, 0]} />
                 <Bar dataKey="loja" name={t("profile.compareStore")} fill="hsl(var(--ponto))" radius={[4, 4, 0, 0]} />
               </BarChart>

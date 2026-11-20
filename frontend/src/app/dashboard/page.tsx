@@ -48,6 +48,7 @@ import { dashboardRange, type DashboardPreset } from "@/lib/date-range";
 import { fmtDate, fmtMoney, fmtNum } from "@/lib/format";
 import { useI18n } from "@/lib/i18n";
 import type { Analytics } from "@/lib/types";
+import { chartTooltipProps } from "@/lib/chart-tooltip";
 import { cn } from "@/lib/utils";
 
 const CHART_COLORS = [
@@ -203,6 +204,7 @@ export default function DashboardPage() {
                         {data.profit.coverage_pct != null && data.profit.coverage_pct < 99.5
                           ? ` · ${t("dash.marginCoverage").replace("{c}", fmtNum(Math.round(data.profit.coverage_pct)))}`
                           : ""}
+                        {(data.profit.estimated_cost_pct ?? 0) > 0 && <span className="block">{t("dash.estimatedCosts")}</span>}
                       </span>
                     }
                   />
@@ -258,12 +260,9 @@ export default function DashboardPage() {
                           stroke="hsl(var(--muted-foreground))"
                         />
                         <YAxis tick={{ fontSize: 11 }} stroke="hsl(var(--muted-foreground))" width={50} />
-                        <ReTooltip
+                        <ReTooltip {...chartTooltipProps}
                           labelFormatter={(label) => fmtDate(String(label))}
                           formatter={(v: number) => fmtMoney(v)}
-                          cursor={{ fill: "hsl(var(--muted))", fillOpacity: 0.35 }}
-                          contentStyle={{ backgroundColor: "hsl(var(--card))", color: "hsl(var(--foreground))", borderRadius: 12, border: "1px solid hsl(var(--border))" }}
-                          labelStyle={{ color: "hsl(var(--foreground))" }}
                         />
                         <Bar dataKey="revenue" name={t("dash.revenue")} fill="hsl(var(--chart-1))" radius={[6, 6, 0, 0]} maxBarSize={40} />
                       </BarChart>
@@ -295,10 +294,8 @@ export default function DashboardPage() {
                             <Cell key={i} fill={CHART_COLORS[i % CHART_COLORS.length]} />
                           ))}
                         </Pie>
-                        <ReTooltip
+                        <ReTooltip {...chartTooltipProps}
                           formatter={(v: number) => fmtMoney(v)}
-                          contentStyle={{ backgroundColor: "hsl(var(--card))", color: "hsl(var(--foreground))", borderRadius: 12, border: "1px solid hsl(var(--border))" }}
-                          itemStyle={{ color: "hsl(var(--foreground))" }}
                         />
                       </PieChart>
                     </ResponsiveContainer>

@@ -1,5 +1,6 @@
 "use client";
 
+import { chartTooltipProps } from "@/lib/chart-tooltip";
 import { useEffect, useState } from "react";
 import {
   AlertTriangle,
@@ -185,7 +186,7 @@ export function ReportPanel({ sid, onNewGame }: { sid: string; onNewGame: () => 
                   <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" vertical={false} />
                   <XAxis dataKey="date" tick={{ fontSize: 10 }} stroke="hsl(var(--muted-foreground))" tickFormatter={(d: string) => fmtDate(d).slice(0, 5)} />
                   <YAxis tick={{ fontSize: 10 }} stroke="hsl(var(--muted-foreground))" width={40} />
-                  <ReTooltip contentStyle={{ borderRadius: 12, border: "1px solid hsl(var(--border))" }} />
+                  <ReTooltip {...chartTooltipProps} />
                   <Legend wrapperStyle={{ fontSize: 12 }} />
                   <Line
                     type="monotone"
@@ -219,9 +220,8 @@ export function ReportPanel({ sid, onNewGame }: { sid: string; onNewGame: () => 
                   <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" vertical={false} />
                   <XAxis dataKey="date" tick={{ fontSize: 10 }} stroke="hsl(var(--muted-foreground))" tickFormatter={(d: string) => fmtDate(d).slice(0, 5)} />
                   <YAxis tick={{ fontSize: 10 }} stroke="hsl(var(--muted-foreground))" width={52} />
-                  <ReTooltip
+                  <ReTooltip {...chartTooltipProps}
                     formatter={(v: number) => fmtMoney(v)}
-                    contentStyle={{ borderRadius: 12, border: "1px solid hsl(var(--border))" }}
                   />
                   <Legend wrapperStyle={{ fontSize: 12 }} />
                   <Bar dataKey="revenue" name={t("sim.revenue")} fill="hsl(var(--chart-1))" radius={[4, 4, 0, 0]} />

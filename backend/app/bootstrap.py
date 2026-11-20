@@ -45,6 +45,14 @@ COLUMN_PATCHES = (
     "ALTER TABLE products ADD COLUMN IF NOT EXISTS sku VARCHAR(60)",
     "ALTER TABLE markets ADD COLUMN IF NOT EXISTS vr_day INTEGER DEFAULT 0",
     "ALTER TABLE products ADD COLUMN IF NOT EXISTS cost NUMERIC(12, 2) DEFAULT 0",
+    """DO $$ BEGIN
+        IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_schema = 'public' AND table_name = 'sale_items' AND column_name = 'unit_cost') THEN
+            ALTER TABLE sale_items ADD COLUMN unit_cost NUMERIC(12, 2);
+            ALTER TABLE sale_items ADD COLUMN cost_estimated BOOLEAN NOT NULL DEFAULT FALSE;
+            UPDATE sale_items SET cost_estimated = TRUE;
+            UPDATE sale_items si SET unit_cost = p.cost FROM products p WHERE si.product_id = p.id AND p.cost > 0;
+        END IF;
+    END $$""",
     "ALTER TABLE sales ADD COLUMN IF NOT EXISTS source VARCHAR(12) DEFAULT 'app'",
     "CREATE INDEX IF NOT EXISTS ix_products_sku ON products (sku)",
     "ALTER TABLE sale_items ADD COLUMN IF NOT EXISTS unit VARCHAR(20)",

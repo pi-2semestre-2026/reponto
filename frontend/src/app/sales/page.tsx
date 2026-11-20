@@ -38,6 +38,7 @@ export default function SalesPage() {
   const [sales, setSales] = useState<Sale[] | null>(null);
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
+  const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const pageSize = 20;
   const [markets, setMarkets] = useState<Market[]>([]);
@@ -52,6 +53,7 @@ export default function SalesPage() {
   const load = useCallback(async () => {
     const version = ++requestVersion.current;
     setLoading(true);
+    setError(null);
     try {
       const [latestSales, latestMarkets] = await Promise.all([
         api.salesPage({ market_id: marketId || undefined, date_from: from || undefined, date_to: to || undefined, page, page_size: pageSize }),
@@ -65,7 +67,7 @@ export default function SalesPage() {
       setDetail(current => current ? latestSales.items.find(sale => sale.id === current.id) ?? current : null);
       setCancelTarget(current => current && latestSales.items.find(sale => sale.id === current.id)?.status === "cancelled" ? null : current);
     } catch (e) {
-      if (version === requestVersion.current) toast.error((e as Error).message);
+      if (version === requestVersion.current) setError((e as Error).message);
     } finally {
       if (version === requestVersion.current) setLoading(false);
     }
@@ -144,7 +146,13 @@ export default function SalesPage() {
 
         <Card className="animate-fade-in-up">
           <CardContent className="p-0">
-            {sales === null ? (
+            {error ? (
+              <div role="alert" className="space-y-3 p-6 text-center">
+                <p className="font-semibold">{t("sales.loadError")}</p>
+                <p className="text-sm text-muted-foreground">{error}</p>
+                <Button variant="outline" disabled={loading} onClick={() => void load()}>{t("common.retry")}</Button>
+              </div>
+            ) : sales === null ? (
               <div className="space-y-3 p-6">
                 {[1, 2, 3].map((i) => (
                   <Skeleton key={i} className="h-12" />
@@ -223,8 +231,8 @@ export default function SalesPage() {
           <span aria-live="polite">{t("sales.page")} {page} / {Math.max(1, Math.ceil(total / pageSize))} · {total} {t("sales.title").toLowerCase()}</span>
           <div className="flex items-center gap-2">
             {loading && <Loader2 className="h-4 w-4 animate-spin" aria-label={t("sales.loading")} />}
-            <Button variant="outline" disabled={loading || page <= 1} onClick={() => setPage(p => p - 1)}>{t("sales.previous")}</Button>
-            <Button variant="outline" disabled={loading || page * pageSize >= total} onClick={() => setPage(p => p + 1)}>{t("sales.next")}</Button>
+            <Button variant="outline" disabled={loading || !!error || page <= 1} onClick={() => setPage(p => p - 1)}>{t("sales.previous")}</Button>
+            <Button variant="outline" disabled={loading || !!error || page * pageSize >= total} onClick={() => setPage(p => p + 1)}>{t("sales.next")}</Button>
           </div>
         </nav>
       </main>

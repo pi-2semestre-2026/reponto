@@ -229,9 +229,14 @@ export default function MarketPage() {
                       const action = t(direction === "asc" ? "market.sortDesc" : direction === "desc" ? "market.sortDefault" : "market.sortAsc");
                       return (
                         <TableHead key={key} aria-sort={direction === "asc" ? "ascending" : direction === "desc" ? "descending" : "none"}>
-                          <button type="button" className="inline-flex items-center gap-2 whitespace-nowrap rounded py-2 text-left uppercase focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring" onClick={() => setProductSort(current => nextProductSort(current, key))} title={action} aria-label={`${label}: ${action}`}>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                          <button type="button" className="inline-flex items-center gap-2 whitespace-nowrap rounded py-2 text-left uppercase focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring" onClick={() => setProductSort(current => nextProductSort(current, key))} aria-label={`${label}: ${action}`}>
                             {label}<Icon className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
                           </button>
+                            </TooltipTrigger>
+                            <TooltipContent className="max-w-72 leading-relaxed">{t(`market.sortHelp.${key}`)}</TooltipContent>
+                          </Tooltip>
                         </TableHead>
                       );
                     })}

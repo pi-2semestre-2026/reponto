@@ -230,17 +230,16 @@ async def analytics(
             )
         )
 
-    # Lucro bruto do período (CMV pelo custo cadastrado no produto).
     profit_row = (
         await db.execute(
             select(
                 func.coalesce(func.sum(SaleItem.subtotal), 0),
-                func.coalesce(func.sum(SaleItem.quantity * Product.cost), 0),
+                func.coalesce(func.sum(SaleItem.quantity * SaleItem.unit_cost), 0),
+                func.coalesce(func.sum(case((SaleItem.cost_estimated.is_(True), SaleItem.subtotal), else_=0)), 0),
             )
             .join(Sale, Sale.id == SaleItem.sale_id)
             .join(Market, Market.id == Sale.market_id)
-            .join(Product, Product.id == SaleItem.product_id)
-            .where(*scope, Product.cost > 0)
+            .where(*scope, SaleItem.unit_cost.is_not(None))
         )
     ).one()
     rev_known, cogs = Decimal(profit_row[0] or 0), Decimal(profit_row[1] or 0)
@@ -251,6 +250,7 @@ async def analytics(
         gross_profit=gross,
         margin_pct=round(float(gross / rev_known) * 100, 1) if rev_known > 0 else None,
         coverage_pct=round(float(rev_known / stats.revenue) * 100, 1) if stats.revenue > 0 else None,
+        estimated_cost_pct=round(float(Decimal(profit_row[2] or 0) / rev_known) * 100, 1) if rev_known > 0 else None,
     )
 
     # Estoque: valor a custo, excesso acima do máximo recomendado e rupturas.

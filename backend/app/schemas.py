@@ -144,6 +144,8 @@ class SaleItemOut(BaseModel):
     unit: str = "unidade"
     quantity: Decimal
     unit_price: Decimal
+    unit_cost: Decimal | None = None
+    cost_estimated: bool = False
     subtotal: Decimal
 
 
@@ -269,7 +271,6 @@ class MarketOverview(BaseModel):
 class ProfitStats(BaseModel):
     """Lucro bruto do período: vendas - custo das mercadorias vendidas (CMV).
 
-    O custo é o cadastrado hoje no produto (o item de venda não guarda o custo da época);
     itens sem custo cadastrado ficam fora da conta e `coverage_pct` diz quanto do
     faturamento foi coberto."""
 
@@ -278,6 +279,7 @@ class ProfitStats(BaseModel):
     gross_profit: Decimal
     margin_pct: float | None
     coverage_pct: float | None
+    estimated_cost_pct: float | None = None
 
 
 class InventoryStats(BaseModel):

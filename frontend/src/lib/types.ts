@@ -53,6 +53,8 @@ export interface SaleItem {
   quantity: string;
   unit: string;
   unit_price: string;
+  unit_cost: string | null;
+  cost_estimated: boolean;
   subtotal: string;
 }
 
@@ -195,6 +197,7 @@ export interface Analytics {
     gross_profit: string;
     margin_pct: number | null;
     coverage_pct: number | null;
+    estimated_cost_pct?: number | null;
   } | null;
   inventory?: {
     value_cost: string;

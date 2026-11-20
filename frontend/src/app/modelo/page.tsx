@@ -25,12 +25,12 @@ import { fmtNum } from "@/lib/format";
 import { useI18n } from "@/lib/i18n";
 import { getToken } from "@/lib/token";
 import type { Evaluation } from "@/lib/types";
+import { chartTooltipProps } from "@/lib/chart-tooltip";
 import { cn } from "@/lib/utils";
 
 const C_ACTUAL = "hsl(var(--muted-foreground))";
 const C_LGBM = "hsl(var(--primary))";
 const C_MA4 = "hsl(var(--ponto))";
-const TOOLTIP_STYLE = { borderRadius: 12, border: "1px solid hsl(var(--border))", background: "hsl(var(--popover))", fontSize: 12 };
 
 const pct = (v: number | undefined | null, digits = 1) =>
   v === undefined || v === null ? "—" : `${v.toLocaleString("pt-BR", { maximumFractionDigits: digits })}%`;
@@ -285,7 +285,7 @@ export default function ModelPage() {
                       <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
                       <XAxis dataKey="week" tickFormatter={shortDate} tick={{ fontSize: 11 }} stroke="hsl(var(--muted-foreground))" />
                       <YAxis tick={{ fontSize: 11 }} stroke="hsl(var(--muted-foreground))" width={55} tickFormatter={(v) => fmtNum(v)} />
-                      <ReTooltip contentStyle={TOOLTIP_STYLE} labelFormatter={(v) => shortDate(String(v))} formatter={(v: number) => fmtNum(v)} />
+                      <ReTooltip {...chartTooltipProps} labelFormatter={(v) => shortDate(String(v))} formatter={(v: number) => fmtNum(v)} />
                       <Legend wrapperStyle={{ fontSize: 12 }} />
                       <Line dataKey="actual" name={t("model.series.actual")} stroke={C_ACTUAL} strokeWidth={2} dot={false} />
                       <Line dataKey="lgbm" name="LightGBM" stroke={C_LGBM} strokeWidth={2.5} dot={false} />
@@ -305,7 +305,7 @@ export default function ModelPage() {
                       <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" vertical={false} />
                       <XAxis dataKey="label" tick={{ fontSize: 11 }} stroke="hsl(var(--muted-foreground))" />
                       <YAxis tick={{ fontSize: 11 }} stroke="hsl(var(--muted-foreground))" width={40} unit="%" />
-                      <ReTooltip contentStyle={TOOLTIP_STYLE} formatter={(v: number) => pct(v, 2)} />
+                      <ReTooltip {...chartTooltipProps} formatter={(v: number) => pct(v, 2)} />
                       <Legend wrapperStyle={{ fontSize: 12 }} />
                       <Bar dataKey="lgbm_wape" name="LightGBM" fill={C_LGBM} radius={[6, 6, 0, 0]} />
                       <Bar dataKey="ma4_wape" name={t("model.series.ma4")} fill={C_MA4} radius={[6, 6, 0, 0]} />
@@ -345,7 +345,7 @@ export default function ModelPage() {
                         <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
                         <XAxis dataKey="week" tickFormatter={shortDate} tick={{ fontSize: 11 }} stroke="hsl(var(--muted-foreground))" />
                         <YAxis tick={{ fontSize: 11 }} stroke="hsl(var(--muted-foreground))" width={45} />
-                        <ReTooltip contentStyle={TOOLTIP_STYLE} labelFormatter={(v) => shortDate(String(v))} />
+                        <ReTooltip {...chartTooltipProps} labelFormatter={(v) => shortDate(String(v))} />
                         <Legend wrapperStyle={{ fontSize: 12 }} />
                         <Line dataKey="actual" name={t("model.series.actual")} stroke={C_ACTUAL} strokeWidth={2} dot={{ r: 2 }} />
                         <Line dataKey="lgbm" name="LightGBM" stroke={C_LGBM} strokeWidth={2.5} dot={false} connectNulls={false} />

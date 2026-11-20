@@ -147,6 +147,8 @@ class SaleItem(Base):
     category_id: Mapped[uuid.UUID | None] = mapped_column(UUID(as_uuid=True), ForeignKey("categories.id"), nullable=True)
     quantity: Mapped[Decimal] = mapped_column(Numeric(12, 3), default=1)
     unit_price: Mapped[Decimal] = mapped_column(Numeric(12, 2), default=0)
+    unit_cost: Mapped[Decimal | None] = mapped_column(Numeric(12, 2), nullable=True)
+    cost_estimated: Mapped[bool] = mapped_column(Boolean, default=False)
     subtotal: Mapped[Decimal] = mapped_column(Numeric(12, 2), default=0)
 
     sale: Mapped[Sale] = relationship(back_populates="items", lazy="selectin")
